@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jabones Kalia - Dashboard de Producción</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="img/logo.jpeg" alt="Logo Sabia Roja" class="brand-logo">
+                <div class="logo-text">
+                    <h1>SABIA ROJA</h1>
+                    <p>Cosmética Curativa de Sangre de Grado</p>
+                </div>
+            </div>
+            <nav>
+                <button class="tab-btn active" onclick="showTab('budget')">Presupuesto</button>
+                <button class="tab-btn" onclick="showTab('strategy')">Estrategia</button>
+                <button class="tab-btn" onclick="showTab('comms')">Comunicación</button>
+                <button class="tab-btn" onclick="showTab('project')">Proyecto</button>
+                <button class="tab-btn" onclick="showTab('analysis')">Análisis</button>
+            </nav>
+        </header>
+
+        <main id="tab-budget" class="tab-content active">
+            <section class="config-panel">
+                <div class="card">
+                    <h3>Configuración de Producción</h3>
+                    <div class="input-group">
+                        <label for="units">Total unidades a producir:</label>
+                        <input type="number" id="units" value="50" min="10" step="10" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="price-target">Precio de Venta Objetivo (S/):</label>
+                        <input type="number" id="price-target" value="10.00" step="0.50" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="mode">Perfil de Adquisición:</label>
+                        <select id="mode" onchange="calculate()">
+                            <option value="wholesale" selected>Mayorista (Productor Directo)</option>
+                            <option value="retail">Minorista (Tienda local)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card summary-card">
+                    <h3>Resumen Financiero</h3>
+                    <div class="stat">
+                        <span>Costo Total Insumos:</span>
+                        <strong id="total-cost">S/ 0.00</strong>
+                    </div>
+                    <div class="stat">
+                        <span>Costo Unitario:</span>
+                        <strong id="unit-cost">S/ 0.00</strong>
+                    </div>
+                    <div class="stat">
+                        <span>Margen Bruto Total:</span>
+                        <strong id="total-profit" class="profit-highlight">S/ 0.00</strong>
+                    </div>
+                    <button class="export-btn" onclick="exportExcel()">Exportar a Excel</button>
+                </div>
+            </section>
+
+            <section class="breakdown">
+                <div class="card glass">
+                    <h3>Detalle de Insumos (basado en receta para 50u)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ingrediente</th>
+                                <th>Cantidad</th>
+                                <th>Costo Est.</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingredients-table">
+                            <!-- JS Inject -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <main id="tab-strategy" class="tab-content">
+            <div class="grid-layout">
+                <div class="card">
+                    <h3>Idea de Negocio</h3>
+                    <p>Producción y comercialización de jabones faciales enriquecidos con <strong>Sangre de Grado</strong> (látex puro), enfocados en la curación de marcas de acné, cicatrices y regeneración celular.</p>
+                </div>
+                <div class="card">
+                    <h3>Sustentación</h3>
+                    <p>La Sangre de Grado es un recurso ancestral peruano con propiedades taspínicas validadas para la cicatrización. El mercado actual busca productos naturales, libres de parabenos y con resultados visibles. Al conseguir materia prima directa, democratizamos el acceso a cosmética de alta gama.</p>
+                </div>
+                <div class="card">
+                    <h3>Público Objetivo</h3>
+                    <ul>
+                        <li>Jóvenes (15-25 años) con secuelas de acné.</li>
+                        <li>Personas con piel sensible o tendencia a irritaciones.</li>
+                        <li>Consumidores ECO que prefieren productos peruanos artesanales.</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <main id="tab-comms" class="tab-content">
+            <div class="card glass large">
+                <h3>Cuadro de Elementos de Comunicación y Presupuesto</h3>
+                <div class="table-container">
+                    <table class="marketing-table">
+                        <thead>
+                            <tr>
+                                <th>Componentes</th>
+                                <th>Elementos</th>
+                                <th>Presupuesto (S/)*</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="category-row"><td rowspan="3">Papelería</td><td>Sobres y hojas membretadas</td><td>3.75</td></tr>
+                            <tr><td>Volantes</td><td>4.00</td></tr>
+                            <tr><td>Bolsas o envases impresos (144u)</td><td>36.45</td></tr>
+                            
+                            <tr class="category-row"><td rowspan="4">Publicidad</td><td>Carteles del local</td><td>20.00</td></tr>
+                            <tr><td>Banners</td><td>5.50</td></tr>
+                            <tr><td>Spot en radio o TV</td><td>40.00</td></tr>
+                            <tr><td>Publicidad en WEB</td><td>5.00</td></tr>
+                            
+                            <tr class="category-row"><td rowspan="3">Promociones</td><td>Liquidaciones fin de temporadas</td><td>20.00</td></tr>
+                            <tr><td>Campañas de descuentos especiales</td><td>25.00</td></tr>
+                            <tr><td>Ofertas asociadas</td><td>15.00</td></tr>
+                            
+                            <tr class="category-row"><td>Web Page</td><td>Hosting, dominio y diseño</td><td>0.00</td></tr>
+                            <tr class="category-row"><td>Redes Sociales</td><td>Administración y Diseño</td><td>0.00</td></tr>
+                            <tr class="category-row"><td>Otros</td><td>Gastos operativos varios</td><td>0.00</td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="2">TOTAL PRESUPUESTO COMUNICACIÓN</td>
+                                <td>S/ 174.70</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <p class="footnote">*Valores adaptados del plan de marketing de Sabia Roja (Tipo de cambio referencial 1:1 para fines de cuadre o ajuste manual).</p>
+            </div>
+        </main>
+
+        <main id="tab-project" class="tab-content">
+            <div class="print-cover">
+                <img src="img/logo.jpeg" alt="Logo Sabia Roja" class="cover-logo">
+                <h1 class="cover-title">PROYECTO EMPRESARIAL: SABIA ROJA</h1>
+                <p class="cover-subtitle">Cosmética Curativa de Sangre de Grado</p>
+                <div class="cover-footer">Huánuco, Perú - 2026</div>
+            </div>
+            <div class="card glass large">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Plan Estratégico de Negocio</h2>
+                    <button class="export-btn" style="width: auto; padding: 0.8rem 2rem;" onclick="exportWord()">Exportar a Word</button>
+                </div>
+                
+                <section class="doc-section">
+                    <h3>1. Gestión Estratégica</h3>
+                    <div class="doc-grid">
+                        <div class="doc-item">
+                            <h4>1.1 La Visión</h4>
+                            <p class="quote">"Ser la marca líder en cosmética curativa natural en la región Huánuco para el 2028, reconocida por valorizar la biodiversidad local y mejorar la salud dermatológica de las familias peruanas."</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>1.2 La Misión</h4>
+                            <p class="quote">"Proveer a la población huanuqueña productos de cuidado facial formulados con Sangre de Grado pura, promoviendo la salud de la piel y el bienestar integral a través de la innovación artesanal y el respeto al medio ambiente."</p>
+                        </div>
+                    </div>
+
+                    <h4>1.3 Valores</h4>
+                    <ul class="values-list">
+                        <li><b>Honestidad:</b> Transparencia en la pureza de nuestros ingredientes.</li>
+                        <li><b>Confianza:</b> Seguridad en los resultados curativos del producto.</li>
+                        <li><b>Compromiso:</b> Con la salud del cliente y el medio ambiente.</li>
+                    </ul>
+
+                    <h4>1.4 Objetivos Estratégicos (Nacional)</h4>
+                    <table id="table-objectives" class="marketing-table small-text">
+                        <thead>
+                            <tr><th>Área</th><th>Objetivo Estratégico</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Comercial</td><td>Posicionar la marca Sabia Roja en Huánuco, Amarilis y Pillco Marca.</td></tr>
+                            <tr><td>Operativo</td><td>Estandarizar procesos de Buenas Prácticas de Manufactura (BPM).</td></tr>
+                            <tr><td>Persona</td><td>Contar con personal capacitado y motivado con el propósito.</td></tr>
+                            <tr><td>Legal</td><td>Cumplir con las exigencias de DIGEMID, DIRESA y la municipalidad.</td></tr>
+                            <tr><td>Financiero</td><td>Autofinanciar la oferta con recursos propios y cumplir compromisos.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-top: 1.5rem;">1.5 Objetivos de Exportación (Largo Plazo)</h4>
+                    <table id="table-objectives-export" class="marketing-table small-text">
+                        <thead>
+                            <tr><th>Área</th><th>Objetivo de Internacionalización</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Mercado</td><td>Penetrar en mercados de cosmética natural en EE.UU. y Europa.</td></tr>
+                            <tr><td>Logística</td><td>Establecer alianzas con couriers internacionales para distribución eficiente.</td></tr>
+                            <tr><td>Calidad</td><td>Obtener certificaciones orgánicas internacionales (Ecocert/USDA).</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-top: 2rem;">1.6 Matriz FODA</h4>
+                    <div class="foda-grid">
+                        <div class="foda-box f-box"><b>Fortalezas:</b> Insumos de alta pureza, conocimiento técnico, uso de redes sociales.</div>
+                        <div class="foda-box o-box"><b>Oportunidades:</b> Demanda post-pandemia de productos naturales, créditos para emprendedores.</div>
+                        <div class="foda-box d-box"><b>Debilidades:</b> Capacidad de producción inicial limitada, falta de maquinaria industrial.</div>
+                        <div class="foda-box a-box"><b>Amenazas:</b> Regulación sanitaria estricta (DIGEMID), inestabilidad económica.</div>
+                    </div>
+                </section>
+
+                <section class="doc-section">
+                    <h3>2. Estudio de Mercado y Consumidor</h3>
+                    <h4>2.1 Segmentación del Mercado</h4>
+                    <table id="table-segmentation" class="marketing-table">
+                        <thead>
+                            <tr>
+                                <th>Segmento</th>
+                                <th>Perfil del Segmento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><b>Mujeres</b></td><td>Segmento clave enfocado en el cuidado del rostro y prevención; principal consumidor de cosméticos.</td></tr>
+                            <tr><td><b>Hombres</b></td><td>Público en crecimiento; reto para romper estereotipos de cuidado personal masculino.</td></tr>
+                            <tr><td><b>Adolescentes</b></td><td>Segmento vital debido a brotes de acné por cambios hormonales; buscan soluciones curativas.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-top: 2rem;">2.2 Análisis Competitivo</h4>
+                    <table id="table-competitors" class="marketing-table small-text">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Fusion Beauty</th>
+                                <th>Biocosmética</th>
+                                <th>Amy & Co</th>
+                                <th>Sabia Roja</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Reputación</td><td>5</td><td>4</td><td>3</td><td><b>5</b></td></tr>
+                            <tr><td>Calidad/Atención</td><td>5</td><td>4</td><td>4</td><td><b>5</b></td></tr>
+                            <tr><td>Precio</td><td>3</td><td>2</td><td>4</td><td><b>5</b></td></tr>
+                            <tr><td>Disponibilidad</td><td>5</td><td>5</td><td>5</td><td><b>5</b></td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td>Puntaje Total</td><td>53</td><td>47</td><td>48</td><td><b>57</b></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </section>
+
+                <section class="doc-section">
+                    <h3>3. Ventaja Competitiva</h3>
+                    <ul class="values-list">
+                        <li><b>Sostenibilidad:</b> Cruelty-free y envases biodegradables.</li>
+                        <li><b>Ingredientes:</b> 100% naturales procedentes de cultivos ecológicos.</li>
+                        <li><b>Precio:</b> Accesible comparado con marcas de lujo ($20+).</li>
+                        <li><b>Servicio Post-Venta:</b> Garantías y política de devoluciones sólida.</li>
+                    </ul>
+                </section>
+
+                <section class="doc-section">
+                    <h3>4. Mercado Proveedor</h3>
+                    <table id="table-suppliers" class="marketing-table">
+                        <thead>
+                            <tr>
+                                <th>Proveedor</th>
+                                <th>Especialidad</th>
+                                <th>Puntaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><b>Chemsol</b></td><td>Materias Primas</td><td>54/60</td></tr>
+                            <tr><td><b>Comagui</b></td><td>Envases/Recipientes</td><td>52/60</td></tr>
+                            <tr><td><b>D' Empaque</b></td><td>Cajas y Bolsas Kraft</td><td>54/60</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="doc-section">
+                    <h3>5. Estrategia de Marketing (4Ps)</h3>
+                    <h4>5.1 Estrategia de Producto</h4>
+                    <div class="doc-grid">
+                        <div class="card glass">
+                            <h5>Limpiador "Breathe"</h5>
+                            <p class="small-text">Presentación: Envase Ámbar 100ml. <br>Elimina suciedad y maquillaje.</p>
+                            <img src="sabia_roja_breathe_packaging_1776982501375.png" alt="Breathe Packaging" class="product-img-small">
+                        </div>
+                        <div class="card glass">
+                            <h5>Hidratante "Glow"</h5>
+                            <p class="small-text">Presentación: Envase Ámbar 100ml. <br>Piel fortalecida y flexible.</p>
+                            <img src="sabia_roja_glow_packaging_1776982516924.png" alt="Glow Packaging" class="product-img-small">
+                        </div>
+                        <div class="card glass">
+                            <h5>Protector "Rise Sunshine"</h5>
+                            <p class="small-text">Presentación: Envase Ámbar 100ml. <br>Protección UVA/UVB total.</p>
+                            <img src="sabia_roja_rise_sunshine_packaging_1776982533000.png" alt="Rise Sunshine Packaging" class="product-img-small">
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 2rem;">5.2 Diseño de Empaque Premium</h4>
+                    <div id="packaging-section" class="card glass" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                        <img src="sabia_roja_breathe_packaging_1776982501375.png" alt="Empaque Premium" style="width: 250px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <div style="flex: 1; min-width: 250px;">
+                            <p><b>Especificaciones Técnicas para Exportación:</b></p>
+                            <ul class="small-text">
+                                <li><b>Envase:</b> Vidrio Ámbar grado farmacéutico (protección UV total).</li>
+                                <li><b>Dosificador:</b> Bomba de lujo en acabado oro mate (anticorrosión).</li>
+                                <li><b>Etiquetado:</b> Cumple normativa FDA/EU con tinta botánica.</li>
+                                <li><b>Sostenibilidad:</b> Empaque exterior de cartón piedra reciclado de alta densidad.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 2rem;">5.3 Estrategia de Precios Dual</h4>
+                    <div class="doc-grid">
+                        <div class="card glass">
+                            <h5>Mercado Nacional (Soles)</h5>
+                            <table id="table-pricing-national" class="marketing-table small-text">
+                                <thead>
+                                    <tr><th>Producto</th><th>Costo</th><th>PVP (S/)</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Breathe</td><td>S/ 5.20</td><td><b>S/ 9.00</b></td></tr>
+                                    <tr><td>Glow</td><td>S/ 5.20</td><td><b>S/ 11.00</b></td></tr>
+                                    <tr><td>Rise Sunshine</td><td>S/ 8.50</td><td><b>S/ 25.00</b></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card glass">
+                            <h5>Exportación (Dólares)</h5>
+                            <table id="table-pricing-export" class="marketing-table small-text">
+                                <thead>
+                                    <tr><th>Producto</th><th>Costo</th><th>PVP ($)</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Breathe</td><td>$1.95</td><td><b>$10.50</b></td></tr>
+                                    <tr><td>Glow</td><td>$2.90</td><td><b>$12.00</b></td></tr>
+                                    <tr><td>Rise Sunshine</td><td>$5.55</td><td><b>$22.00</b></td></tr>
+                                </tbody>
+                            </table>
+                            <p class="small-text" style="margin-top: 5px; color: #8B0000;">*Margen incrementado (+200%) por demanda internacional.</p>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 2rem;">5.3 Proyección de Ventas (Anual)</h4>
+                    <div style="overflow-x: auto;">
+                        <table id="table-projections" class="marketing-table small-text" style="min-width: 600px;">
+                            <thead>
+                                <tr><th>Producto</th><th>Mes 1-4</th><th>Mes 5-8</th><th>Mes 9-12</th><th>Total Anual</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Breathe</td><td>100 u.</td><td>120 u.</td><td>150 u.</td><td><b>365 u.</b></td></tr>
+                                <tr><td>Glow</td><td>50 u.</td><td>70 u.</td><td>105 u.</td><td><b>225 u.</b></td></tr>
+                                <tr><td>Rise Sunshine</td><td>50 u.</td><td>70 u.</td><td>105 u.</td><td><b>225 u.</b></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="doc-section">
+                    <h3>6. Estrategia de Distribución: Exclusiva (Huánuco)</h3>
+                    <p><b>¿Por qué elegimos Distribución Exclusiva?</b></p>
+                    <p>Se ha seleccionado este modelo para mantener un <b>posicionamiento premium</b>. Al vender exclusivamente a través de canales propios o distribuidores autorizados especializados, aseguramos que el cliente reciba la asesoría correcta sobre las propiedades curativas de la Sangre de Grado, evitando que el producto se pierda en góndolas de supermercados genéricos.</p>
+                    <div class="diagram-placeholder">
+                        <div class="node">🏭 Productor (Sabia Roja)</div>
+                        <div class="arrow">↓</div>
+                        <div class="node special">🏪 Punto de Venta Exclusivo</div>
+                        <div class="arrow">↓</div>
+                        <div class="node">👤 Consumidor Final (Huánuco/Perú)</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <main id="tab-analysis" class="tab-content">
+            <div class="card large">
+                <h3>Factores preponderantes y Regulación</h3>
+                <div class="alert note">
+                    <b>Regulación SBS:</b> Los márgenes de ganancia están regulados para evitar sobrecostos. Se deben considerar los topes establecidos para productos de primera necesidad o cosmética regulada.
+                </div>
+                
+                <h4 style="margin-top: 1.5rem;">Márgenes de Ganancia Sugeridos (Referencia SBS)</h4>
+                <table class="marketing-table" style="margin-top: 1rem;">
+                    <thead>
+                        <tr><th>Tipo de Venta</th><th>Margen (%)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Venta Directa</td><td>20%</td></tr>
+                        <tr><td>Venta al por Mayor</td><td>25%</td></tr>
+                        <tr><td>Venta Minorista</td><td>25%</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="alert important" style="margin-top: 2rem;">
+                    <strong>Siguiente Paso (DIGEMID):</strong> Para vender en farmacias o supermercados a S/ 11.00, necesitarás el NSOC (Notificación Sanitaria Obligatoria) de DIGEMID.
+                </div>
+                <canvas id="profitChart" style="width:100%; height:300px;"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
