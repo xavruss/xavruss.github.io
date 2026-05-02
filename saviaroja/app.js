@@ -25,7 +25,10 @@ function showTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     
     document.getElementById(`tab-${tabId}`).classList.add('active');
-    event.currentTarget.classList.add('active');
+    
+    // Highlight the correct nav button
+    const navBtn = document.querySelector(`nav .tab-btn[onclick*="'${tabId}'"]`);
+    if (navBtn) navBtn.classList.add('active');
 }
 
 function calculate() {

@@ -307,6 +307,129 @@ th {
     background: #f9f9f9;
 }
 
+.hero-section {
+    position: relative;
+    height: 70vh;
+    border-radius: 30px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px; /* Más espacio para no tapar los botones */
+    margin-bottom: 2rem;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-logo-wrapper {
+    width: 25vw;
+    max-width: 280px;
+    height: 25vw;
+    max-height: 280px;
+    border-radius: 50%;
+    border: 6px solid var(--white);
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible; /* IMPORTANTE: Permitimos que el PNG transparente sobresalga */
+    transform: translateY(-70px); 
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    animation: pulse-enhanced 4s infinite ease-in-out;
+    margin-bottom: 1.5rem;
+}
+
+.hero-logo-img {
+    width: 110%; /* Sobresale ligeramente del círculo blanco para un efecto 3D */
+    height: 110%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)); /* Sombra para el PNG transparente */
+}
+
+.hero-text {
+    margin-top: -60px; /* Ajuste por el desplazamiento del logo */
+}
+
+.hero-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+.hero-text p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.minimalist-details {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.minimalist-details span {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.fade-in {
+    animation: fadeInDown 1s ease-out;
+}
+
+.fade-in-delay {
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.hero-btn {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    background: var(--accent);
+    color: var(--primary);
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-btn:hover {
+    background: #b19365;
+    transform: scale(1.05);
+}
+
+@keyframes pulse-enhanced {
+    0%, 100% { transform: translateY(-70px) scale(1); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+    50% { transform: translateY(-80px) scale(1.03); box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .print-cover {
     display: none;
     text-align: center;
