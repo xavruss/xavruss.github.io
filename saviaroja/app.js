@@ -13,11 +13,17 @@ const PRICES = {
     }
 };
 
+const PRODUCT_PRICES = {
+    breathe: 9.00,
+    glow: 11.00,
+    rise: 25.00
+};
+
 const RECIPE_PER_10 = {
-    glycerin: 1,    // kg
-    blood: 20,      // ml
-    vitE: 5,        // ml
-    oil: 10         // ml
+    glycerin: 0.9,  // kg para 10 unidades
+    blood: 5,       // ml para 10 unidades
+    vitE: 10,       // ml para 10 unidades
+    oil: 10         // ml para 10 unidades
 };
 
 function showTab(tabId) {
@@ -32,26 +38,55 @@ function showTab(tabId) {
 }
 
 function calculate() {
+    const productId = document.getElementById('product-select').value;
     const units = parseFloat(document.getElementById('units').value) || 0;
-    const targetPrice = parseFloat(document.getElementById('price-target').value) || 0;
-    const mode = document.getElementById('mode').value;
+    const customerType = document.getElementById('customer-type').value;
+    const warning = document.getElementById('wholesale-warning');
     
+    // 1. Lógica de Precios para el Cliente
+    const basePrice = PRODUCT_PRICES[productId];
+    let finalUnitPrice = basePrice;
+    let discount = 0;
+    
+    if (customerType === 'wholesale') {
+        if (units >= 100) {
+            finalUnitPrice = basePrice * 0.8; // 20% descuento
+            warning.style.display = 'none';
+        } else {
+            finalUnitPrice = basePrice; // No aplica descuento
+            warning.style.display = 'block';
+        }
+        discount = (basePrice - finalUnitPrice) * units;
+    } else {
+        warning.style.display = 'none';
+    }
+    
+    const subtotal = basePrice * units;
+    const totalPayable = subtotal - discount;
+    
+    // Actualizar UI del Simulador
+    document.getElementById('unit-price-display').innerText = `S/ ${finalUnitPrice.toFixed(2)}`;
+    document.getElementById('subtotal-display').innerText = `S/ ${subtotal.toFixed(2)}`;
+    document.getElementById('discount-display').innerText = `S/ ${discount.toFixed(2)}`;
+    document.getElementById('total-pay-display').innerText = `S/ ${totalPayable.toFixed(2)}`;
+    
+    // 2. Lógica Técnica de Insumos (para el desglose interno)
     const multiplier = units / 10;
-    const p = PRICES[mode];
+    const p = PRICES.wholesale; // El costo de producción se calcula siempre a precio mayorista de insumo
 
     const ingredients = [
         { name: 'Base de Glicerina', qty: (RECIPE_PER_10.glycerin * multiplier).toFixed(2) + ' kg', cost: p.glycerin, subtotal: RECIPE_PER_10.glycerin * multiplier * p.glycerin },
-        { name: 'Sangre de Grado', qty: (RECIPE_PER_10.blood * multiplier).toFixed(0) + ' ml', cost: p.blood, subtotal: RECIPE_PER_10.blood * multiplier * p.blood },
-        { name: 'Vitamina E', qty: (RECIPE_PER_10.vitE * multiplier).toFixed(0) + ' ml', cost: p.vitE, subtotal: RECIPE_PER_10.vitE * multiplier * p.vitE },
-        { name: 'Aceite Esencial', qty: (RECIPE_PER_10.oil * multiplier).toFixed(0) + ' ml', cost: p.oil, subtotal: RECIPE_PER_10.oil * multiplier * p.oil }
+        { name: 'Sangre de Grado', qty: (RECIPE_PER_10.blood * multiplier).toFixed(2) + ' ml', cost: p.blood, subtotal: RECIPE_PER_10.blood * multiplier * p.blood },
+        { name: 'Vitamina E', qty: (RECIPE_PER_10.vitE * multiplier).toFixed(2) + ' ml', cost: p.vitE, subtotal: RECIPE_PER_10.vitE * multiplier * p.vitE },
+        { name: 'Aceites Naturales', qty: (RECIPE_PER_10.oil * multiplier).toFixed(2) + ' ml', cost: p.oil, subtotal: RECIPE_PER_10.oil * multiplier * p.oil }
     ];
 
-    let totalInsumos = 0;
+    let totalProductionCost = 0;
     const tableBody = document.getElementById('ingredients-table');
     tableBody.innerHTML = '';
 
     ingredients.forEach(item => {
-        totalInsumos += item.subtotal;
+        totalProductionCost += item.subtotal;
         const row = `<tr>
             <td>${item.name}</td>
             <td>${item.qty}</td>
@@ -60,27 +95,14 @@ function calculate() {
         </tr>`;
         tableBody.innerHTML += row;
     });
-
-    const unitCost = totalInsumos / units;
-    const totalRevenue = units * targetPrice;
-    const totalProfit = totalRevenue - totalInsumos;
-
-    document.getElementById('total-cost').innerText = `S/ ${totalInsumos.toFixed(2)}`;
-    document.getElementById('unit-cost').innerText = `S/ ${unitCost.toFixed(2)}`;
-    document.getElementById('total-profit').innerText = `S/ ${totalProfit.toFixed(2)}`;
-    
-    if (unitCost >= targetPrice) {
-        document.getElementById('unit-cost').style.color = 'red';
-    } else {
-        document.getElementById('unit-cost').style.color = 'inherit';
-    }
 }
 
 function exportExcel() {
     const units = document.getElementById('units').value;
-    const mode = document.getElementById('mode').value.toUpperCase();
-    const totalProd = document.getElementById('total-cost').innerText;
-    const unitProd = document.getElementById('unit-cost').innerText;
+    const product = document.getElementById('product-select').options[document.getElementById('product-select').selectedIndex].text;
+    const customer = document.getElementById('customer-type').options[document.getElementById('customer-type').selectedIndex].text;
+    const totalPay = document.getElementById('total-pay-display').innerText;
+    const unitPrice = document.getElementById('unit-price-display').innerText;
     
     // Estilos Inline para Excel
     const headerStyle = "background-color: #4A0E0E; color: #C2A478; font-weight: bold; border: 1px solid #C2A478;";
@@ -328,3 +350,8 @@ function exportWord() {
 
 // Initial Run
 window.onload = calculate;
+window.onload = () => {
+    if (document.getElementById('product-select')) {
+        calculate();
+    }
+};

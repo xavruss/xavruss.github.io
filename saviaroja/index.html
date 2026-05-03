@@ -50,50 +50,125 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Gestión Estratégica -->
+            <section class="strategic-section" style="padding: 2rem 0;">
+                <div class="doc-grid">
+                    <div class="card glass">
+                        <img src="img/mision.png" alt="Misión" class="feature-img">
+                        <div class="feature-text">
+                            <h3>🎯 Nuestra Misión</h3>
+                            <p>Elaborar y ofrecer jabones naturales a base de sangre de grado, brindando un producto de calidad que ayude al cuidado y bienestar de la piel, a un precio accesible, mediante un proceso responsable y seguro con insumos naturales.</p>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <img src="img/vision.png" alt="Visión" class="feature-img">
+                        <div class="feature-text">
+                            <h3>🔭 Nuestra Visión</h3>
+                            <p>Posicionarse como una marca reconocida en el mercado por la elaboración de jabones naturales de sangre de grado, logrando una expansión progresiva a nivel local y nacional, con innovación constante.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <main id="tab-budget" class="tab-content">
-            <section class="config-panel">
-                <div class="card">
-                    <h3>Configuración de Producción</h3>
-                    <div class="input-group">
-                        <label for="units">Total unidades a producir:</label>
-                        <input type="number" id="units" value="50" min="10" step="10" oninput="calculate()">
-                    </div>
-                    <div class="input-group">
-                        <label for="price-target">Precio de Venta Objetivo (S/):</label>
-                        <input type="number" id="price-target" value="10.00" step="0.50" oninput="calculate()">
-                    </div>
-                    <div class="input-group">
-                        <label for="mode">Perfil de Adquisición:</label>
-                        <select id="mode" onchange="calculate()">
-                            <option value="wholesale" selected>Mayorista (Productor Directo)</option>
-                            <option value="retail">Minorista (Tienda local)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="card summary-card">
-                    <h3>Resumen Financiero</h3>
-                    <div class="stat">
-                        <span>Costo Total Insumos:</span>
-                        <strong id="total-cost">S/ 0.00</strong>
-                    </div>
-                    <div class="stat">
-                        <span>Costo Unitario:</span>
-                        <strong id="unit-cost">S/ 0.00</strong>
-                    </div>
-                    <div class="stat">
-                        <span>Margen Bruto Total:</span>
-                        <strong id="total-profit" class="profit-highlight">S/ 0.00</strong>
-                    </div>
-                    <button class="export-btn" onclick="exportExcel()">Exportar a Excel</button>
-                </div>
-            </section>
-
-            <section class="breakdown">
+            <!-- Ficha Técnica Informativa -->
+            <div class="product-showcase">
+                <!-- Tarjeta 1: Beneficios -->
                 <div class="card glass">
-                    <h3>Detalle de Insumos (basado en receta para 50u)</h3>
+                    <div class="feature-img-container">
+                        <img src="img/empaque.jpg" alt="Beneficios Sabia Roja" class="feature-img-contain">
+                    </div>
+                    <div class="feature-text">
+                        <h3>🌿 Beneficios del Producto</h3>
+                        <ul>
+                            <li>Cicatrizante natural de alta potencia.</li>
+                            <li>Regenera tejidos dañados por acné.</li>
+                            <li>Propiedades antisépticas.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Ingredientes -->
+                <div class="card glass">
+                    <div class="feature-img-container">
+                        <img src="img/infografia_detalles.png" alt="Ingredientes" class="feature-img-contain">
+                    </div>
+                    <div class="feature-text">
+                        <h3>🧪 Ingredientes Naturales</h3>
+                        <p><strong>Activos:</strong> Látex de Sangre de Grado puro, Vitamina E, Aceites de coco.</p>
+                        <p><strong>Base:</strong> Glicerina vegetal.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Modo de Uso -->
+                <div class="card glass">
+                    <img src="img/modo_uso.png" alt="Modo de Uso" class="feature-img">
+                    <div class="feature-text">
+                        <h3>🚿 Modo de Uso</h3>
+                        <ol class="usage-list">
+                            <li>Humedecer el rostro con agua tibia.</li>
+                            <li>Frotar el jabón hasta crear espuma y masajear suavemente.</li>
+                            <li>Enjuagar con abundante agua fresca.</li>
+                            <li>Secar con una toalla limpia dando pequeños toques.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Presentación -->
+                <div class="card glass">
+                    <img src="img/lifestyle_producto.png" alt="Presentación Premium" class="feature-img">
+                    <div class="feature-text">
+                        <h3>🎁 Presentación Premium</h3>
+                        <p>Barra de 100g en papel Kraft biodegradable. Eco-amigable.</p>
+                    </div>
+                </div>
+
+                <!-- NUEVO: Simulador Integrado (Ocupa 2 espacios) -->
+                <div class="card glass span-2 order-simulator-card">
+                    <div class="simulator-grid">
+                        <div class="simulator-inputs">
+                            <h3>🛒 Simulador de Pedidos</h3>
+                            <div class="input-group">
+                                <label for="product-select">Producto:</label>
+                                <select id="product-select" onchange="calculate()">
+                                    <option value="breathe">Breathe - Limpiador (S/ 9.00)</option>
+                                    <option value="glow">Glow - Hidratante (S/ 11.00)</option>
+                                    <option value="rise">Rise Sunshine - Protector (S/ 25.00)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="units">Unidades:</label>
+                                <input type="number" id="units" value="100" min="1" oninput="calculate()">
+                            </div>
+                            <div class="input-group">
+                                <label for="customer-type">Cliente:</label>
+                                <select id="customer-type" onchange="calculate()">
+                                    <option value="retail">Minorista (PVP Regular)</option>
+                                    <option value="wholesale" selected>Mayorista (+100 unidades)</option>
+                                </select>
+                            </div>
+                            <div id="wholesale-warning" class="alert note" style="display: none; padding: 0.5rem; margin-top: 0.5rem; font-size: 0.8rem; background: #fffde7; border-left: 3px solid #fbc02d;">
+                                ⚠️ Min. 100u para precio mayorista.
+                            </div>
+                        </div>
+                        <div class="simulator-results summary-card">
+                            <h3>Cotización</h3>
+                            <div class="stat"><span>Unitario:</span> <strong id="unit-price-display">S/ 0.00</strong></div>
+                            <div class="stat"><span>Subtotal:</span> <strong id="subtotal-display">S/ 0.00</strong></div>
+                            <div class="stat"><span>Descuento:</span> <strong id="discount-display">S/ 0.00</strong></div>
+                            <div class="stat"><span>Total:</span> <strong id="total-pay-display" class="profit-highlight">S/ 0.00</strong></div>
+                            <button class="export-btn" onclick="exportExcel()">Descargar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="breakdown" style="display: none;">
+                <div class="card glass" style="opacity: 0.8;">
+                    <h3>Desglose Técnico de Insumos (Interno)</h3>
+                    <p class="small-text">Esta sección muestra el costo de producción estimado para el fabricante.</p>
                     <table>
                         <thead>
                             <tr>
@@ -222,6 +297,18 @@
                 </div>
                 <p class="footnote">*Valores adaptados del plan de marketing de Sabia Roja (Tipo de cambio referencial
                     1:1 para fines de cuadre o ajuste manual).</p>
+                
+                <div class="card glass" style="margin-top: 2rem;">
+                    <h3>📢 Estrategia en Redes Sociales</h3>
+                    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                        <img src="img/redes.png" alt="Marketing Digital" style="width: 100%; max-width: 400px; border-radius: 10px;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <p><strong>Canales Principales:</strong> Facebook e Instagram Ads.</p>
+                            <p><strong>Contenido:</strong> Testimonios de clientes huanuqueños, tutoriales de 'Modo de Uso' y comparativas 'Antes/Después' de cicatrización.</p>
+                            <p><strong>Tono de Voz:</strong> Educativo, empático y profesional.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
