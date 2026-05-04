@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Inicio | Divina Misericordia</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Logo and Header -->
+        <header class="header">
+            <img src="img/374651199_793914746076973_7527015581801563570_n.png" alt="Colegio Divina Misericordia Logo" class="logo">
+            <h1>Guía de Aula</h1>
+            <p>Configuración rápida de equipos</p>
+        </header>
+
+        <!-- Main Slider Content -->
+        <main class="slider-container">
+            <div class="slider-track" id="sliderTrack">
+                
+                <!-- Step 1 -->
+                <div class="slide">
+                    <div class="card glass">
+                        <div class="image-container">
+                            <img src="img/generadas/step_1_embedded_pc_1777911649420.png" alt="Preparar computadora">
+                            <div class="step-badge">Paso 1</div>
+                        </div>
+                        <div class="card-content">
+                            <h2>Preparar Equipo</h2>
+                            <p>Ubique la computadora en el escritorio. Coloque el teclado y el mouse en una posición cómoda para trabajar durante su clase.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="slide">
+                    <div class="card glass">
+                        <div class="image-container">
+                            <img src="img/IMG_20260501_134637998.jpg.jpeg" alt="Switch termomagnético de corriente">
+                            <div class="step-badge">Paso 2</div>
+                        </div>
+                        <div class="card-content">
+                            <h2>Corriente Eléctrica</h2>
+                            <p>Encienda el switch principal de corriente eléctrica ubicado en la pared para suministrar energía a los equipos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="slide">
+                    <div class="card glass">
+                        <div class="image-container">
+                            <img src="img/IMG_20260501_134700582.jpg.jpeg" alt="Botón de encendido CPU empotrada">
+                            <div class="step-badge">Paso 3</div>
+                        </div>
+                        <div class="card-content">
+                            <h2>Encender PC</h2>
+                            <p>Presione el botón de encendido (Power) en el CPU de la computadora y asegúrese de que el monitor también esté encendido.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="slide">
+                    <div class="card glass">
+                        <div class="image-container">
+                            <img src="img/IMG_20260501_134735008.jpg.jpeg" alt="Botón proyector">
+                            <div class="step-badge">Paso 4</div>
+                        </div>
+                        <div class="card-content">
+                            <h2>Encender Proyector</h2>
+                            <p>Presione el botón de encendido en el proyector (el diseño del botón puede variar según el modelo) o use el control remoto. Espere unos segundos hasta que dé imagen.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="slide">
+                    <div class="card glass">
+                        <div class="image-container">
+                            <img src="img/generadas/step_5_usb_1777911337552.png" alt="Conectar USB">
+                            <div class="step-badge">Paso 5</div>
+                        </div>
+                        <div class="card-content">
+                            <h2>Conectar Memoria USB</h2>
+                            <p>Por último, inserte su memoria USB en uno de los puertos frontales del CPU para acceder al material y presentaciones de su clase.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final/Success -->
+                <div class="slide">
+                    <div class="card glass success-card">
+                        <div class="icon-circle">
+                            <i class="ri-check-line"></i>
+                        </div>
+                        <h2>¡Todo Listo!</h2>
+                        <p>Los equipos están encendidos y preparados. ¡Que tenga una excelente clase en el Colegio Divina Misericordia!</p>
+                        <button class="btn-primary mt-4" onclick="goToSlide(0)">Volver al inicio</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Navigation Controls -->
+        <div class="controls-container">
+            <div class="dots-indicator" id="dotsIndicator">
+                <!-- Dots are injected via JS -->
+            </div>
+            
+            <div class="buttons-row">
+                <button class="btn-secondary" id="btnPrev" onclick="prevSlide()">
+                    <i class="ri-arrow-left-s-line"></i> Atrás
+                </button>
+                <button class="btn-primary" id="btnNext" onclick="nextSlide()">
+                    Siguiente <i class="ri-arrow-right-s-line"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
