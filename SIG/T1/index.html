@@ -1,0 +1,3383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIG - Colegio Privado La Divina Misericordia | UDH 2026</title>
+  
+  <!-- Tipografías Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       PALETA LUXURY IMPERIAL: ORO PULIDO, ROJO PÚRPURA Y AZUL ZAFIRO NOBLE
+       ========================================================================== */
+    :root {
+      --bg-dark: #040813;
+      --bg-surface: rgba(10, 16, 32, 0.90);
+      --bg-surface-hover: rgba(20, 28, 52, 0.96);
+      --bg-glass: rgba(12, 19, 38, 0.78);
+      
+      /* Acentos Oro Fino y Champagne */
+      --c-gold-light: #F7D774;
+      --c-gold-main: #D4AF37;
+      --c-gold-dark: #9A7B1C;
+      --c-gold-glow: rgba(212, 175, 55, 0.35);
+      --grad-gold: linear-gradient(135deg, #F9DF88 0%, #D4AF37 50%, #9A7B1C 100%);
+      --grad-gold-subtle: linear-gradient(90deg, rgba(212,175,55,0.05), rgba(212,175,55,0.25), rgba(212,175,55,0.05));
+      
+      /* Acentos Rojo Púrpura Imperial / Borgoña Aterciopelado */
+      --c-purple-royal: #7B113A;
+      --c-purple-glow: rgba(123, 17, 58, 0.45);
+      --c-purple-dark: #400A1E;
+      --grad-purple: linear-gradient(135deg, #8E1544 0%, #600C2B 60%, #3B0518 100%);
+      
+      /* Identidad Institucional (UDH & Colegio) */
+      --c-colegio-blue: #1062a3;
+      --c-colegio-blue-light: #38bdf8;
+      --c-colegio-orange: #fa8109;
+      --c-udh-green: #009688;
+      
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-gold: rgba(212, 175, 55, 0.38);
+      --border-gold-bright: rgba(247, 215, 116, 0.65);
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-gold: #F7D774;
+      
+      --font-ornate: 'Cinzel', serif;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      
+      --shadow-imperial: 0 20px 60px -5px rgba(0, 0, 0, 0.9), 0 0 35px -5px var(--c-gold-glow), 0 0 25px -5px var(--c-purple-glow);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      user-select: none;
+    }
+
+    /* Fondo animado de constelaciones doradas y zafiro */
+    #ambientCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .bg-vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(2, 4, 10, 0.92) 100%),
+                  radial-gradient(circle at 15% 15%, rgba(123, 17, 58, 0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 85% 85%, rgba(212, 175, 55, 0.16) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 10%, rgba(16, 98, 163, 0.18) 0%, transparent 45%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       BARRA SUPERIOR CON DETALLES DORADOS Y PÚRPURA
+       ========================================================================== */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(6, 11, 22, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-gold);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(247, 215, 116, 0.15) inset;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .top-bar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--grad-gold-subtle);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-cluster img.udh-logo-mini {
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 26px;
+      background: linear-gradient(to bottom, transparent, var(--c-gold-main), transparent);
+    }
+
+    .brand-cluster img.school-logo-mini {
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(250, 129, 9, 0.35));
+    }
+
+    .header-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-titles .super-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      font-family: var(--font-display);
+    }
+
+    .header-titles .sub-title {
+      font-size: 0.88rem;
+      color: var(--text-main);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .timer-pill {
+      background: rgba(123, 17, 58, 0.25);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 14px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--c-gold-light);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .timer-pill:hover {
+      background: rgba(123, 17, 58, 0.45);
+      border-color: var(--c-gold-main);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .timer-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--c-gold-light);
+      box-shadow: 0 0 8px var(--c-gold-main);
+      animation: pulse-dot 1.8s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-gold);
+      color: #f1f5f9;
+      padding: 7px 15px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.25s ease;
+    }
+
+    .pill-btn:hover {
+      background: var(--grad-purple);
+      border-color: var(--c-gold-main);
+      box-shadow: 0 0 16px var(--c-purple-glow);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .pill-btn.active {
+      background: var(--grad-gold);
+      border-color: #fff;
+      color: #381a00;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+
+    /* ==========================================================================
+       VIEWPORT Y DIAPOSITIVAS ENSANCHADAS (1 CM DE MARGEN EN PANTALLA)
+       ========================================================================== */
+    .viewport {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 64px;
+      overflow: hidden;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1400px;
+    }
+
+    /* Área ensanchada con ribetes de oro y púrpura */
+    .slide-node {
+      position: absolute;
+      width: calc(100vw - 44px);
+      max-width: 1560px;
+      height: calc(100vh - 128px - 34px);
+      max-height: 820px;
+      background: var(--bg-surface);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 24px;
+      box-shadow: var(--shadow-imperial);
+      padding: 32px 48px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: scale(0.88) translate3d(0, 40px, -100px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                  visibility 0.55s;
+    }
+
+    .slide-node.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: scale(1) translate3d(0, 0, 0);
+      border-color: var(--border-gold-bright);
+      z-index: 20;
+    }
+
+    .slide-node.prezi-exit-prev {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.12) translate3d(0, -60px, 50px);
+    }
+    .slide-node.prezi-exit-next {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.82) translate3d(0, 60px, -100px);
+    }
+
+    .slide-node::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--c-purple-royal) 20%, 
+        var(--c-gold-main) 50%, 
+        var(--c-colegio-orange) 80%, 
+        transparent 100%
+      );
+    }
+
+    /* Esquinas ornamentales estilo Luxury Certificate / Academia */
+    .corner-ornament {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+      border: 2px solid var(--c-gold-main);
+      opacity: 0.6;
+    }
+    .corner-tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+    .corner-tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+    .corner-br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+    .slide-badge-topic {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(123, 17, 58, 0.4), rgba(212, 175, 55, 0.2));
+      border: 1px solid var(--border-gold);
+      color: var(--c-gold-light);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      font-family: var(--font-display);
+      margin-bottom: 12px;
+      align-self: flex-start;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .slide-header {
+      margin-bottom: 16px;
+    }
+
+    .slide-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.95rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slide-header h2 span.accent {
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-header p.lead {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+
+    .slide-content-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 12px;
+    }
+
+    .slide-content-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide-content-body::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+    }
+    .slide-content-body::-webkit-scrollbar-thumb {
+      background: var(--c-gold-dark);
+      border-radius: 10px;
+    }
+
+    /* ==========================================================================
+       ESTILOS PARA IMÁGENES OFICIALES INTEGRADAS CON MARCO DORADO
+       ========================================================================== */
+    .img-gold-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border-gold);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+      transition: all 0.35s ease;
+    }
+
+    .img-gold-card:hover {
+      border-color: var(--c-gold-light);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .img-gold-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .img-gold-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .img-gold-card .img-overlay-badge {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(10, 16, 32, 0.95) 0%, rgba(10, 16, 32, 0.7) 60%, transparent 100%);
+      padding: 14px 16px 10px 16px;
+      color: #fff;
+    }
+
+    .img-gold-card .img-overlay-badge .badge-title {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--c-gold-light);
+      display: block;
+      font-family: var(--font-display);
+    }
+
+    .img-gold-card .img-overlay-badge .badge-subtitle {
+      font-size: 0.75rem;
+      color: #e2e8f0;
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* ==========================================================================
+       LÁMINA 0: PORTADA INSTITUCIONAL
+       ========================================================================== */
+    .hero-portada {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .portada-logos-row {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 20px;
+    }
+
+    .portada-logos-row img.udh-hero {
+      height: 74px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 6px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--c-gold-main);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.25);
+    }
+
+    .portada-logos-row .sep-vertical {
+      width: 2px;
+      height: 52px;
+      background: linear-gradient(to bottom, transparent, var(--c-gold-main), transparent);
+    }
+
+    .portada-logos-row img.school-hero {
+      height: 80px;
+      filter: drop-shadow(0 6px 18px rgba(250, 129, 9, 0.45));
+    }
+
+    .hero-title-group h1 {
+      font-family: var(--font-display);
+      font-size: 2.65rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .hero-title-group h1 .grad-text {
+      background: linear-gradient(135deg, #FFF0B5 0%, #D4AF37 40%, #FA8109 75%, #38BDF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(123, 17, 58, 0.35), rgba(16, 98, 163, 0.3));
+      border: 1px solid var(--border-gold);
+      color: var(--c-gold-light);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .hero-details-card {
+      background: linear-gradient(180deg, rgba(16, 25, 48, 0.85) 0%, rgba(10, 16, 32, 0.95) 100%);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(123, 17, 58, 0.25);
+      position: relative;
+    }
+
+    .hero-details-card h4 {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--c-gold-light);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .team-member {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      color: #e2e8f0;
+      border-left: 3px solid var(--c-gold-main);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+      transition: all 0.25s ease;
+    }
+
+    .team-member:hover {
+      background: rgba(123, 17, 58, 0.25);
+      border-left-color: var(--c-gold-light);
+      transform: translateX(4px);
+    }
+
+    .prof-info {
+      padding-top: 10px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .hero-start-cta {
+      margin-top: 22px;
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-glow-primary {
+      background: var(--grad-gold);
+      color: #2b1400;
+      border: 1px solid #FFF;
+      padding: 13px 30px;
+      border-radius: 14px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+      transition: all 0.25s ease;
+    }
+
+    .btn-glow-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(212, 175, 55, 0.7);
+      background: linear-gradient(135deg, #FFF, #F9DF88);
+    }
+
+    .btn-glass-secondary {
+      background: var(--grad-purple);
+      border: 1px solid var(--border-gold);
+      color: #fff;
+      padding: 13px 24px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px var(--c-purple-glow);
+      transition: all 0.25s ease;
+    }
+
+    .btn-glass-secondary:hover {
+      background: linear-gradient(135deg, #A81C53, #600C2B);
+      border-color: var(--c-gold-light);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       LÁMINA 1: MAPA PANORÁMICO PREZI (AGENDA INTERACTIVA)
+       ========================================================================== */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 14px;
+    }
+
+    .overview-card {
+      background: linear-gradient(180deg, rgba(16, 25, 48, 0.75) 0%, rgba(10, 16, 32, 0.9) 100%);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 22px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 155px;
+    }
+
+    .overview-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--grad-gold);
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+
+    .overview-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--c-gold-light);
+      box-shadow: 0 16px 35px -5px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.3);
+      background: linear-gradient(180deg, rgba(123, 17, 58, 0.25) 0%, rgba(20, 32, 60, 0.95) 100%);
+    }
+
+    .overview-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-num {
+      font-size: 0.82rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: var(--c-gold-light);
+      letter-spacing: 1.2px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 8px 0 4px 0;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .card-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--c-gold-light);
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    /* ==========================================================================
+       LÁMINA 2: 1.1 DESCRIPCIÓN HISTÓRICA CON IMAGEN DE CAMPUS/COMUNIDAD
+       ========================================================================== */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .timeline-nav {
+      display: flex;
+      gap: 12px;
+      background: rgba(123, 17, 58, 0.15);
+      padding: 6px;
+      border-radius: 16px;
+      border: 1px solid var(--border-gold);
+    }
+
+    .timeline-btn {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .timeline-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .timeline-btn.active {
+      background: var(--grad-gold);
+      color: #381a00;
+      border-color: #fff;
+      box-shadow: 0 4px 18px rgba(212, 175, 55, 0.45);
+    }
+
+    .timeline-card-content {
+      background: linear-gradient(180deg, rgba(16, 25, 48, 0.8) 0%, rgba(10, 16, 32, 0.92) 100%);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 22px 26px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+
+    .timeline-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .timeline-details h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--c-gold-light);
+      margin-bottom: 8px;
+    }
+
+    .timeline-details p {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .sig-pill-box {
+      background: rgba(123, 17, 58, 0.25);
+      border-left: 3px solid var(--c-gold-main);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: #F7D774;
+      border-top: 1px solid rgba(212, 175, 55, 0.15);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .timeline-stats-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stat-grid-compact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 12px;
+    }
+
+    .stat-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-cell .stat-label {
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-cell .stat-value {
+      font-weight: 700;
+      color: var(--c-gold-light);
+      font-size: 0.84rem;
+    }
+
+    /* Mini banner fotográfico en la lámina histórica */
+    .timeline-photo-banner {
+      height: 76px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-gold);
+      position: relative;
+    }
+    .timeline-photo-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .timeline-photo-banner .photo-tag {
+      position: absolute;
+      bottom: 4px;
+      right: 6px;
+      background: rgba(10, 16, 32, 0.88);
+      color: var(--c-gold-light);
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    .timeline-photo-banner .photo-tag {
+      position: absolute;
+      bottom: 4px;
+      right: 6px;
+      background: rgba(10, 16, 32, 0.85);
+      color: var(--c-gold-light);
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       LÁMINA 3: 1.2 VISIÓN 2026
+       ========================================================================== */
+    .vision-hero-quote {
+      background: linear-gradient(135deg, rgba(123, 17, 58, 0.35) 0%, rgba(16, 98, 163, 0.25) 50%, rgba(212, 175, 55, 0.2) 100%);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 18px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .vision-hero-quote p {
+      font-size: 0.96rem;
+      line-height: 1.55;
+      font-weight: 500;
+      color: #fff;
+      font-style: italic;
+    }
+
+    .vision-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .vision-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vision-card:hover, .vision-card.active {
+      transform: translateY(-4px);
+      border-color: var(--c-gold-light);
+      background: linear-gradient(180deg, rgba(123, 17, 58, 0.3) 0%, rgba(26, 43, 76, 0.9) 100%);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+    }
+
+    .vision-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--grad-purple);
+      border: 1px solid var(--c-gold-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-gold-light);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .vision-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .vision-card .desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .vision-card .sig-tag {
+      margin-top: auto;
+      font-size: 0.74rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--c-gold-light);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      font-weight: 600;
+    }
+
+    .vision-expanded-info {
+      margin-top: 18px;
+      background: rgba(14, 25, 45, 0.94);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .expanded-col h5 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--c-gold-light);
+      margin-bottom: 6px;
+    }
+
+    .expanded-col p {
+      font-size: 0.84rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    /* ==========================================================================
+       LÁMINA 4: 1.3 MISIÓN DE LA ORGANIZACIÓN
+       ========================================================================== */
+    .mision-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 28px;
+      height: 100%;
+    }
+
+    .mision-statement-card {
+      background: linear-gradient(180deg, rgba(123, 17, 58, 0.3) 0%, rgba(16, 98, 163, 0.3) 50%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .mision-statement-card .quote-mark {
+      font-size: 2.8rem;
+      color: var(--c-gold-main);
+      line-height: 1;
+      font-family: serif;
+    }
+
+    .mision-statement-card blockquote {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #f8fafc;
+      font-weight: 500;
+    }
+
+    .mision-matrix-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mision-matrix-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 13px 18px;
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: 14px;
+      align-items: center;
+      transition: all 0.25s ease;
+    }
+
+    .mision-matrix-item:hover {
+      background: rgba(123, 17, 58, 0.2);
+      border-color: var(--c-gold-light);
+      transform: translateX(4px);
+    }
+
+    .matrix-pillar {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.84rem;
+      color: var(--c-gold-light);
+    }
+
+    .matrix-process {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+    }
+
+    .matrix-tech {
+      font-size: 0.78rem;
+      color: #fff;
+      background: var(--grad-purple);
+      padding: 5px 10px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid var(--border-gold);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       LÁMINA 5: 1.4 MODELO DE NEGOCIO CON GALERÍA DE LOS 3 NIVELES
+       ========================================================================== */
+    .bizmodel-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 24px;
+      height: 100%;
+    }
+
+    .canvas-quad-grid-compact {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .canvas-quad-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .canvas-quad-card:hover {
+      border-color: var(--c-gold-light);
+      background: rgba(20, 32, 60, 0.85);
+    }
+
+    .canvas-quad-card .tag-hdr {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 800;
+      color: var(--c-gold-light);
+      margin-bottom: 6px;
+    }
+
+    .canvas-quad-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .canvas-quad-card p {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .canvas-quad-card .sig-insight {
+      margin-top: auto;
+      background: rgba(123, 17, 58, 0.22);
+      border-left: 3px solid var(--c-gold-main);
+      padding: 7px 10px;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      color: #F7D774;
+    }
+
+    /* Galería Visual de Niveles Educativos */
+    .levels-gallery-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .level-photo-strip {
+      flex: 1;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid var(--border-gold);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .level-photo-strip:hover {
+      transform: scale(1.02);
+      border-color: var(--c-gold-light);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35);
+    }
+
+    .level-photo-strip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .level-badge-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(6, 11, 22, 0.88) 0%, rgba(6, 11, 22, 0.4) 60%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 18px;
+    }
+
+    .level-badge-overlay h5 {
+      font-size: 0.92rem;
+      color: var(--c-gold-light);
+      font-weight: 800;
+      font-family: var(--font-display);
+    }
+
+    .level-badge-overlay span {
+      font-size: 0.76rem;
+      color: #e2e8f0;
+    }
+
+    .flow-stepper-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 12px 16px;
+    }
+
+    .flow-step-node {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .flow-step-node.active {
+      border-color: var(--c-gold-light);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+      background: linear-gradient(180deg, rgba(123, 17, 58, 0.3) 0%, rgba(15, 23, 42, 0.9) 100%);
+    }
+
+    .flow-step-node h5 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--c-gold-light);
+      margin-bottom: 2px;
+      font-weight: 800;
+    }
+
+    .flow-step-node p {
+      font-size: 0.76rem;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .flow-step-arrow {
+      color: var(--c-gold-main);
+      font-size: 1.2rem;
+    }
+
+    /* ==========================================================================
+       LÁMINA 6: 1.6 IDENTIFICACIÓN DE HARDWARE CON IMÁGENES DE AULAS
+       ========================================================================== */
+    .hardware-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      height: 100%;
+    }
+
+    .hardware-sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hw-category-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 13px 18px;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .hw-category-btn:hover {
+      background: rgba(123, 17, 58, 0.25);
+      color: #fff;
+      border-color: var(--c-gold-light);
+    }
+
+    .hw-category-btn.active {
+      background: var(--grad-purple);
+      border-color: var(--c-gold-main);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--c-purple-glow);
+    }
+
+    .hardware-display-panel {
+      background: linear-gradient(180deg, rgba(16, 25, 48, 0.75) 0%, rgba(10, 16, 32, 0.9) 100%);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .hw-detail-card {
+      display: none;
+      animation: fadeIn 0.35s ease forwards;
+    }
+
+    .hw-detail-card.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hw-detail-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--c-gold-light);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hw-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .hw-spec-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .hw-spec-item h5 {
+      font-size: 0.88rem;
+      color: var(--c-gold-light);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    .hw-spec-item p {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .hw-contrast-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .tag-desktop {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .tag-mobile {
+      background: rgba(212, 175, 55, 0.18);
+      color: var(--c-gold-light);
+      border: 1px solid var(--border-gold);
+    }
+
+    /* Tarjetas fotográficas dentro de Cómputo por Niveles */
+    .hw-photo-card-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    /* ==========================================================================
+       LÁMINA 7: 1.7 IDENTIFICACIÓN DE SOFTWARE
+       ========================================================================== */
+    .software-showcase {
+      display: grid;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: 24px;
+      height: 100%;
+    }
+
+    .sieweb-interactive-box {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+
+    .sieweb-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .sieweb-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--c-gold-light);
+    }
+
+    .sieweb-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .sieweb-tab-btn {
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-gold);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sieweb-tab-btn.active {
+      background: var(--grad-purple);
+      border-color: var(--c-gold-light);
+      color: #fff;
+      box-shadow: 0 2px 10px var(--c-purple-glow);
+    }
+
+    .sieweb-feature-screen {
+      background: rgba(7, 13, 24, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 14px;
+      padding: 18px;
+      flex: 1;
+    }
+
+    .sieweb-feature-screen h4 {
+      font-size: 1rem;
+      color: var(--c-gold-light);
+      margin-bottom: 10px;
+    }
+
+    .sieweb-feature-screen ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sieweb-feature-screen li {
+      font-size: 0.84rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .sieweb-feature-screen li span.bullet {
+      color: var(--c-gold-main);
+      font-weight: bold;
+    }
+
+    .software-ecosystem-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .eco-soft-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 16px 20px;
+      transition: all 0.25s ease;
+    }
+
+    .eco-soft-card:hover {
+      background: rgba(123, 17, 58, 0.2);
+      border-color: var(--c-gold-light);
+      transform: translateX(4px);
+    }
+
+    .eco-soft-card h4 {
+      font-size: 0.92rem;
+      color: #fff;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .eco-soft-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ==========================================================================
+       LÁMINA 8: CONCLUSIONES Y DIAGNÓSTICO ESTRATÉGICO
+       ========================================================================== */
+    .conclusions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      height: 100%;
+    }
+
+    .conclusion-card {
+      background: linear-gradient(180deg, rgba(16, 25, 48, 0.75) 0%, rgba(10, 16, 32, 0.9) 100%);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .conclusion-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--c-gold-light);
+      box-shadow: 0 14px 35px rgba(0,0,0,0.6), 0 0 20px rgba(212, 175, 55, 0.25);
+    }
+
+    .conc-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--grad-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2b1400;
+      font-weight: 800;
+      font-size: 0.92rem;
+      font-family: var(--font-display);
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .conclusion-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .conclusion-card p {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.48;
+      margin-bottom: 14px;
+    }
+
+    .conc-recommendation {
+      margin-top: auto;
+      background: rgba(123, 17, 58, 0.25);
+      border-left: 3px solid var(--c-gold-main);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      color: var(--c-gold-light);
+      border-top: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    /* ==========================================================================
+       LÁMINA 9: FICHA INSTITUCIONAL Y AGRADECIMIENTO CON FOTO DE CIERRE
+       ========================================================================== */
+    .closing-card-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 32px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .closing-inst-box {
+      background: linear-gradient(180deg, rgba(16, 25, 48, 0.8) 0%, rgba(10, 16, 32, 0.95) 100%);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .contact-item-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+    }
+
+    .contact-item-row .icon-bubble {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--grad-purple);
+      border: 1px solid var(--border-gold);
+      color: var(--c-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    .thanks-group h2 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .thanks-group h2 span.gold {
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .thanks-group p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* ==========================================================================
+       BARRA INFERIOR DE NAVEGACIÓN
+       ========================================================================== */
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(6, 11, 22, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border-gold);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(247, 215, 116, 0.15) inset;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .bottom-dock::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--grad-gold-subtle);
+    }
+
+    .nav-buttons-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-gold);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--grad-gold);
+      border-color: #fff;
+      color: #2b1400;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .progress-dock {
+      flex: 1;
+      max-width: 520px;
+      margin: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--c-gold-light);
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, var(--c-purple-royal), var(--c-gold-main));
+      border-radius: 6px;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .deck-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-tool-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-gold);
+      color: var(--c-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .icon-tool-btn:hover {
+      color: #fff;
+      background: var(--grad-purple);
+      border-color: var(--c-gold-main);
+      box-shadow: 0 0 15px var(--c-purple-glow);
+    }
+
+    .icon-tool-btn.active {
+      color: #2b1400;
+      border-color: #fff;
+      background: var(--grad-gold);
+    }
+
+    /* Modal de Notas de Orador */
+    .speaker-modal {
+      position: fixed;
+      bottom: 74px;
+      right: 24px;
+      width: 400px;
+      max-height: 500px;
+      background: rgba(10, 16, 32, 0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1.5px solid var(--c-gold-main);
+      border-radius: 20px;
+      box-shadow: var(--shadow-imperial);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .speaker-modal.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .speaker-modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .speaker-modal-header h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--c-gold-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .speaker-modal-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      font-size: 0.86rem;
+      color: #e2e8f0;
+      line-height: 1.55;
+    }
+
+    .speaker-modal-body strong.speaker-name {
+      display: block;
+      color: var(--c-gold-light);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .speaker-tips {
+      margin-top: 14px;
+      padding: 12px;
+      background: rgba(123, 17, 58, 0.25);
+      border-radius: 10px;
+      border: 1px dashed var(--c-gold-main);
+      font-size: 0.78rem;
+      color: #F7D774;
+    }
+
+    /* Modal de Vista en Cuadrícula */
+    .grid-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 4, 10, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      padding: 40px;
+    }
+
+    .grid-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .grid-modal-container {
+      width: 100%;
+      max-width: 1200px;
+      background: rgba(10, 16, 32, 0.94);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--shadow-imperial);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .grid-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .grid-modal-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: var(--c-gold-light);
+    }
+
+    .grid-thumbnails {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .thumb-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .thumb-card:hover, .thumb-card.active {
+      border-color: var(--c-gold-light);
+      background: linear-gradient(135deg, rgba(123, 17, 58, 0.3), rgba(212, 175, 55, 0.15));
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .thumb-num {
+      font-size: 0.74rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: var(--c-gold-light);
+    }
+
+    .thumb-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 1024px) {
+      .slide-node {
+        width: calc(100vw - 20px);
+        height: calc(100vh - 128px - 16px);
+        padding: 24px;
+      }
+      .vision-grid, .overview-grid, .conclusions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero-portada, .bizmodel-layout, .closing-card-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Lienzo de partículas de fondo (oro y zafiro) -->
+  <canvas id="ambientCanvas"></canvas>
+  <div class="bg-vignette"></div>
+
+  <!-- BARRA SUPERIOR DE CONTROL -->
+  <header class="top-bar">
+    <div class="brand-cluster">
+      <img src="logo.png" alt="Logo Universidad de Huánuco" class="udh-logo-mini" title="Universidad de Huánuco">
+      <div class="brand-divider"></div>
+      <img src="colegio_logo4.png" alt="Logo Colegio La Divina Misericordia" class="school-logo-mini" title="Colegio Privado La Divina Misericordia">
+      <div class="header-titles">
+        <span class="super-title">Sistemas de Información Gerencial (SIG)</span>
+        <span class="sub-title">Colegio Privado La Divina Misericordia • Tarea Académica 01</span>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <!-- Cronómetro de Exposición -->
+      <div class="timer-pill" id="presentationTimerBtn" title="Clic para pausar/reanudar cronómetro de exposición">
+        <span class="dot"></span>
+        <span id="timerDigits">00:00</span>
+      </div>
+
+      <!-- Botón Vista Panorámica Prezi -->
+      <button class="pill-btn" id="btnOverviewMap" title="Ver Mapa Panorámico (Vista Espacial Prezi) [Tecla: Esc]">
+        <span>🌐</span>
+        <span>Mapa General</span>
+      </button>
+
+      <!-- Botón Notas de Orador Articulate -->
+      <button class="pill-btn" id="btnSpeakerNotes" title="Abrir Notas del Orador / Libreto de Exposición [Tecla: N]">
+        <span>📝</span>
+        <span>Notas Orador</span>
+      </button>
+
+      <!-- Botón Sonido On/Off -->
+      <button class="pill-btn" id="btnAudioToggle" title="Activar/Silenciar Efectos de Audio Sintetizados [Tecla: M]">
+        <span id="audioIcon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- VIEWPORT ENSANCHADO CON 1 CM DE MARGEN -->
+  <main class="viewport" id="mainViewport">
+
+    <!-- ===================================================================
+         SLIDE 0: PORTADA INSTITUCIONAL
+         =================================================================== -->
+    <section class="slide-node active" id="slide-0" data-index="0">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Universidad de Huánuco • Adm. de Empresas</div>
+      <div class="slide-content-body hero-portada">
+        <div>
+          <div class="portada-logos-row">
+            <img src="logo.png" alt="UDH" class="udh-hero">
+            <div class="sep-vertical"></div>
+            <img src="colegio_logo.png" alt="Colegio La Divina Misericordia" class="school-hero">
+          </div>
+
+          <div class="hero-title-group">
+            <h1>
+              Análisis y Diagnóstico de <br>
+              <span class="grad-text">Sistemas de Información</span>
+            </h1>
+            <div class="hero-meta-badge">
+              <span>🏫 Colegio Privado La Divina Misericordia — Huánuco</span>
+            </div>
+          </div>
+
+          <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.55; margin-bottom: 22px;">
+            Presentación ejecutiva e interactiva de la estructura estratégica, evolución histórica, modelo de negocio y arquitectura tecnológica (Hardware y Software) de la institución educativa.
+          </p>
+
+          <div class="hero-start-cta">
+            <button class="btn-glow-primary" onclick="goToSlide(1)">
+              <span>Comenzar Exposición</span>
+              <span>➔</span>
+            </button>
+            <button class="btn-glass-secondary" onclick="openOverviewGrid()">
+              <span>Ver Temario Completo</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="hero-details-card">
+            <h4><span>👥</span> Equipo de Exposición</h4>
+            <div class="team-grid">
+              <div class="team-member">Carlos Fabricio Almonacid</div>
+              <div class="team-member">Yagely Isabelita Cabrera</div>
+              <div class="team-member">Xavier Russell Figueroa</div>
+              <div class="team-member">Lintsay Karlely Morales</div>
+            </div>
+
+            <div class="prof-info">
+              <span><strong>Docente:</strong> Alex Heraclides Baldeon R.</span>
+              <span><strong>Ciclo:</strong> 2026</span>
+            </div>
+            <div class="prof-info" style="margin-top: 6px;">
+              <span><strong>Facultad:</strong> Ciencias Empresariales</span>
+              <span><strong>Sede:</strong> Huánuco, Perú</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 1: MAPA PANORÁMICO PREZI (AGENDA INTERACTIVA)
+         =================================================================== -->
+    <section class="slide-node" id="slide-1" data-index="1">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Agenda Ejecutiva • Estructura del Trabajo</div>
+      <div class="slide-header">
+        <h2>Ruta de Exploración <span class="accent">Estratégica</span></h2>
+        <p class="lead">Selecciona cualquier nodo para profundizar interactivamente en los puntos requeridos por la cátedra de SIG.</p>
+      </div>
+
+      <div class="slide-content-body">
+        <div class="overview-grid">
+          <div class="overview-card" onclick="goToSlide(2)">
+            <div>
+              <span class="card-num">PUNTO 1.1</span>
+              <h3 class="card-title">Descripción Histórica</h3>
+              <p class="card-desc">Trayectoria desde 1997, retos en local alquilado, transición con crédito estratégico y consolidación.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(3)">
+            <div>
+              <span class="card-num">PUNTO 1.2</span>
+              <h3 class="card-title">Visión Organizacional</h3>
+              <p class="card-desc">Proyección al 2026: Calidad, competitividad, innovación y formación cristiana con soporte SIG.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(4)">
+            <div>
+              <span class="card-num">PUNTO 1.3</span>
+              <h3 class="card-title">Misión de la Organización</h3>
+              <p class="card-desc">Razón de ser institucional y la matriz de alineación entre procesos formativos y tecnología.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(5)">
+            <div>
+              <span class="card-num">PUNTO 1.4</span>
+              <h3 class="card-title">Modelo de Negocio</h3>
+              <p class="card-desc">Propuesta de valor integral, segmentación familiar, canales y flujo operativo de valor.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(6)">
+            <div>
+              <span class="card-num">PUNTO 1.6</span>
+              <h3 class="card-title">Identificación de Hardware</h3>
+              <p class="card-desc">CCTV, alarmas, control biométrico, redes cableadas, PCs fijas vs movilidad de docentes.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(7)">
+            <div>
+              <span class="card-num">PUNTO 1.7</span>
+              <h3 class="card-title">Identificación de Software</h3>
+              <p class="card-desc">ERP Escolar SIEWEB en la nube, plataforma web oficial, canales colaborativos y ofimática.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 2: 1.1 DESCRIPCIÓN HISTÓRICA CON FOTO DE LA COMUNIDAD MISERICORDIANA
+         =================================================================== -->
+    <section class="slide-node" id="slide-2" data-index="2">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Punto 1.1 • Análisis Evolutivo</div>
+      <div class="slide-header">
+        <h2>Descripción Histórica y <span class="accent">Evolución Organizacional</span></h2>
+        <p class="lead">Desde la fundación en 1997 como "La Familia Misericordiana" hasta su liderazgo con campus propio en Huánuco.</p>
+      </div>
+
+      <div class="slide-content-body timeline-container">
+        <div class="timeline-nav">
+          <button class="timeline-btn active" onclick="setTimelineEra(0)">
+            <span>🌱</span> 1997: Fundación y Retos
+          </button>
+          <button class="timeline-btn" onclick="setTimelineEra(1)">
+            <span>🚀</span> Punto de Inflexión
+          </button>
+          <button class="timeline-btn" onclick="setTimelineEra(2)">
+            <span>🏆</span> Consolidación Actual
+          </button>
+        </div>
+
+        <div class="timeline-card-content" id="timelineContentArea">
+          <div class="timeline-details">
+            <h3 id="timelineEraTitle">1997: Inicio en Local Alquilado y Resiliencia</h3>
+            <p id="timelineEraDesc">
+              El Colegio Privado La Divina Misericordia nació con recursos limitados y en un local alquilado. La estructura organizativa era horizontal y multitarea: los fundadores y directivos asumían directamente la docencia en aulas y redoblaban turnos para garantizar la continuidad pedagógica.
+            </p>
+            <div class="sig-pill-box" id="timelineSigBox">
+              <strong>💡 Implicancia para el SIG:</strong> En los primeros años, el sistema de información dependía de registros manuales y del conocimiento tácito del equipo fundador, creando una alta dependencia de personas clave.
+            </div>
+          </div>
+
+          <!-- Caja de Datos + Mini Banner Fotográfico Institucional -->
+          <div class="timeline-stats-box">
+            <div class="timeline-photo-banner">
+              <img src="colegio_hero-1-6a.jpg" alt="Comunidad Estudiantil Misericordiana">
+              <span class="photo-tag">Campus Huánuco</span>
+            </div>
+
+            <div class="stat-grid-compact" style="margin-top: 6px;">
+              <div class="stat-cell">
+                <span class="stat-label">Fundación:</span>
+                <span class="stat-value">1997 (Huánuco)</span>
+              </div>
+              <div class="stat-cell">
+                <span class="stat-label">Trayectoria:</span>
+                <span class="stat-value">Más de 28 años</span>
+              </div>
+              <div class="stat-cell">
+                <span class="stat-label">Gestión:</span>
+                <span class="stat-value">Privada Particular</span>
+              </div>
+              <div class="stat-cell">
+                <span class="stat-label">Niveles:</span>
+                <span class="stat-value">Inicial • Prim. • Sec.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px;">
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1.2px solid rgba(16, 185, 129, 0.35); border-radius: 14px; padding: 13px;">
+            <h5 style="color: #34d399; font-size: 0.85rem; margin-bottom: 4px; font-weight: 700;">✔ Fortalezas Observables</h5>
+            <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.4;">
+              Capacidad de resiliencia probada, estabilidad patrimonial con terreno propio y una identidad de marca fuertemente arraigada en la comunidad huanuqueña.
+            </p>
+          </div>
+          <div style="background: rgba(123, 17, 58, 0.2); border: 1.2px solid var(--border-gold); border-radius: 14px; padding: 13px;">
+            <h5 style="color: var(--c-gold-light); font-size: 0.85rem; margin-bottom: 4px; font-weight: 700;">⚠ Reto Gerencial SIG</h5>
+            <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.4;">
+              El crecimiento explosivo de la matrícula requiere estandarizar procesos y digitalizar flujos para evitar la pérdida de información en procedimientos informales.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 3: 1.2 VISIÓN 2026
+         =================================================================== -->
+    <section class="slide-node" id="slide-3" data-index="3">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Punto 1.2 • Horizonte Estratégico</div>
+      <div class="slide-header">
+        <h2>Visión Institucional al <span class="accent">2026</span></h2>
+        <p class="lead">Alineamiento de los 4 pilares estratégicos con las necesidades de los Sistemas de Información Gerencial.</p>
+      </div>
+
+      <div class="slide-content-body">
+        <div class="vision-hero-quote">
+          <p>
+            "Al 2026, ser un colegio que lidere con calidad educativa, competitividad e innovación; con estudiantes críticos, prospectivos, que posean identidad y una sólida formación en la fe cristiana que contribuirán al logro de una sociedad exitosa, justa y emprendedora."
+          </p>
+        </div>
+
+        <div class="vision-grid">
+          <div class="vision-card active" onclick="showVisionDetail('calidad', event)">
+            <div class="vision-icon">🎓</div>
+            <h4>Calidad Educativa</h4>
+            <p class="desc">Seguimiento riguroso del desempeño y procesos formativos continuos.</p>
+            <span class="sig-tag">Notas y Asistencia</span>
+          </div>
+
+          <div class="vision-card" onclick="showVisionDetail('competitividad', event)">
+            <div class="vision-icon">📈</div>
+            <h4>Competitividad</h4>
+            <p class="desc">Monitoreo de resultados académicos, admisión e indicadores de retención.</p>
+            <span class="sig-tag">Decisiones Directivas</span>
+          </div>
+
+          <div class="vision-card" onclick="showVisionDetail('innovacion', event)">
+            <div class="vision-icon">💡</div>
+            <h4>Innovación</h4>
+            <p class="desc">Adopción de tecnologías emergentes, conectividad y competencias digitales.</p>
+            <span class="sig-tag">Plataformas Web</span>
+          </div>
+
+          <div class="vision-card" onclick="showVisionDetail('valores', event)">
+            <div class="vision-icon">🕊️</div>
+            <h4>Fe y Valores</h4>
+            <p class="desc">Acompañamiento tutorial, psicopedagógico y formación moral cristiana.</p>
+            <span class="sig-tag">Expediente Integral</span>
+          </div>
+        </div>
+
+        <div class="vision-expanded-info" id="visionDetailBox">
+          <div class="expanded-col">
+            <h5>Necesidad Organizacional</h5>
+            <p id="visionNeedText">Supervisión continua del rendimiento estudiantil y cumplimiento de los estándares del plan curricular.</p>
+          </div>
+          <div class="expanded-col">
+            <h5>Relación Directa con el SIG</h5>
+            <p id="visionSigText">Generación oportuna y en tiempo real de registros de calificaciones, incidencias y reportes pedagógicos.</p>
+          </div>
+          <div class="expanded-col">
+            <h5>Indicador de Gestión Clave</h5>
+            <p id="visionKpiText">% de cumplimiento de competencias por grado, tasa de aprobación y tiempo de entrega de libretas escolares.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 4: 1.3 MISIÓN DE LA ORGANIZACIÓN
+         =================================================================== -->
+    <section class="slide-node" id="slide-4" data-index="4">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Punto 1.3 • Propósito Fundamental</div>
+      <div class="slide-header">
+        <h2>Misión Institucional y <span class="accent">Soporte Tecnológico</span></h2>
+        <p class="lead">La razón de ser del colegio y cómo el SIG transforma sus compromisos en procesos operativos eficientes.</p>
+      </div>
+
+      <div class="slide-content-body mision-wrapper">
+        <div class="mision-statement-card">
+          <div>
+            <span class="quote-mark">“</span>
+            <blockquote>
+              Somos una institución educativa que brinda servicios educativos de calidad orientados a la formación integral de sus estudiantes para que lideren con calidad educativa, sólida formación moral y afianzados en la fe cristiana, siendo capaces de contribuir al desarrollo de una sociedad democrática con ambiente saludable.
+            </blockquote>
+          </div>
+
+          <div style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-gold); padding: 14px; border-radius: 12px; margin-top: 16px;">
+            <span style="color: var(--c-gold-light); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Enfoque SIG Directivo</span>
+            <p style="font-size: 0.82rem; color: #cbd5e1; margin-top: 4px;">
+              La tecnología no es un fin en sí misma, sino el vehículo para asegurar que la propuesta de valor educativa llegue a cada estudiante y familia.
+            </p>
+          </div>
+        </div>
+
+        <div class="mision-matrix-list">
+          <div class="mision-matrix-item">
+            <span class="matrix-pillar">Servicio de Calidad</span>
+            <span class="matrix-process">Planificación de clases, dictado y evaluaciones.</span>
+            <span class="matrix-tech">SIEWEB Académico</span>
+          </div>
+
+          <div class="mision-matrix-item">
+            <span class="matrix-pillar">Formación Integral</span>
+            <span class="matrix-process">Tutoría, arte, deporte, cadetes y psicología.</span>
+            <span class="matrix-tech">Historial del Alumno</span>
+          </div>
+
+          <div class="mision-matrix-item">
+            <span class="matrix-pillar">Moral y Fe Cristiana</span>
+            <span class="matrix-process">Eventos pastorales, sacramentos y labor social.</span>
+            <span class="matrix-tech">Canales de Difusión</span>
+          </div>
+
+          <div class="mision-matrix-item">
+            <span class="matrix-pillar">Contribución Social</span>
+            <span class="matrix-process">Participación en olimpiadas y ferias regionales.</span>
+            <span class="matrix-tech">Portal Web Institucional</span>
+          </div>
+
+          <div class="mision-matrix-item">
+            <span class="matrix-pillar">Ambiente Saludable</span>
+            <span class="matrix-process">Seguridad física, evacuación y bioseguridad.</span>
+            <span class="matrix-tech">CCTV y Control de Acceso</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 5: 1.4 MODELO DE NEGOCIO CON FOTOS REALES DE LOS 3 NIVELES
+         =================================================================== -->
+    <section class="slide-node" id="slide-5" data-index="5">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Punto 1.4 • Análisis Estratégico</div>
+      <div class="slide-header">
+        <h2>Análisis del <span class="accent">Modelo de Negocio</span></h2>
+        <p class="lead">Estructura de creación y entrega de valor para los tres niveles educativos del colegio.</p>
+      </div>
+
+      <div class="slide-content-body bizmodel-layout">
+        <div>
+          <div class="canvas-quad-grid-compact">
+            <div class="canvas-quad-card">
+              <span class="tag-hdr">Sector y Tipo</span>
+              <h4>Educación Privada Particular</h4>
+              <p>Institución formal autorizada para los 3 niveles: Inicial, Primaria y Secundaria.</p>
+              <div class="sig-insight">
+                <strong>SIG Clave:</strong> Matrícula, pensiones y cumplimiento UGEL.
+              </div>
+            </div>
+
+            <div class="canvas-quad-card">
+              <span class="tag-hdr">Propuesta de Valor</span>
+              <h4>Formación Integral de Excelencia</h4>
+              <p>Rigor académico, enfoque preuniversitario, disciplina y fe cristiana.</p>
+              <div class="sig-insight">
+                <strong>SIG Clave:</strong> Libretas digitales y reportes en tiempo real.
+              </div>
+            </div>
+
+            <div class="canvas-quad-card">
+              <span class="tag-hdr">Segmento de Clientes</span>
+              <h4>Familias de Huánuco</h4>
+              <p>Padres que buscan alta exigencia académica y valores sólidos para sus hijos.</p>
+              <div class="sig-insight">
+                <strong>SIG Clave:</strong> Atención segmentada por nivel escolar.
+              </div>
+            </div>
+
+            <div class="canvas-quad-card">
+              <span class="tag-hdr">Canales de Relación</span>
+              <h4>Ecosistema Omnicanal</h4>
+              <p>Portal web institucional, redes sociales, WhatsApp y plataforma SIEWEB.</p>
+              <div class="sig-insight">
+                <strong>SIG Clave:</strong> Trazabilidad integral de consultas y trámites.
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-stepper-row">
+            <div class="flow-step-node active">
+              <h5>1. Entrada</h5>
+              <p>Familias, postulantes y plana docente calificada.</p>
+            </div>
+            <div class="flow-step-arrow">➔</div>
+            <div class="flow-step-node">
+              <h5>2. Procesos Clave</h5>
+              <p>Admisión ➔ Matrícula ➔ Formación ➔ SIEWEB.</p>
+            </div>
+            <div class="flow-step-arrow">➔</div>
+            <div class="flow-step-node">
+              <h5>3. Salida de Valor</h5>
+              <p>Líderes preparados para la vida universitaria.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Galería Fotográfica Oficial de los 3 Niveles Educativos -->
+        <div class="levels-gallery-box">
+          <div class="level-photo-strip" title="Nivel Inicial: Donde todo comienza con amor y aprendizaje">
+            <img src="colegio_hero-1-4b.jpg" alt="Nivel Inicial La Divina Misericordia">
+            <div class="level-badge-overlay">
+              <h5>Nivel Inicial</h5>
+              <span>Donde todo comienza con amor y valores</span>
+            </div>
+          </div>
+
+          <div class="level-photo-strip" title="Nivel Primaria: Aprender haciendo, crecer con valores">
+            <img src="colegio_hero-1-5a.jpg" alt="Nivel Primaria La Divina Misericordia">
+            <div class="level-badge-overlay">
+              <h5>Nivel Primaria</h5>
+              <span>Aprender haciendo, crecer con disciplina</span>
+            </div>
+          </div>
+
+          <div class="level-photo-strip" title="Nivel Secundaria: Formamos líderes con visión preuniversitaria">
+            <img src="colegio_hero-1-6a.jpg" alt="Nivel Secundaria La Divina Misericordia">
+            <div class="level-badge-overlay">
+              <h5>Nivel Secundaria</h5>
+              <span>Formamos líderes con excelencia y fe</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 6: 1.6 IDENTIFICACIÓN DE HARDWARE CON FOTOS DE NIVELES
+         =================================================================== -->
+    <section class="slide-node" id="slide-6" data-index="6">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Punto 1.6 • Infraestructura Física</div>
+      <div class="slide-header">
+        <h2>Identificación de <span class="accent">Hardware Tecnológico</span></h2>
+        <p class="lead">Equipos tecnológicos, seguridad, conectividad y distribución informática por niveles educativos.</p>
+      </div>
+
+      <div class="slide-content-body hardware-layout">
+        <div class="hardware-sidebar-menu">
+          <button class="hw-category-btn active" onclick="switchHwTab(0)">
+            <span>🛡️</span> Seguridad y CCTV
+          </button>
+          <button class="hw-category-btn" onclick="switchHwTab(1)">
+            <span>🔐</span> Control de Accesos
+          </button>
+          <button class="hw-category-btn" onclick="switchHwTab(2)">
+            <span>🌐</span> Red y Conectividad
+          </button>
+          <button class="hw-category-btn" onclick="switchHwTab(3)">
+            <span>💻</span> Cómputo por Niveles
+          </button>
+          <button class="hw-category-btn" onclick="switchHwTab(4)">
+            <span>📺</span> Multimedia en Aula
+          </button>
+        </div>
+
+        <div class="hardware-display-panel">
+          <div class="hw-detail-card active" id="hw-tab-0">
+            <h3><span>📹</span> Sistema de Circuito Cerrado (CCTV) y Prevención</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+              Infraestructura física diseñada para la vigilancia perimétrica y resguardo integral de la comunidad educativa las 24 horas del día.
+            </p>
+            <div class="hw-specs-grid">
+              <div class="hw-spec-item">
+                <h5>Cámaras de Seguridad IP / CCTV</h5>
+                <p>Distribuidas en pasillos, accesos principales, patios y zonas de recreación con grabación continua en grabadores NVR.</p>
+              </div>
+              <div class="hw-spec-item">
+                <h5>Alarmas Contraincendios y Emergencias</h5>
+                <p>Detectores de humo, pulsadores de pánico y alarmas audibles conectadas a zonas seguras (canchas deportivas de evacuación sísmica).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hw-detail-card" id="hw-tab-1">
+            <h3><span>🚪</span> Control de Acceso y Gestión de Asistencia</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+              Automatización de los flujos de ingreso para personal docente, administrativo y alumnado.
+            </p>
+            <div class="hw-specs-grid">
+              <div class="hw-spec-item">
+                <h5>Lectores Biométricos de Huella / Rostro</h5>
+                <p>Dispositivos en portería para registro exacto de hora de entrada/salida de la plana docente y colaboradores.</p>
+              </div>
+              <div class="hw-spec-item">
+                <h5>Tarjetas de Proximidad RFID</h5>
+                <p>Mecanismo alternativo ágil para validación rápida en horas punta escolares y control de puertas restringidas.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hw-detail-card" id="hw-tab-2">
+            <h3><span>📡</span> Infraestructura de Red de Datos</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+              Columna vertebral de telecomunicaciones que conecta aulas, laboratorios y oficinas administrativas.
+            </p>
+            <div class="hw-specs-grid">
+              <div class="hw-spec-item">
+                <h5>Cableado Estructurado y Switches</h5>
+                <p>Racks de comunicaciones con switches administrables que interconectan las distintas alas de la infraestructura del colegio.</p>
+              </div>
+              <div class="hw-spec-item">
+                <h5>Enrutadores y Puntos de Acceso Wi-Fi</h5>
+                <p>Acceso inalámbrico zonificado con seguridad WPA2/WPA3 para docentes y soporte de plataformas pedagógicas en aula.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pestaña 3: Cómputo por Niveles con fotos de Secundaria y Primaria/Inicial -->
+          <div class="hw-detail-card" id="hw-tab-3">
+            <h3><span>🖥️</span> Equipamiento Informático: Secundaria vs Inicial / Primaria</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+              Diferenciación estratégica de hardware implementada por la institución según la dinámica pedagógica de cada nivel:
+            </p>
+            
+            <div class="hw-photo-card-wrap">
+              <div class="img-gold-card" style="height: 150px;">
+                <img src="colegio_hero-1-6a.jpg" alt="Nivel Secundaria">
+                <div class="img-overlay-badge">
+                  <span class="badge-title">Nivel Secundaria & Administración</span>
+                  <span class="badge-subtitle">PCs fijas de escritorio en aula para uso docente y SIEWEB</span>
+                </div>
+              </div>
+
+              <div class="img-gold-card" style="height: 150px;">
+                <img src="colegio_hero-1-4b.jpg" alt="Niveles Inicial y Primaria">
+                <div class="img-overlay-badge">
+                  <span class="badge-title">Niveles Inicial & Primaria</span>
+                  <span class="badge-subtitle">Modalidad móvil: Laptops personales de las docentes conectadas a Wi-Fi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hw-detail-card" id="hw-tab-4">
+            <h3><span>📽️</span> Recursos de Proyección y Clases Dinámicas</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+              Herramientas audiovisuales instaladas para potenciar el aprendizaje visual interactivo en los salones de clase.
+            </p>
+            <div class="hw-specs-grid">
+              <div class="hw-spec-item">
+                <h5>Proyectores Multimedia (Data Shows)</h5>
+                <p>Equipos de alta luminosidad montados en techo para proyección de diapositivas, pizarras digitales y contenido educativo.</p>
+              </div>
+              <div class="hw-spec-item">
+                <h5>Televisores Smart TV en Aulas</h5>
+                <p>Pantallas conectadas a la red de alta definición para transmisión de videos formativos, clases de inglés y conferencias.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 7: 1.7 IDENTIFICACIÓN DE SOFTWARE
+         =================================================================== -->
+    <section class="slide-node" id="slide-7" data-index="7">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Punto 1.7 • Ecosistema Digital</div>
+      <div class="slide-header">
+        <h2>Identificación de <span class="accent">Software y Sistemas</span></h2>
+        <p class="lead">La plataforma integral de gestión escolar SIEWEB, portales institucionales y herramientas colaborativas.</p>
+      </div>
+
+      <div class="slide-content-body software-showcase">
+        <div class="sieweb-interactive-box">
+          <div class="sieweb-header-bar">
+            <div class="sieweb-brand">
+              <span>☁️</span>
+              <span>Plataforma Cloud: SIEWEB</span>
+            </div>
+            <a href="https://ladivinamisericordia.sieweb.com.pe/sistema/login" target="_blank" style="font-size: 0.78rem; color: var(--c-gold-light); text-decoration: none; border: 1px solid var(--border-gold); padding: 5px 12px; border-radius: 8px; background: rgba(123, 17, 58, 0.25);">
+              Abrir Portal ↗
+            </a>
+          </div>
+
+          <div class="sieweb-tabs">
+            <button class="sieweb-tab-btn active" onclick="switchSiewebTab(0)">Académico</button>
+            <button class="sieweb-tab-btn" onclick="switchSiewebTab(1)">Familia-Escuela</button>
+            <button class="sieweb-tab-btn" onclick="switchSiewebTab(2)">Administración</button>
+          </div>
+
+          <div class="sieweb-feature-screen" id="siewebScreenContent">
+            <h4>Módulo de Gestión Académica</h4>
+            <ul>
+              <li><span class="bullet">▸</span> <strong>Registro de Notas:</strong> Centralización de calificaciones cuantitativas y cualitativas por competencias.</li>
+              <li><span class="bullet">▸</span> <strong>Control de Asistencia:</strong> Monitoreo diario de tardanzas, justificaciones e inasistencias en línea.</li>
+              <li><span class="bullet">▸</span> <strong>Libretas Automatizadas:</strong> Generación y emisión inmediata de reportes de progreso académico.</li>
+              <li><span class="bullet">▸</span> <strong>Seguimiento Curricular:</strong> Monitoreo de cumplimiento de sesiones por parte de la coordinación.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="software-ecosystem-cards">
+          <div class="eco-soft-card">
+            <h4>
+              <span>🌐 Sitio Web Institucional</span>
+              <span style="font-size: 0.74rem; color: var(--c-gold-light);">ladivinamisericordia.edu.pe</span>
+            </h4>
+            <p>Portal web oficial que opera como canal de difusión educativa, admisiones, costos de inversión e identidad institucional.</p>
+          </div>
+
+          <div class="eco-soft-card">
+            <h4>
+              <span>✉️ Canales de Comunicación</span>
+              <span style="font-size: 0.74rem; color: #fa8109;">Correo & WhatsApp</span>
+            </h4>
+            <p>Correo institucional (informes@ladivinamisericordia.edu.pe) y mensajería directa para interacción con padres y comunidad escolar.</p>
+          </div>
+
+          <div class="eco-soft-card">
+            <h4>
+              <span>💼 Suites Ofimáticas y SO</span>
+              <span style="font-size: 0.74rem; color: #34d399;">Windows & Workspace</span>
+            </h4>
+            <p>Sistemas operativos Windows en equipos de cómputo, Microsoft Office y herramientas de Google para planificaciones docentes y reportes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 8: CONCLUSIONES Y DIAGNÓSTICO ESTRATÉGICO
+         =================================================================== -->
+    <section class="slide-node" id="slide-8" data-index="8">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Diagnóstico Gerencial • Recomendaciones</div>
+      <div class="slide-header">
+        <h2>Conclusiones y <span class="accent">Recomendaciones SIG</span></h2>
+        <p class="lead">Evaluación de madurez informática para la alta dirección de la institución educativa.</p>
+      </div>
+
+      <div class="slide-content-body conclusions-grid">
+        <div class="conclusion-card">
+          <div class="conc-num">1</div>
+          <h4>Madurez y Centralización</h4>
+          <p>
+            La implementación de <strong>SIEWEB</strong> ha permitido al colegio superar la etapa de registros manuales, centralizando los datos académicos y simplificando la emisión de boletas y reportes.
+          </p>
+          <div class="conc-recommendation">
+            <strong>Oportunidad:</strong> Explotar los datos históricos para análisis predictivo de deserción escolar.
+          </div>
+        </div>
+
+        <div class="conclusion-card">
+          <div class="conc-num">2</div>
+          <h4>Infraestructura Híbrida</h4>
+          <p>
+            El modelo de cómputo fijo en Secundaria contrasta con la movilidad de laptops personales en Inicial y Primaria, lo cual brinda flexibilidad pero requiere políticas estrictas de seguridad.
+          </p>
+          <div class="conc-recommendation">
+            <strong>Oportunidad:</strong> Estandarizar software antivirus y segmentar redes Wi-Fi docentes e invitados.
+          </div>
+        </div>
+
+        <div class="conclusion-card">
+          <div class="conc-num">3</div>
+          <h4>Omnicanalidad y Relación</h4>
+          <p>
+            La integración entre el portal web, la pasarela de admisiones y la comunicación digital agiliza el contacto con las familias, fortaleciendo la identidad institucional en Huánuco.
+          </p>
+          <div class="conc-recommendation">
+            <strong>Oportunidad:</strong> Implementar pasarela de pagos en línea integrada al banco para cobranzas automáticas.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 9: FICHA INSTITUCIONAL Y CIERRE
+         =================================================================== -->
+    <section class="slide-node" id="slide-9" data-index="9">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Cierre de Presentación • Agradecimientos</div>
+      <div class="slide-content-body closing-card-layout">
+        <div class="thanks-group">
+          <h2>¡Muchas Gracias por su <span class="gold">Atención!</span></h2>
+          <p>
+            Presentación elaborada para la cátedra de <strong>Sistemas de Información Gerencial (SIG)</strong> de la Escuela Profesional de Administración de Empresas — Universidad de Huánuco.
+          </p>
+
+          <!-- Tarjeta de foto de la familia misericordiana -->
+          <div class="img-gold-card" style="height: 120px; max-width: 480px; margin-bottom: 20px;">
+            <img src="colegio_hero-1-5a.jpg" alt="Comunidad Estudiantil">
+            <div class="img-overlay-badge">
+              <span class="badge-title">La Familia Misericordiana</span>
+              <span class="badge-subtitle">Fe, Disciplina y Excelencia Académica en Huánuco</span>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 14px;">
+            <button class="btn-glow-primary" onclick="goToSlide(0)">
+              <span>↺ Reiniciar Presentación</span>
+            </button>
+            <button class="btn-glass-secondary" onclick="openOverviewGrid()">
+              <span>Ver Mapa Completo</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="closing-inst-box">
+          <h4 style="color: var(--c-gold-light); font-size: 0.86rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">
+            Ficha Técnica del Colegio
+          </h4>
+
+          <div class="contact-item-row">
+            <div class="icon-bubble">📍</div>
+            <div>
+              <strong>Ubicación:</strong> Huánuco, Perú
+            </div>
+          </div>
+
+          <div class="contact-item-row">
+            <div class="icon-bubble">🌐</div>
+            <div>
+              <strong>Portal Oficial:</strong>
+              <a href="https://www.ladivinamisericordia.edu.pe" target="_blank" style="color: var(--c-gold-light); text-decoration: none; font-weight: 600;">
+                www.ladivinamisericordia.edu.pe
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-item-row">
+            <div class="icon-bubble">📞</div>
+            <div>
+              <strong>Teléfono Institucional:</strong> 953 484 460
+            </div>
+          </div>
+
+          <div class="contact-item-row">
+            <div class="icon-bubble">📧</div>
+            <div>
+              <strong>Correo:</strong> informes@ladivinamisericordia.edu.pe
+            </div>
+          </div>
+
+          <div class="contact-item-row">
+            <div class="icon-bubble">🎓</div>
+            <div>
+              <strong>Sistema ERP:</strong> SieWeb Cloud Escolar
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BARRA INFERIOR DE NAVEGACIÓN -->
+  <footer class="bottom-dock">
+    <div class="nav-buttons-group">
+      <button class="nav-btn" id="btnPrevSlide" onclick="prevSlide()" title="Diapositiva Anterior [Flecha Izquierda]">
+        <span>❮</span>
+        <span>Anterior</span>
+      </button>
+      <button class="nav-btn" id="btnNextSlide" onclick="nextSlide()" title="Siguiente Diapositiva [Flecha Derecha / Espacio]">
+        <span>Siguiente</span>
+        <span>❯</span>
+      </button>
+    </div>
+
+    <div class="progress-dock">
+      <div class="progress-meta">
+        <span id="slideTitleIndicator">Portada Institucional</span>
+        <span id="slideCounterText">1 / 10</span>
+      </div>
+      <div class="progress-track" onclick="handleTrackClick(event)" title="Hacer clic para saltar en la presentación">
+        <div class="progress-fill" id="progressFillBar"></div>
+      </div>
+    </div>
+
+    <div class="deck-tools">
+      <button class="icon-tool-btn" id="btnToggleGrid" onclick="openOverviewGrid()" title="Ver Cuadrícula de Diapositivas">
+        <span>⊞</span>
+      </button>
+      <button class="icon-tool-btn" id="btnFullscreen" onclick="toggleFullscreen()" title="Modo Pantalla Completa [Tecla: F]">
+        <span>⛶</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- MODAL DE NOTAS DE ORADOR (SPEAKER NOTES) -->
+  <div class="speaker-modal" id="speakerNotesModal">
+    <div class="speaker-modal-header">
+      <h4><span>🎙️</span> Guion del Expositor</h4>
+      <button class="icon-tool-btn" style="width: 28px; height: 28px; font-size: 0.75rem;" onclick="toggleSpeakerNotes()">✕</button>
+    </div>
+    <div class="speaker-modal-body" id="speakerNotesBody">
+      <!-- Contenido dinámico -->
+    </div>
+  </div>
+
+  <!-- MODAL DE VISTA EN CUADRÍCULA (GRID VIEW MODAL) -->
+  <div class="grid-modal-overlay" id="gridModalOverlay" onclick="closeOverviewGrid(event)">
+    <div class="grid-modal-container" onclick="event.stopPropagation()">
+      <div class="grid-modal-header">
+        <h3>Selector Rápido de Diapositivas</h3>
+        <button class="icon-tool-btn" onclick="closeOverviewGrid()">✕</button>
+      </div>
+      <div class="grid-thumbnails" id="gridThumbnailsContainer">
+        <!-- Generado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT MODULAR -->
+  <script>
+    const slidesData = [
+      {
+        id: 0,
+        title: "Portada Institucional",
+        speaker: "Todos los Integrantes",
+        notes: "Saludar cordialmente al profesor Alex Baldeón y a los compañeros. Presentar el tema: 'Diagnóstico de Sistemas de Información Gerencial del Colegio Privado La Divina Misericordia'. Mencionar la Facultad de Ciencias Empresariales de la UDH y los cuatro integrantes del equipo.",
+        tip: "Mantengan una postura erguida y transmitan seguridad al abrir la sustentación."
+      },
+      {
+        id: 1,
+        title: "Agenda de Exploración Prezi",
+        speaker: "Carlos Fabricio Almonacid",
+        notes: "Explicar brevemente la estructura del trabajo de investigación. Aclarar que se abordarán los puntos 1.1, 1.2, 1.3, 1.4, 1.6 y 1.7 conforme a lo establecido por el docente, excluyendo el punto 1.5. Resaltar cómo los datos conectan la estrategia del colegio con su soporte tecnológico.",
+        tip: "Destaca que la presentación usa un canvas espacial donde cada punto es un nodo interconectado."
+      },
+      {
+        id: 2,
+        title: "1.1 Descripción Histórica",
+        speaker: "Carlos Fabricio Almonacid",
+        notes: "Narrar la fundación en 1997: los inicios en local alquilado, con directores redoblando como docentes. Destacar el momento cumbre: la obtención del crédito de inversión y compra del terreno propio. Desde el enfoque SIG, explicar cómo pasaron de la memoria de las personas clave a la necesidad de procedimientos formalizados.",
+        tip: "Haz énfasis en el salto cualitativo al adquirir la sede propia."
+      },
+      {
+        id: 3,
+        title: "1.2 Visión de la Organización",
+        speaker: "Yagely Isabelita Cabrera",
+        notes: "Leer o parafrasear la visión al 2026. Detallar los cuatro pilares estratégicos: Calidad Educativa, Competitividad, Innovación y Formación Cristiana. Explicar cómo el SIG proporciona la información necesaria para cada uno (control de notas, indicadores de permanencia y herramientas digitales).",
+        tip: "Interactúa con las tarjetas de la pantalla para mostrar los indicadores SIG."
+      },
+      {
+        id: 4,
+        title: "1.3 Misión de la Organización",
+        speaker: "Yagely Isabelita Cabrera",
+        notes: "Presentar la razón de ser de la institución. Demostrar que la misión no son solo palabras: requiere procesos de soporte como la evaluación continua, el seguimiento psicopedagógico y la gestión de actividades pastorales, sustentados por el software académico y los canales digitales.",
+        tip: "Resalta que el SIG asegura que la promesa de valor a los padres se cumpla día a día."
+      },
+      {
+        id: 5,
+        title: "1.4 Modelo de Negocio",
+        speaker: "Xavier Russell Figueroa",
+        notes: "Describir el modelo de negocio: Educación privada particular en Huánuco. Explicar la propuesta de valor (excelencia académica + valores cristianos + preparación preuniversitaria). Detallar el segmento de clientes y los canales de comunicación, culminando con el flujo: Entrada ➔ Procesos ➔ Salida de valor.",
+        tip: "Explica con claridad la interacción entre los padres y la plataforma digital."
+      },
+      {
+        id: 6,
+        title: "1.6 Identificación de Hardware",
+        speaker: "Xavier Russell Figueroa",
+        notes: "Exponer el hardware del colegio: el sistema de CCTV con cámaras IP, alarmas contra sismos e incendios, control biométrico de asistencia, cableado estructurado y switches. Destacar la diferencia gerencial: en Secundaria hay PCs fijas en cada aula, mientras que en Inicial/Primaria se maneja modalidad móvil con laptops docentes.",
+        tip: "Haz clic en cada botón del menú lateral para mostrar los detalles al profesor."
+      },
+      {
+        id: 7,
+        title: "1.7 Identificación de Software",
+        speaker: "Lintsay Karlely Morales",
+        notes: "Presentar el software central: la plataforma ERP en la nube SIEWEB (módulos académico, de comunicación familia y administrativo). Mencionar también el portal web oficial (ladivinamisericordia.edu.pe), el correo institucional y los sistemas operativos y suites ofimáticas (Windows y Google Workspace / Office).",
+        tip: "Alterna entre los botones de SIEWEB para mostrar la versatilidad de la plataforma escolar."
+      },
+      {
+        id: 8,
+        title: "Conclusiones y Diagnóstico SIG",
+        speaker: "Lintsay Karlely Morales",
+        notes: "Sintetizar los tres hallazgos clave: la madurez alcanzada con SIEWEB, la oportunidad de estandarizar la seguridad en equipos móviles de Inicial/Primaria, y la recomendación de incorporar pasarelas de pago automatizadas para la cobranza de pensiones.",
+        tip: "Demuestra visión gerencial y capacidad de propuesta de mejora."
+      },
+      {
+        id: 9,
+        title: "Ficha Institucional y Agradecimiento",
+        speaker: "Todos los Integrantes",
+        notes: "Agradecer al docente Alex Heraclides Baldeon Romero por la atención prestada y abrir el espacio para responder cualquier consulta o pregunta del jurado/profesor.",
+        tip: "Cerrar con tono profesional y un agradecimiento formal."
+      }
+    ];
+
+    let currentSlide = 0;
+    const totalSlides = slidesData.length;
+    let isSpeakerNotesOpen = false;
+    let audioEnabled = true;
+
+    // Elementos DOM
+    const slideNodes = document.querySelectorAll('.slide-node');
+    const slideCounterText = document.getElementById('slideCounterText');
+    const slideTitleIndicator = document.getElementById('slideTitleIndicator');
+    const progressFillBar = document.getElementById('progressFillBar');
+    const btnPrevSlide = document.getElementById('btnPrevSlide');
+    const btnNextSlide = document.getElementById('btnNextSlide');
+    const speakerNotesModal = document.getElementById('speakerNotesModal');
+    const speakerNotesBody = document.getElementById('speakerNotesBody');
+    const btnSpeakerNotes = document.getElementById('btnSpeakerNotes');
+    const gridModalOverlay = document.getElementById('gridModalOverlay');
+
+    // Audio sintetizado
+    let audioCtx = null;
+    function playSfx(type) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, now);
+          osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else if (type === 'transition') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(540, now + 0.16);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        } else if (type === 'tab') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(760, now + 0.08);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        }
+      } catch (e) {}
+    }
+
+    document.getElementById('btnAudioToggle').addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audioIcon').textContent = audioEnabled ? '🔊' : '🔇';
+      document.getElementById('btnAudioToggle').classList.toggle('active', audioEnabled);
+      if (audioEnabled) playSfx('click');
+    });
+
+    function updateSlideView(oldIndex, newIndex) {
+      slideNodes.forEach((node, idx) => {
+        node.classList.remove('active', 'prezi-exit-prev', 'prezi-exit-next');
+        if (idx === newIndex) {
+          node.classList.add('active');
+        } else if (idx === oldIndex) {
+          if (newIndex > oldIndex) {
+            node.classList.add('prezi-exit-prev');
+          } else {
+            node.classList.add('prezi-exit-next');
+          }
+        }
+      });
+
+      slideCounterText.textContent = `${newIndex + 1} / ${totalSlides}`;
+      slideTitleIndicator.textContent = slidesData[newIndex].title;
+      const pct = (newIndex / (totalSlides - 1)) * 100;
+      progressFillBar.style.width = `${Math.max(8, pct)}%`;
+
+      btnPrevSlide.disabled = newIndex === 0;
+      btnNextSlide.disabled = newIndex === totalSlides - 1;
+
+      updateSpeakerNotesContent();
+      playSfx('transition');
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlides || index === currentSlide) return;
+      const prev = currentSlide;
+      currentSlide = index;
+      updateSlideView(prev, currentSlide);
+      closeOverviewGrid();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        goToSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        goToSlide(currentSlide - 1);
+      }
+    }
+
+    function handleTrackClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      const targetIndex = Math.round(pct * (totalSlides - 1));
+      goToSlide(targetIndex);
+    }
+
+    function updateSpeakerNotesContent() {
+      const data = slidesData[currentSlide];
+      speakerNotesBody.innerHTML = `
+        <strong class="speaker-name">👤 Expositor(a): ${data.speaker}</strong>
+        <p style="margin-top: 6px;">${data.notes}</p>
+        <div class="speaker-tips">
+          <strong>💡 Consejo para la exposición:</strong> ${data.tip}
+        </div>
+      `;
+    }
+
+    function toggleSpeakerNotes() {
+      isSpeakerNotesOpen = !isSpeakerNotesOpen;
+      speakerNotesModal.classList.toggle('open', isSpeakerNotesOpen);
+      btnSpeakerNotes.classList.toggle('active', isSpeakerNotesOpen);
+      playSfx('click');
+    }
+    btnSpeakerNotes.addEventListener('click', toggleSpeakerNotes);
+
+    // Cronómetro
+    let timerSeconds = 0;
+    let timerRunning = true;
+    const timerDigits = document.getElementById('timerDigits');
+
+    setInterval(() => {
+      if (!timerRunning) return;
+      timerSeconds++;
+      const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+      const secs = String(timerSeconds % 60).padStart(2, '0');
+      timerDigits.textContent = `${mins}:${secs}`;
+    }, 1000);
+
+    document.getElementById('presentationTimerBtn').addEventListener('click', () => {
+      timerRunning = !timerRunning;
+      document.querySelector('.timer-pill .dot').style.animationPlayState = timerRunning ? 'running' : 'paused';
+      playSfx('click');
+    });
+
+    // Cuadrícula
+    function buildGridThumbnails() {
+      const container = document.getElementById('gridThumbnailsContainer');
+      container.innerHTML = '';
+      slidesData.forEach((s, idx) => {
+        const card = document.createElement('div');
+        card.className = `thumb-card ${idx === currentSlide ? 'active' : ''}`;
+        card.onclick = () => goToSlide(idx);
+        card.innerHTML = `
+          <span class="thumb-num">LÁMINA ${idx + 1}</span>
+          <h4 class="thumb-title">${s.title}</h4>
+          <span style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px; display: block;">${s.speaker}</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openOverviewGrid() {
+      buildGridThumbnails();
+      gridModalOverlay.classList.add('open');
+      playSfx('click');
+    }
+
+    function closeOverviewGrid(e) {
+      if (e && e.target !== gridModalOverlay && !e.target.classList.contains('icon-tool-btn')) return;
+      gridModalOverlay.classList.remove('open');
+      playSfx('click');
+    }
+
+    document.getElementById('btnOverviewMap').addEventListener('click', () => {
+      goToSlide(1);
+    });
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+      playSfx('click');
+    }
+
+    // Datos interactivos
+    const timelineData = [
+      {
+        title: "1997: Inicio en Local Alquilado y Resiliencia",
+        desc: "El Colegio Privado La Divina Misericordia nació con recursos limitados y en un local alquilado. La estructura organizativa era horizontal y multitarea: los fundadores y directivos asumían directamente la docencia en aulas y redoblaban turnos para garantizar la continuidad pedagógica.",
+        sig: "En los primeros años, el sistema de información dependía de registros manuales y del conocimiento tácito del equipo fundador, creando una alta dependencia de personas clave."
+      },
+      {
+        title: "Punto de Inflexión: Financiamiento e Infraestructura Propia",
+        desc: "Mediante una gestión financiera estratégica y la obtención de un crédito de inversión, la institución adquirió terreno propio e inició la construcción de su infraestructura educativa moderna, marcando el despegue hacia su posicionamiento.",
+        sig: "El crecimiento físico y de alumnado forzó la transición hacia procesos estandarizados y mayor coordinación entre las áreas académica y administrativa."
+      },
+      {
+        title: "Consolidación Actual: Liderazgo y Campus Escolar",
+        desc: "Hoy en día, el colegio cuenta con campus consolidado, ofreciendo de forma integral los niveles de Inicial, Primaria y Secundaria, con docentes especializados, laboratorios y una reconocida comunidad llamada 'La Familia Misericordiana'.",
+        sig: "Integración total mediante plataforma web y ERP escolar, eliminando silos y permitiendo el seguimiento académico en tiempo real."
+      }
+    ];
+
+    function setTimelineEra(index) {
+      const era = timelineData[index];
+      document.getElementById('timelineEraTitle').textContent = era.title;
+      document.getElementById('timelineEraDesc').textContent = era.desc;
+      document.getElementById('timelineSigBox').innerHTML = `<strong>💡 Implicancia para el SIG:</strong> ${era.sig}`;
+
+      const btns = document.querySelectorAll('.timeline-btn');
+      btns.forEach((b, i) => b.classList.toggle('active', i === index));
+      playSfx('tab');
+    }
+
+    const visionInfo = {
+      calidad: {
+        need: "Supervisión continua del rendimiento estudiantil y cumplimiento de los estándares del plan curricular.",
+        sig: "Generación oportuna y en tiempo real de registros de calificaciones, incidencias y reportes pedagógicos.",
+        kpi: "% de cumplimiento de competencias por grado, tasa de aprobación y tiempo de entrega de libretas escolares."
+      },
+      competitividad: {
+        need: "Mantener una alta preferencia frente a otras instituciones educativas particulares de la región Huánuco.",
+        sig: "Consolidación de métricas de retención, nuevas matrículas, traslados y satisfacción de padres de familia.",
+        kpi: "Tasa de retención anual de estudiantes e índice de ingreso de egresados a universidades."
+      },
+      innovacion: {
+        need: "Modernizar los entornos de aprendizaje e incorporar herramientas TIC en las sesiones de clase.",
+        sig: "Infraestructura de red de alta velocidad, conectividad Wi-Fi, proyectores y capacitación docente.",
+        kpi: "Horas de uso efectivo de plataformas multimedia y grado de adopción de herramientas virtuales."
+      },
+      valores: {
+        need: "Formar ciudadanos con sólidos principios éticos, cívicos y afianzados en la fe cristiana.",
+        sig: "Seguimiento tutorial individualizado, expedientes psicológicos confidenciales y registro de labor pastoral.",
+        kpi: "Reportes de clima de convivencia escolar e incidencias disciplinarias resueltas."
+      }
+    };
+
+    function showVisionDetail(key, e) {
+      const v = visionInfo[key];
+      if (!v) return;
+      document.getElementById('visionNeedText').textContent = v.need;
+      document.getElementById('visionSigText').textContent = v.sig;
+      document.getElementById('visionKpiText').textContent = v.kpi;
+
+      const cards = document.querySelectorAll('.vision-card');
+      cards.forEach(c => c.classList.remove('active'));
+      if (e && e.currentTarget) {
+        e.currentTarget.classList.add('active');
+      }
+      playSfx('tab');
+    }
+
+    function switchHwTab(index) {
+      const buttons = document.querySelectorAll('.hw-category-btn');
+      buttons.forEach((btn, i) => btn.classList.toggle('active', i === index));
+
+      const cards = document.querySelectorAll('.hw-detail-card');
+      cards.forEach((c, i) => c.classList.toggle('active', i === index));
+      playSfx('tab');
+    }
+
+    const siewebDetails = [
+      {
+        title: "Módulo de Gestión Académica",
+        items: [
+          "<strong>Registro de Notas:</strong> Centralización de calificaciones cuantitativas y cualitativas por competencias.",
+          "<strong>Control de Asistencia:</strong> Monitoreo diario de tardanzas, justificaciones e inasistencias en línea.",
+          "<strong>Libretas Automatizadas:</strong> Generación y emisión inmediata de reportes de progreso académico.",
+          "<strong>Seguimiento Curricular:</strong> Monitoreo de cumplimiento de sesiones por parte de la coordinación."
+        ]
+      },
+      {
+        title: "Módulo de Comunicación Familia-Escuela",
+        items: [
+          "<strong>Intranet de Padres:</strong> Visualización del progreso académico y comportamiento de los hijos desde cualquier dispositivo.",
+          "<strong>Avisos y Comunicados:</strong> Difusión inmediata de citaciones, fechas de exámenes y eventos escolares.",
+          "<strong>Agenda Escolar Digital:</strong> Calendario de tareas, actividades y entrega de trabajos prácticos.",
+          "<strong>Buzón de Consultas:</strong> Canal formal de interacción con tutores y directivos del plantel."
+        ]
+      },
+      {
+        title: "Módulo de Gestión Administrativa",
+        items: [
+          "<strong>Admisión y Matrícula:</strong> Registro digital de nuevos ingresantes y asignación de vacantes por nivel.",
+          "<strong>Control de Pensiones:</strong> Monitoreo del estado de pagos, emisión de boletas y reportes de mora.",
+          "<strong>Trámites y Certificados:</strong> Generación de constancias de estudio y certificados oficiales.",
+          "<strong>Inventario y Legajos:</strong> Archivo centralizado de expedientes de alumnos y personal del colegio."
+        ]
+      }
+    ];
+
+    function switchSiewebTab(index) {
+      const buttons = document.querySelectorAll('.sieweb-tab-btn');
+      buttons.forEach((btn, i) => btn.classList.toggle('active', i === index));
+
+      const info = siewebDetails[index];
+      const screen = document.getElementById('siewebScreenContent');
+      screen.innerHTML = `
+        <h4>${info.title}</h4>
+        <ul>
+          ${info.items.map(item => `<li><span class="bullet">▸</span> ${item}</li>`).join('')}
+        </ul>
+      `;
+      playSfx('tab');
+    }
+
+    // Atajos de teclado
+    window.addEventListener('keydown', (e) => {
+      if (gridModalOverlay.classList.contains('open')) {
+        if (e.key === 'Escape') {
+          closeOverviewGrid();
+          return;
+        }
+      }
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'PageDown':
+        case ' ':
+          e.preventDefault();
+          nextSlide();
+          break;
+        case 'ArrowLeft':
+        case 'PageUp':
+          e.preventDefault();
+          prevSlide();
+          break;
+        case 'Home':
+          e.preventDefault();
+          goToSlide(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          goToSlide(totalSlides - 1);
+          break;
+        case 'Escape':
+          e.preventDefault();
+          goToSlide(1);
+          break;
+        case 'n':
+        case 'N':
+          toggleSpeakerNotes();
+          break;
+        case 'f':
+        case 'F':
+          toggleFullscreen();
+          break;
+        case 'm':
+        case 'M':
+          document.getElementById('btnAudioToggle').click();
+          break;
+      }
+    });
+
+    // Partículas de fondo con destellos dorados y zafiro
+    const canvas = document.getElementById('ambientCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.35;
+        this.radius = Math.random() * 1.6 + 0.6;
+        this.isGold = Math.random() > 0.45;
+        this.alpha = Math.random() * 0.5 + 0.25;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.isGold 
+          ? `rgba(247, 215, 116, ${this.alpha})` 
+          : `rgba(186, 230, 253, ${this.alpha * 0.8})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 48; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateAmbient() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(212, 175, 55, ${0.14 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(animateAmbient);
+    }
+    animateAmbient();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSpeakerNotesContent();
+    });
+  </script>
+</body>
+</html>
