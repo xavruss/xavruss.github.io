@@ -1946,6 +1946,795 @@
         grid-template-columns: 1fr;
       }
     }
+  
+    /* ==========================================================================
+       LÁMINA 6: MODELADO DE PROCESOS IDEF0 (IEEE 1320.1) & ARQUITECTURA SIG
+       ========================================================================== */
+    .idef-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .idef0-top-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .idef-level-pills {
+      display: flex;
+      background: rgba(10, 16, 32, 0.95);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 3px;
+      gap: 4px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .idef-pill {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #94a3b8;
+      font-size: 0.74rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .idef-pill:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .idef-pill.active {
+      background: var(--grad-gold);
+      border-color: #fff;
+      color: #381a00;
+      font-weight: 800;
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.5);
+    }
+
+    /* Layout principal: Canvas a la izquierda, Inspector analítico a la derecha */
+    .idef0-main-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 16px;
+      height: calc(100% - 66px);
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .idef-viewport-card {
+      background: rgba(6, 11, 24, 0.88);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(247, 215, 116, 0.15);
+      position: relative;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .idef-canvas-topbar {
+      padding: 7px 14px;
+      background: rgba(10, 16, 32, 0.96);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      z-index: 5;
+    }
+
+    .icom-legend {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .legend-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+
+    .legend-badge strong {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      text-align: center;
+      border-radius: 3px;
+      font-size: 0.64rem;
+    }
+
+    .legend-badge.icom-c {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fda4af;
+      border-color: rgba(244, 63, 94, 0.45);
+    }
+    .legend-badge.icom-c strong { background: #f43f5e; color: #fff; }
+
+    .legend-badge.icom-i {
+      background: rgba(56, 189, 248, 0.15);
+      color: #bae6fd;
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+    .legend-badge.icom-i strong { background: #0284c7; color: #fff; }
+
+    .legend-badge.icom-o {
+      background: rgba(247, 215, 116, 0.15);
+      color: #fef08a;
+      border-color: rgba(247, 215, 116, 0.45);
+    }
+    .legend-badge.icom-o strong { background: #d97706; color: #fff; }
+
+    .legend-badge.icom-m {
+      background: rgba(52, 211, 153, 0.15);
+      color: #a7f3d0;
+      border-color: rgba(52, 211, 153, 0.45);
+    }
+    .legend-badge.icom-m strong { background: #059669; color: #fff; }
+
+    .idef-flow-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .flow-indicator-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 3px 8px;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.68rem;
+      color: #e2e8f0;
+    }
+
+    .pulse-flow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 10px #34d399;
+      animation: pulseDot 1.4s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.75); }
+    }
+
+    .btn-tool-sm {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-gold);
+      color: var(--c-gold-light);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-tool-sm:hover {
+      background: rgba(212, 175, 55, 0.25);
+      color: #fff;
+    }
+
+    .select-filter-icom {
+      background: rgba(10, 16, 32, 0.95);
+      border: 1px solid var(--border-gold);
+      color: #f8fafc;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Área con scroll para el canvas */
+    .idef-stage-scrollable {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      height: calc(100% - 44px);
+    }
+
+    .idef-level-view {
+      display: none;
+      width: 100%;
+      height: 100%;
+      animation: fadeInIdef 0.35s ease forwards;
+    }
+    .idef-level-view.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeInIdef {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Animación de flujo en vectores SVG */
+    @keyframes idefDashForward {
+      from { stroke-dashoffset: 40; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .idef-svg-canvas {
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      display: block;
+      user-select: none;
+    }
+
+    .flow-line {
+      stroke-dasharray: 8 6;
+      animation: idefDashForward 1.4s linear infinite;
+      transition: opacity 0.3s, stroke 0.3s;
+    }
+    .flow-line.fast {
+      animation-duration: 0.7s;
+    }
+    .flow-line.paused {
+      animation-play-state: paused;
+    }
+
+    .flow-line-c { stroke: #fb7185; }
+    .flow-line-i { stroke: #38bdf8; }
+    .flow-line-o { stroke: #fbbf24; }
+    .flow-line-m { stroke: #34d399; }
+    .flow-line-feedback { stroke: #a855f7; stroke-dasharray: 7 5; animation: idefDashForward 1.8s linear infinite; }
+
+    /* Partículas luminosas viajando por los canales */
+    .flow-particle-c { fill: #f43f5e; filter: drop-shadow(0 0 6px #f43f5e); }
+    .flow-particle-i { fill: #38bdf8; filter: drop-shadow(0 0 6px #38bdf8); }
+    .flow-particle-o { fill: #f59e0b; filter: drop-shadow(0 0 6px #f59e0b); }
+    .flow-particle-m { fill: #10b981; filter: drop-shadow(0 0 6px #10b981); }
+    .flow-particle-feedback { fill: #c084fc; filter: drop-shadow(0 0 7px #c084fc); }
+
+    /* Cajas funcionales IDEF0 */
+    .idef-box-rect {
+      fill: rgba(11, 18, 36, 0.94);
+      stroke: var(--c-gold-main);
+      stroke-width: 1.8px;
+      rx: 10px;
+      ry: 10px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.65));
+    }
+    .idef-box-rect:hover, .idef-box-rect.selected {
+      fill: rgba(22, 33, 62, 0.98);
+      stroke: var(--c-gold-light);
+      stroke-width: 2.4px;
+      filter: drop-shadow(0 0 22px rgba(212, 175, 55, 0.55));
+    }
+
+    .idef-box-header-bg {
+      fill: rgba(123, 17, 58, 0.55);
+      rx: 10px;
+      ry: 10px;
+    }
+
+    .idef-node-code {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 800;
+      fill: var(--c-gold-light);
+      letter-spacing: 0.6px;
+    }
+
+    .idef-node-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      fill: #ffffff;
+    }
+
+    .idef-node-sub {
+      font-family: var(--font-body);
+      fill: #94a3b8;
+    }
+
+    /* Inspector Lateral */
+    .idef-inspector-panel {
+      background: rgba(8, 13, 26, 0.94);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
+    .idef-inspector-panel::-webkit-scrollbar {
+      width: 5px;
+    }
+    .idef-inspector-panel::-webkit-scrollbar-thumb {
+      background: var(--c-gold-dark);
+      border-radius: 3px;
+    }
+
+    .inspector-header {
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      padding-bottom: 7px;
+    }
+
+    .inspector-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .inspector-code-chip {
+      background: var(--grad-gold);
+      color: #381a00;
+      font-size: 0.68rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    .inspector-category-chip {
+      font-size: 0.64rem;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    .inspector-title {
+      font-family: var(--font-display);
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+    }
+
+    .inspector-desc {
+      font-size: 0.73rem;
+      color: #cbd5e1;
+      line-height: 1.38;
+      margin-top: 4px;
+    }
+
+    .inspector-icom-quad {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .icom-quad-box {
+      border-radius: 7px;
+      padding: 6px 9px;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .icom-quad-box.c-box {
+      border-left-color: #f43f5e;
+      background: linear-gradient(90deg, rgba(244, 63, 94, 0.09) 0%, transparent 100%);
+    }
+    .icom-quad-box.i-box {
+      border-left-color: #38bdf8;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.09) 0%, transparent 100%);
+    }
+    .icom-quad-box.o-box {
+      border-left-color: #f59e0b;
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.09) 0%, transparent 100%);
+    }
+    .icom-quad-box.m-box {
+      border-left-color: #10b981;
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.09) 0%, transparent 100%);
+    }
+
+    .icom-quad-label {
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .icom-quad-box.c-box .icom-quad-label { color: #fb7185; }
+    .icom-quad-box.i-box .icom-quad-label { color: #38bdf8; }
+    .icom-quad-box.o-box .icom-quad-label { color: #fbbf24; }
+    .icom-quad-box.m-box .icom-quad-label { color: #34d399; }
+
+    .icom-quad-text {
+      font-size: 0.70rem;
+      color: #e2e8f0;
+      line-height: 1.32;
+    }
+
+    .inspector-sig-box {
+      background: linear-gradient(135deg, rgba(16, 98, 163, 0.25) 0%, rgba(123, 17, 58, 0.25) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 9px;
+      padding: 8px 10px;
+    }
+
+    .inspector-sig-box h5 {
+      font-size: 0.72rem;
+      color: var(--c-gold-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .inspector-sig-box p {
+      font-size: 0.70rem;
+      color: #cbd5e1;
+      line-height: 1.32;
+    }
+
+    .inspector-meta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 2px;
+    }
+
+    .meta-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 7px;
+      padding: 4px 7px;
+    }
+    .meta-chip .lbl {
+      font-size: 0.60rem;
+      color: #94a3b8;
+      display: block;
+      text-transform: uppercase;
+    }
+    .meta-chip .val {
+      font-size: 0.68rem;
+      color: #fff;
+      font-weight: 600;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Tabla Matriz ICOM Completa */
+    .matriz-icom-wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 4px;
+    }
+
+    .matriz-search-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .matriz-input {
+      background: rgba(10, 16, 32, 0.95);
+      border: 1px solid var(--border-gold);
+      color: #fff;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 0.73rem;
+      width: 280px;
+      outline: none;
+    }
+    .matriz-input:focus {
+      border-color: var(--c-gold-light);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .matriz-table-container {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 10px;
+      background: rgba(6, 11, 24, 0.85);
+    }
+
+    .matriz-table-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .matriz-table-container::-webkit-scrollbar-thumb {
+      background: var(--c-gold-dark);
+      border-radius: 3px;
+    }
+
+    .matriz-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.70rem;
+      text-align: left;
+    }
+
+    .matriz-table th {
+      background: rgba(16, 25, 48, 0.95);
+      color: var(--c-gold-light);
+      padding: 7px 9px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      border-bottom: 1.5px solid var(--border-gold);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    .matriz-table td {
+      padding: 6px 9px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      vertical-align: top;
+      color: #cbd5e1;
+      line-height: 1.32;
+    }
+
+    .matriz-table tr:hover td {
+      background: rgba(123, 17, 58, 0.2);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .badge-code {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 800;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.66rem;
+      white-space: nowrap;
+    }
+    .badge-code.lvl-0 { background: #d97706; color: #fff; }
+    .badge-code.lvl-1 { background: #0284c7; color: #fff; }
+    .badge-code.lvl-2 { background: #7c3aed; color: #fff; }
+    .badge-code.lvl-3 { background: #059669; color: #fff; }
+
+    /* Estilo de la tarjeta IDEF0 en la Agenda (Lámina 1) */
+    .overview-card.card-idef0-highlight {
+      border-color: rgba(56, 189, 248, 0.55);
+      background: linear-gradient(180deg, rgba(16, 98, 163, 0.28) 0%, rgba(10, 16, 32, 0.95) 100%);
+      box-shadow: 0 8px 24px rgba(16, 98, 163, 0.25);
+    }
+    .overview-card.card-idef0-highlight:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 16px 35px -5px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.4);
+    }
+
+  
+    /* ==========================================================================
+       PANTALLA COMPLETA, ZOOM INTERACTIVO & EDGE PANNING DEL DIAGRAMA IDEF0
+       ========================================================================== */
+    /* Modo Pantalla Completa Expandida para el Diagrama */
+    .idef-viewport-card.fullscreen-active {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      z-index: 99999 !important;
+      border-radius: 0 !important;
+      border: none !important;
+      background: radial-gradient(circle at 50% 40%, rgba(10, 16, 32, 0.98) 0%, rgba(2, 4, 10, 0.99) 100%) !important;
+      backdrop-filter: blur(35px) !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+
+    .fullscreen-active .idef-canvas-topbar {
+      padding: 12px 24px;
+      background: rgba(6, 11, 24, 0.96);
+      border-bottom: 1.5px solid var(--border-gold);
+    }
+
+    .fullscreen-active .idef-stage-scrollable {
+      height: calc(100vh - 60px) !important;
+    }
+
+    /* Botón flotante para salir de pantalla completa */
+    .btn-exit-fullscreen {
+      display: none;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(185, 28, 28, 0.35) 100%);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      padding: 5px 13px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-exit-fullscreen:hover {
+      background: rgba(239, 68, 68, 0.5);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+    }
+    .fullscreen-active .btn-exit-fullscreen {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Contenedor Pan-Zoom interno */
+    .idef-stage-scrollable {
+      position: relative;
+      overflow: hidden !important;
+      cursor: grab;
+      user-select: none;
+    }
+    .idef-stage-scrollable.is-dragging {
+      cursor: grabbing;
+    }
+
+    .idef-panzoom-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center center;
+      will-change: transform;
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .idef-panzoom-container.smooth-transition {
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Floating Zoom HUD Widget */
+    .idef-zoom-hud {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(8, 14, 28, 0.94);
+      border: 1.2px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 4px 7px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 15px rgba(212, 175, 55, 0.2);
+      z-index: 40;
+      backdrop-filter: blur(14px);
+    }
+
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .hud-btn:hover {
+      background: rgba(212, 175, 55, 0.3);
+      color: var(--c-gold-light);
+      border-color: var(--c-gold-main);
+      transform: translateY(-1px);
+    }
+
+    .hud-scale-text {
+      font-size: 0.70rem;
+      font-weight: 700;
+      color: var(--c-gold-light);
+      padding: 0 6px;
+      min-width: 42px;
+      text-align: center;
+      user-select: none;
+      font-family: var(--font-display);
+    }
+
+    /* Indicador flotante de sugerencia interactiva */
+    .idef-hint-pill {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(8, 14, 28, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 10px;
+      padding: 5px 11px;
+      font-size: 0.68rem;
+      color: #bae6fd;
+      pointer-events: none;
+      z-index: 35;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Luces de borde animadas para Edge Panning */
+    .edge-glow-indicator {
+      position: absolute;
+      pointer-events: none;
+      z-index: 38;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .edge-glow-top {
+      top: 0; left: 0; right: 0; height: 24px;
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.5) 0%, transparent 100%);
+    }
+    .edge-glow-bottom {
+      bottom: 0; left: 0; right: 0; height: 24px;
+      background: linear-gradient(0deg, rgba(212, 175, 55, 0.5) 0%, transparent 100%);
+    }
+    .edge-glow-left {
+      top: 0; bottom: 0; left: 0; width: 24px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.5) 0%, transparent 100%);
+    }
+    .edge-glow-right {
+      top: 0; bottom: 0; right: 0; width: 24px;
+      background: linear-gradient(270deg, rgba(212, 175, 55, 0.5) 0%, transparent 100%);
+    }
+    .edge-glow-indicator.active {
+      opacity: 1;
+    }
+
+    /* Resaltado dinámico con pulso cuando se selecciona una caja */
+    .idef-box-rect.zoom-focused {
+      animation: boxZoomPulse 1.8s infinite alternate ease-in-out;
+    }
+    @keyframes boxZoomPulse {
+      0% { stroke: var(--c-gold-main); stroke-width: 2.2px; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.4)); }
+      100% { stroke: #38bdf8; stroke-width: 3.2px; filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.7)); }
+    }
+
   </style>
 </head>
 <body>
@@ -2077,12 +2866,12 @@
       </div>
 
       <div class="slide-content-body">
-        <div class="overview-grid">
+        <div class="overview-grid" style="grid-template-columns: repeat(4, 1fr); gap: 16px;">
           <div class="overview-card" onclick="goToSlide(2)">
             <div>
               <span class="card-num">PUNTO 1.1</span>
               <h3 class="card-title">Descripción Histórica</h3>
-              <p class="card-desc">Trayectoria desde 1997, retos en local alquilado, transición con crédito estratégico y consolidación.</p>
+              <p class="card-desc">Trayectoria desde 1997, retos en local alquilado, transición con crédito y campus propio.</p>
             </div>
             <div class="card-action"><span>Explorar nodo</span> ➔</div>
           </div>
@@ -2091,7 +2880,7 @@
             <div>
               <span class="card-num">PUNTO 1.2</span>
               <h3 class="card-title">Visión Organizacional</h3>
-              <p class="card-desc">Proyección al 2026: Calidad, competitividad, innovación y formación cristiana con soporte SIG.</p>
+              <p class="card-desc">Proyección al 2026: Calidad, competitividad, innovación y fe cristiana con soporte SIG.</p>
             </div>
             <div class="card-action"><span>Explorar nodo</span> ➔</div>
           </div>
@@ -2100,7 +2889,7 @@
             <div>
               <span class="card-num">PUNTO 1.3</span>
               <h3 class="card-title">Misión de la Organización</h3>
-              <p class="card-desc">Razón de ser institucional y la matriz de alineación entre procesos formativos y tecnología.</p>
+              <p class="card-desc">Razón de ser institucional y matriz de alineación entre procesos formativos y tecnología.</p>
             </div>
             <div class="card-action"><span>Explorar nodo</span> ➔</div>
           </div>
@@ -2114,20 +2903,38 @@
             <div class="card-action"><span>Explorar nodo</span> ➔</div>
           </div>
 
-          <div class="overview-card" onclick="goToSlide(6)">
+          <div class="overview-card card-idef0-highlight" onclick="goToSlide(6)">
             <div>
-              <span class="card-num">PUNTO 1.6</span>
-              <h3 class="card-title">Identificación de Hardware</h3>
-              <p class="card-desc">CCTV, alarmas, control biométrico, redes cableadas, PCs fijas vs movilidad de docentes.</p>
+              <span class="card-num" style="color: #38bdf8;">IEEE 1320.1 • ICOM</span>
+              <h3 class="card-title" style="color: #fff;"><span style="color: #F7D774;">Modelado IDEF0</span></h3>
+              <p class="card-desc">Arquitectura funcional animada: A-0, A0, A2, sub-subprocesos pedagógicos y trazabilidad SIG.</p>
             </div>
-            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+            <div class="card-action"><span style="color: #38bdf8; font-weight: 700;">Explorar Procesos</span> ➔</div>
           </div>
 
           <div class="overview-card" onclick="goToSlide(7)">
             <div>
+              <span class="card-num">PUNTO 1.6</span>
+              <h3 class="card-title">Identificación de Hardware</h3>
+              <p class="card-desc">CCTV, alarmas, control biométrico, redes cableadas, PCs fijas vs laptops de docentes.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(8)">
+            <div>
               <span class="card-num">PUNTO 1.7</span>
               <h3 class="card-title">Identificación de Software</h3>
               <p class="card-desc">ERP Escolar SIEWEB en la nube, plataforma web oficial, canales colaborativos y ofimática.</p>
+            </div>
+            <div class="card-action"><span>Explorar nodo</span> ➔</div>
+          </div>
+
+          <div class="overview-card" onclick="goToSlide(9)">
+            <div>
+              <span class="card-num">SÍNTESIS</span>
+              <h3 class="card-title">Conclusiones & Diagnóstico</h3>
+              <p class="card-desc">Evaluación de madurez tecnológica, riesgos operativos y recomendaciones estratégicas SIG.</p>
             </div>
             <div class="card-action"><span>Explorar nodo</span> ➔</div>
           </div>
@@ -2459,7 +3266,1111 @@
     <!-- ===================================================================
          SLIDE 6: 1.6 IDENTIFICACIÓN DE HARDWARE CON FOTOS DE NIVELES
          =================================================================== -->
+    
+    <!-- ===================================================================
+         SLIDE 6: MODELADO DE PROCESOS IDEF0 (IEEE 1320.1) & ARQUITECTURA SIG
+         =================================================================== -->
     <section class="slide-node" id="slide-6" data-index="6">
+      <div class="corner-ornament corner-tl"></div>
+      <div class="corner-ornament corner-tr"></div>
+      <div class="corner-ornament corner-bl"></div>
+      <div class="corner-ornament corner-br"></div>
+
+      <div class="slide-badge-topic">Metodología IEEE 1320.1 • Arquitectura de Procesos & Trazabilidad SIG</div>
+      <div class="slide-header idef-header-row">
+        <div>
+          <h2>Modelado Funcional de Procesos <span class="accent">IDEF0</span></h2>
+          <p class="lead">Descomposición jerárquica con sintaxis ICOM (Entradas, Controles, Salidas, Mecanismos) y flujos dinámicos animados.</p>
+        </div>
+        <div class="idef0-top-toolbar">
+          <div class="idef-level-pills">
+            <button class="idef-pill active" id="btn-lvl-a-0" onclick="switchIdefLevel('a-0')">📌 Nivel A-0 (Contexto)</button>
+            <button class="idef-pill" id="btn-lvl-a0" onclick="switchIdefLevel('a0')">🔀 Nivel A0 (Macroprocesos)</button>
+            <button class="idef-pill" id="btn-lvl-a2" onclick="switchIdefLevel('a2')">🔬 Nivel A2 (Zoom Pedagógico & Subprocesos)</button>
+            <button class="idef-pill" id="btn-lvl-matriz" onclick="switchIdefLevel('matriz')">📊 Matriz ICOM & SIG</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-content-body idef0-main-layout">
+        <!-- Panel Izquierdo / Canvas Visual -->
+        <div class="idef-viewport-card" id="idefViewportCard">
+          <!-- Barra de Control de Flujo Animado & Leyenda ICOM -->
+          <div class="idef-canvas-topbar">
+            <div class="icom-legend">
+              <span class="legend-badge icom-c" title="Controles (Arriba): Normas y directivas que guían el proceso"><strong>C</strong> Controles (Arriba)</span>
+              <span class="legend-badge icom-i" title="Entradas (Izquierda): Insumos que se transforman"><strong>I</strong> Entradas (Izquierda)</span>
+              <span class="legend-badge icom-o" title="Salidas (Derecha): Valor y resultados generados"><strong>O</strong> Salidas (Derecha)</span>
+              <span class="legend-badge icom-m" title="Mecanismos (Abajo): Recursos humanos, SIEWEB y hardware"><strong>M</strong> Mecanismos (Abajo)</span>
+            </div>
+
+            <div class="idef-flow-controls">
+              <!-- Botón Pantalla Completa del Diagrama -->
+              <button class="btn-tool-sm" id="btnIdefFullscreen" onclick="toggleIdefFullscreen()" title="Pantalla Completa del Diagrama [Maximizar / Modo Teatro]">
+                <span id="fsIcon">⛶</span> Pantalla Completa
+              </button>
+              <button class="btn-exit-fullscreen" id="btnExitFullscreen" onclick="toggleIdefFullscreen()" title="Salir de Pantalla Completa [Esc]">
+                ✕ Salir Pantalla Completa
+              </button>
+              
+              <div class="flow-indicator-badge">
+                <span class="pulse-flow-dot" id="flowPulseDot"></span>
+                <span id="flowStatusText">Flujo: Activo</span>
+              </div>
+              <button class="btn-tool-sm" id="btnToggleFlowAnim" onclick="toggleFlowAnimation()" title="Pausar / Reanudar Flujos">
+                <span id="flowToggleIcon">⏸</span> Pausa
+              </button>
+              <button class="btn-tool-sm" id="btnFlowSpeed" onclick="cycleFlowSpeed()" title="Ajustar velocidad del flujo">
+                ⚡ 1x
+              </button>
+              <select class="select-filter-icom" id="filterIcomSelect" onchange="filterIcomFlows(this.value)">
+                <option value="all">Todos los flujos</option>
+                <option value="c">Solo Controles (C)</option>
+                <option value="i">Solo Entradas (I)</option>
+                <option value="o">Solo Salidas (O)</option>
+                <option value="m">Solo Mecanismos (M)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Contenedor dinámico de niveles -->
+          <div class="idef-stage-scrollable" id="idefStageScrollable" title="Arrastra para mover o acerca el cursor al borde para desplazar el diagrama">
+            <!-- Indicadores luminosos de Edge Panning -->
+            <div class="edge-glow-indicator edge-glow-top" id="edgeGlowTop"></div>
+            <div class="edge-glow-indicator edge-glow-bottom" id="edgeGlowBottom"></div>
+            <div class="edge-glow-indicator edge-glow-left" id="edgeGlowLeft"></div>
+            <div class="edge-glow-indicator edge-glow-right" id="edgeGlowRight"></div>
+
+            
+
+            <!-- Floating Zoom HUD -->
+            <div class="idef-zoom-hud">
+              <button class="hud-btn" onclick="zoomIdefStep(0.25)" title="Aumentar Zoom [+]">+</button>
+              <span class="hud-scale-text" id="hudScaleText">100%</span>
+              <button class="hud-btn" onclick="zoomIdefStep(-0.25)" title="Disminuir Zoom [-]">-</button>
+              <button class="hud-btn" style="width: auto; padding: 0 8px; font-size: 0.70rem;" onclick="resetIdefZoom(true)" title="Restablecer Zoom y Centrar">1x Reset</button>
+              <button class="hud-btn" onclick="toggleIdefFullscreen()" title="Pantalla Completa">⛶</button>
+            </div>
+
+            <!-- Contenedor con Transform Zoom & Pan -->
+            <div class="idef-panzoom-container" id="idefPanZoomContainer">
+            <!-- NIVEL A-0 -->
+            <div class="idef-level-view active" id="view-idef-a-0">
+              
+<svg class="idef-svg-canvas" viewBox="0 0 1020 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arr-c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#f43f5e" />
+    </marker>
+    <marker id="arr-i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arr-o" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arr-m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34d399" />
+    </marker>
+  </defs>
+
+  <!-- CONTROLES SUPERIORES (Arriba -> Abajo) -->
+  <g class="flow-group-c">
+    <!-- C1 -->
+    <path id="path-c1" d="M 390 15 L 390 155" class="flow-line flow-line-c" stroke-width="2.2" fill="none" marker-end="url(#arr-c)" />
+    <circle r="4" class="flow-particle-c"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#path-c1"/></animateMotion></circle>
+    
+    <g transform="translate(245, 30)">
+      <rect x="0" y="0" width="210" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#f43f5e" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C1</text>
+      <text x="30" y="14.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Normativa MINEDU / UGEL</text>
+    </g>
+  
+
+    <!-- C2 -->
+    <path id="path-c2" d="M 450 15 L 450 155" class="flow-line flow-line-c" stroke-width="2.2" fill="none" marker-end="url(#arr-c)" />
+    <circle r="4" class="flow-particle-c"><animateMotion dur="2.3s" repeatCount="indefinite"><mpath href="#path-c2"/></animateMotion></circle>
+    
+    <g transform="translate(255, 68)">
+      <rect x="0" y="0" width="200" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#f43f5e" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C2</text>
+      <text x="30" y="14.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">PEI & Plan PAT 2026</text>
+    </g>
+  
+
+    <!-- C3 -->
+    <path id="path-c3" d="M 570 15 L 570 155" class="flow-line flow-line-c" stroke-width="2.2" fill="none" marker-end="url(#arr-c)" />
+    <circle r="4" class="flow-particle-c"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#path-c3"/></animateMotion></circle>
+    
+    <g transform="translate(565, 30)">
+      <rect x="0" y="0" width="220" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#f43f5e" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C3</text>
+      <text x="30" y="14.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Reglamento Interno & RI</text>
+    </g>
+  
+
+    <!-- C4 -->
+    <path id="path-c4" d="M 630 15 L 630 155" class="flow-line flow-line-c" stroke-width="2.2" fill="none" marker-end="url(#arr-c)" />
+    <circle r="4" class="flow-particle-c"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#path-c4"/></animateMotion></circle>
+    
+    <g transform="translate(575, 68)">
+      <rect x="0" y="0" width="225" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#f43f5e" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C4</text>
+      <text x="30" y="14.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Ideario & Valores Cristianos</text>
+    </g>
+  
+  </g>
+
+  <!-- ENTRADAS IZQUIERDAS (Izquierda -> Derecha) -->
+  <g class="flow-group-i">
+    <!-- I1 -->
+    <path id="path-i1" d="M 20 185 L 330 185" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i)" />
+    <circle r="4" class="flow-particle-i"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#path-i1"/></animateMotion></circle>
+    
+    <g transform="translate(25, 174)">
+      <rect x="0" y="0" width="275" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#38bdf8" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I1</text>
+      <text x="30" y="14.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Postulantes y Alumnos (Inicial, Prim., Sec.)</text>
+    </g>
+  
+
+    <!-- I2 -->
+    <path id="path-i2" d="M 20 235 L 330 235" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i)" />
+    <circle r="4" class="flow-particle-i"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#path-i2"/></animateMotion></circle>
+    
+    <g transform="translate(25, 224)">
+      <rect x="0" y="0" width="275" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#38bdf8" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I2</text>
+      <text x="30" y="14.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Requerimientos Pedagógicos Familiares</text>
+    </g>
+  
+
+    <!-- I3 -->
+    <path id="path-i3" d="M 20 285 L 330 285" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i)" />
+    <circle r="4" class="flow-particle-i"><animateMotion dur="2.5s" repeatCount="indefinite"><mpath href="#path-i3"/></animateMotion></circle>
+    
+    <g transform="translate(25, 274)">
+      <rect x="0" y="0" width="275" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#38bdf8" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I3</text>
+      <text x="30" y="14.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Recursos Financieros (Matrícula y Pensiones)</text>
+    </g>
+  
+
+    <!-- I4 -->
+    <path id="path-i4" d="M 20 335 L 330 335" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i)" />
+    <circle r="4" class="flow-particle-i"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#path-i4"/></animateMotion></circle>
+    
+    <g transform="translate(25, 324)">
+      <rect x="0" y="0" width="275" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#38bdf8" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I4</text>
+      <text x="30" y="14.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Malla Curricular Base & Plana Docente</text>
+    </g>
+  
+  </g>
+
+  <!-- CAJA PRINCIPAL A0 (ACTIVIDAD CENTRAL) -->
+  <g onclick="inspectIdefNode('A0')" style="cursor: pointer;">
+    <rect x="330" y="155" width="360" height="225" class="idef-box-rect selected" id="rect-A0" />
+    <rect x="330" y="155" width="360" height="36" class="idef-box-header-bg" />
+    
+    <text x="345" y="178" class="idef-node-code">A0 • MODELO CONTEXTO GLOBAL</text>
+    <text x="675" y="178" class="idef-node-code" text-anchor="end" fill="#F7D774">IEEE 1320.1</text>
+    
+    <text x="510" y="218" class="idef-node-title" text-anchor="middle" font-size="14" fill="#fff">GESTIONAR Y BRINDAR EL SERVICIO</text>
+    <text x="510" y="238" class="idef-node-title" text-anchor="middle" font-size="14" fill="#F7D774">EDUCATIVO INTEGRAL</text>
+    
+    <text x="510" y="266" class="idef-node-sub" text-anchor="middle" font-size="10.5" fill="#cbd5e1">Colegio Privado "La Divina Misericordia" — Huánuco</text>
+    <line x1="355" y1="280" x2="665" y2="280" stroke="rgba(212,175,55,0.3)" stroke-width="1" />
+    
+    <text x="510" y="300" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#94a3b8">Inicial • Primaria • Secundaria Preuniversitaria</text>
+    <text x="510" y="320" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#38bdf8">Integración SIG: ERP Cloud SIEWEB & Red LAN/Wi-Fi</text>
+    <text x="510" y="342" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#34d399">Trazabilidad Total: Admisión ➔ Aula ➔ SIEWEB ➔ Familia</text>
+    
+    <!-- Chip inferior clickable -->
+    
+  </g>
+
+  <!-- SALIDAS DERECHAS (Izquierda -> Derecha) -->
+  <g class="flow-group-o">
+    <!-- O1 -->
+    <path id="path-o1" d="M 690 185 L 1000 185" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o)" />
+    <circle r="4" class="flow-particle-o"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#path-o1"/></animateMotion></circle>
+    
+    <g transform="translate(710, 174)">
+      <rect x="0" y="0" width="280" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#fbbf24" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O1</text>
+      <text x="30" y="14.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Egresados con Liderazgo y Fe Cristiana</text>
+    </g>
+  
+
+    <!-- O2 -->
+    <path id="path-o2" d="M 690 235 L 1000 235" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o)" />
+    <circle r="4" class="flow-particle-o"><animateMotion dur="2.3s" repeatCount="indefinite"><mpath href="#path-o2"/></animateMotion></circle>
+    
+    <g transform="translate(710, 224)">
+      <rect x="0" y="0" width="280" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#fbbf24" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O2</text>
+      <text x="30" y="14.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Libretas Digitales SIEWEB & Actas SIAGIE</text>
+    </g>
+  
+
+    <!-- O3 -->
+    <path id="path-o3" d="M 690 285 L 1000 285" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o)" />
+    <circle r="4" class="flow-particle-o"><animateMotion dur="1.9s" repeatCount="indefinite"><mpath href="#path-o3"/></animateMotion></circle>
+    
+    <g transform="translate(710, 274)">
+      <rect x="0" y="0" width="280" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#fbbf24" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O3</text>
+      <text x="30" y="14.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Comunidad Familiar Satisfecha y Fidelizada</text>
+    </g>
+  
+
+    <!-- O4 -->
+    <path id="path-o4" d="M 690 335 L 1000 335" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o)" />
+    <circle r="4" class="flow-particle-o"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#path-o4"/></animateMotion></circle>
+    
+    <g transform="translate(710, 324)">
+      <rect x="0" y="0" width="280" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#fbbf24" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O4</text>
+      <text x="30" y="14.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Reportes Gerenciales y Estados Financieros</text>
+    </g>
+  
+  </g>
+
+  <!-- MECANISMOS INFERIORES (Abajo -> Arriba) -->
+  <g class="flow-group-m">
+    <!-- M1 -->
+    <path id="path-m1" d="M 390 525 L 390 380" class="flow-line flow-line-m" stroke-width="2.2" fill="none" marker-end="url(#arr-m)" />
+    <circle r="4" class="flow-particle-m"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#path-m1"/></animateMotion></circle>
+    
+    <g transform="translate(245, 480)">
+      <rect x="0" y="0" width="215" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#34d399" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M1</text>
+      <text x="30" y="14.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Plana Directiva y Docente Titulada</text>
+    </g>
+  
+
+    <!-- M2 -->
+    <path id="path-m2" d="M 450 525 L 450 380" class="flow-line flow-line-m" stroke-width="2.2" fill="none" marker-end="url(#arr-m)" />
+    <circle r="4" class="flow-particle-m"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#path-m2"/></animateMotion></circle>
+    
+    <g transform="translate(260, 440)">
+      <rect x="0" y="0" width="205" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#34d399" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M2</text>
+      <text x="30" y="14.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Plataforma Cloud SIEWEB</text>
+    </g>
+  
+
+    <!-- M3 -->
+    <path id="path-m3" d="M 570 525 L 570 380" class="flow-line flow-line-m" stroke-width="2.2" fill="none" marker-end="url(#arr-m)" />
+    <circle r="4" class="flow-particle-m"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#path-m3"/></animateMotion></circle>
+    
+    <g transform="translate(565, 440)">
+      <rect x="0" y="0" width="220" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#34d399" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M3</text>
+      <text x="30" y="14.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Cómputo Móvil & PCs Fijas Aulas</text>
+    </g>
+  
+
+    <!-- M4 -->
+    <path id="path-m4" d="M 630 525 L 630 380" class="flow-line flow-line-m" stroke-width="2.2" fill="none" marker-end="url(#arr-m)" />
+    <circle r="4" class="flow-particle-m"><animateMotion dur="2.5s" repeatCount="indefinite"><mpath href="#path-m4"/></animateMotion></circle>
+    
+    <g transform="translate(575, 480)">
+      <rect x="0" y="0" width="225" height="22" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="18" rx="4" fill="#34d399" />
+      <text x="13" y="14.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M4</text>
+      <text x="30" y="14.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Seguridad CCTV 24/7 & Biométrico</text>
+    </g>
+  
+  </g>
+</svg>
+
+            </div>
+
+            <!-- NIVEL A0 -->
+            <div class="idef-level-view" id="view-idef-a0">
+              
+<svg class="idef-svg-canvas" viewBox="0 0 1020 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arr-c0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#f43f5e" />
+    </marker>
+    <marker id="arr-i0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arr-o0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arr-m0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34d399" />
+    </marker>
+    <marker id="arr-f0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#c084fc" />
+    </marker>
+  </defs>
+
+  <!-- CONTROLES SUPERIORES -->
+  <g class="flow-group-c">
+    <path id="p0-c1" d="M 180 15 L 180 65" class="flow-line flow-line-c" stroke-width="2" fill="none" marker-end="url(#arr-c0)" />
+    <circle r="3.5" class="flow-particle-c"><animateMotion dur="1.7s" repeatCount="indefinite"><mpath href="#p0-c1"/></animateMotion></circle>
+    
+    <g transform="translate(75, 20)">
+      <rect x="0" y="0" width="205" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#f43f5e" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C</text>
+      <text x="30" y="13.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Reglamento Admisión & Aforos</text>
+    </g>
+  
+
+    <path id="p0-c2" d="M 450 15 L 450 155" class="flow-line flow-line-c" stroke-width="2" fill="none" marker-end="url(#arr-c0)" />
+    <circle r="3.5" class="flow-particle-c"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#p0-c2"/></animateMotion></circle>
+    
+    <g transform="translate(350, 45)">
+      <rect x="0" y="0" width="215" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#f43f5e" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C</text>
+      <text x="30" y="13.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Currículo MINEDU & Syllabus Pre-U</text>
+    </g>
+  
+
+    <path id="p0-c3" d="M 750 15 L 750 255" class="flow-line flow-line-c" stroke-width="2" fill="none" marker-end="url(#arr-c0)" />
+    <circle r="3.5" class="flow-particle-c"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#p0-c3"/></animateMotion></circle>
+    
+    <g transform="translate(650, 65)">
+      <rect x="0" y="0" width="220" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#f43f5e" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C</text>
+      <text x="30" y="13.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Valores Cristianos & Convivencia</text>
+    </g>
+  
+  </g>
+
+  <!-- ENTRADAS EXTERNAS -->
+  <g class="flow-group-i">
+    <path id="p0-i1" d="M 10 110 L 75 110" class="flow-line flow-line-i" stroke-width="2" fill="none" marker-end="url(#arr-i0)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#p0-i1"/></animateMotion></circle>
+
+    <path id="p0-i2" d="M 10 200 L 325 200" class="flow-line flow-line-i" stroke-width="2" fill="none" marker-end="url(#arr-i0)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#p0-i2"/></animateMotion></circle>
+    
+    <g transform="translate(15, 185)">
+      <rect x="0" y="0" width="200" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#38bdf8" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I</text>
+      <text x="30" y="13.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Material Didáctico & Recursos</text>
+    </g>
+  
+
+    <path id="p0-i4" d="M 10 425 L 345 425" class="flow-line flow-line-i" stroke-width="2" fill="none" marker-end="url(#arr-i0)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="2.5s" repeatCount="indefinite"><mpath href="#p0-i4"/></animateMotion></circle>
+    
+    <g transform="translate(15, 410)">
+      <rect x="0" y="0" width="205" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#38bdf8" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I</text>
+      <text x="30" y="13.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Pensiones & Insumos Campus</text>
+    </g>
+  
+  </g>
+
+  <!-- CAJA A1: ADMISIÓN & MATRÍCULA -->
+  <g onclick="inspectIdefNode('A1')" style="cursor: pointer;">
+    <rect x="75" y="65" width="225" height="95" class="idef-box-rect" id="rect-A1" />
+    <rect x="75" y="65" width="225" height="24" class="idef-box-header-bg" />
+    <text x="85" y="81" class="idef-node-code">A1</text>
+    <text x="112" y="81" class="idef-node-title" font-size="11.5">Admisión & Matrícula</text>
+    <text x="187" y="106" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#f8fafc">Filiación de familias</text>
+    <text x="187" y="122" class="idef-node-sub" text-anchor="middle" font-size="9.5" fill="#38bdf8">Legajos digitales en SIEWEB</text>
+    <text x="187" y="140" class="idef-node-sub" text-anchor="middle" font-size="9" fill="#94a3b8">Portal ladivinamisericordia.edu.pe</text>
+  </g>
+
+  <!-- CONEXIÓN: A1 ➔ A2 -->
+  <g>
+    <path id="p0-inter1" d="M 300 112 L 375 112 L 375 155" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i0)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#p0-inter1"/></animateMotion></circle>
+    
+    <g transform="translate(315, 95)">
+      <rect x="0" y="0" width="120" height="18" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="14" rx="4" fill="#38bdf8" />
+      <text x="13" y="12.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">➔</text>
+      <text x="30" y="12.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Nómina SIEWEB</text>
+    </g>
+  
+  </g>
+
+  <!-- CAJA A2: ENSEÑANZA-APRENDIZAJE -->
+  <g onclick="inspectIdefNode('A2')" style="cursor: pointer;">
+    <rect x="330" y="160" width="250" height="110" class="idef-box-rect selected" id="rect-A2" />
+    <rect x="330" y="160" width="250" height="25" class="idef-box-header-bg" />
+    <text x="340" y="177" class="idef-node-code">A2 • NÚCLEO PEDAGÓGICO</text>
+    <text x="455" y="204" class="idef-node-title" text-anchor="middle" font-size="12.5">Enseñanza-Aprendizaje</text>
+    <text x="455" y="222" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#cbd5e1">Sesiones Inicial, Primaria y Secundaria</text>
+    <text x="455" y="238" class="idef-node-sub" text-anchor="middle" font-size="9.5" fill="#F7D774">PCs fijas en Sec. / Laptops en Primaria</text>
+    <text x="455" y="255" class="idef-node-sub" text-anchor="middle" font-size="9.5" fill="#38bdf8">Calificaciones & Asistencias en SIEWEB</text>
+  </g>
+
+  <!-- CONEXIÓN: A2 ➔ A3 -->
+  <g>
+    <path id="p0-inter2" d="M 580 195 L 685 195 L 685 255" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i0)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#p0-inter2"/></animateMotion></circle>
+    
+    <g transform="translate(600, 178)">
+      <rect x="0" y="0" width="160" height="18" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="14" rx="4" fill="#38bdf8" />
+      <text x="13" y="12.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">➔</text>
+      <text x="30" y="12.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Asistencias & Conducta</text>
+    </g>
+  
+  </g>
+
+  <!-- CONEXIÓN: A2 ➔ A4 -->
+  <g>
+    <path id="p0-inter3" d="M 455 270 L 455 330 L 420 330 L 420 390" class="flow-line flow-line-i" stroke-width="2" fill="none" marker-end="url(#arr-i0)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="2.0s" repeatCount="indefinite"><mpath href="#p0-inter3"/></animateMotion></circle>
+    
+    <g transform="translate(425, 315)">
+      <rect x="0" y="0" width="145" height="18" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="14" rx="4" fill="#38bdf8" />
+      <text x="13" y="12.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">➔</text>
+      <text x="30" y="12.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Métricas Rendimiento</text>
+    </g>
+  
+  </g>
+
+  <!-- CAJA A3: TUTORÍA, PASTORAL & CONVIVENCIA -->
+  <g onclick="inspectIdefNode('A3')" style="cursor: pointer;">
+    <rect x="635" y="260" width="245" height="100" class="idef-box-rect" id="rect-A3" />
+    <rect x="635" y="260" width="245" height="24" class="idef-box-header-bg" />
+    <text x="645" y="276" class="idef-node-code">A3</text>
+    <text x="672" y="276" class="idef-node-title" font-size="11.5">Tutoría, Pastoral & Convivencia</text>
+    <text x="755" y="303" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#f8fafc">Acompañamiento psicológico y moral</text>
+    <text x="755" y="321" class="idef-node-sub" text-anchor="middle" font-size="9.5" fill="#34d399">CCTV 24/7 en pasillos y patios</text>
+    <text x="755" y="340" class="idef-node-sub" text-anchor="middle" font-size="9" fill="#94a3b8">Control biométrico en portería</text>
+  </g>
+
+  <!-- CAJA A4: RECURSOS, TI & INFRAESTRUCTURA -->
+  <g onclick="inspectIdefNode('A4')" style="cursor: pointer;">
+    <rect x="350" y="395" width="265" height="95" class="idef-box-rect" id="rect-A4" />
+    <rect x="350" y="395" width="265" height="24" class="idef-box-header-bg" />
+    <text x="360" y="411" class="idef-node-code">A4</text>
+    <text x="388" y="411" class="idef-node-title" font-size="11.5">Recursos, TI & Infraestructura</text>
+    <text x="482" y="435" class="idef-node-sub" text-anchor="middle" font-size="10" fill="#f8fafc">Cobranza y Tesorería SIEWEB</text>
+    <text x="482" y="452" class="idef-node-sub" text-anchor="middle" font-size="9.5" fill="#F7D774">Red LAN estructurada & Wi-Fi aulas</text>
+    <text x="482" y="471" class="idef-node-sub" text-anchor="middle" font-size="9" fill="#94a3b8">Mantenimiento de campus y hardware</text>
+  </g>
+
+  <!-- HABILITADOR DE A4 ➔ HACIA A1, A2, A3 -->
+  <g>
+    <path id="p0-techsupport" d="M 350 450 L 50 450 L 50 145 L 75 145" class="flow-line flow-line-m" stroke-width="1.8" fill="none" marker-end="url(#arr-m0)" />
+    <circle r="3.5" class="flow-particle-m"><animateMotion dur="3.0s" repeatCount="indefinite"><mpath href="#p0-techsupport"/></animateMotion></circle>
+    
+    <g transform="translate(55, 370)">
+      <rect x="0" y="0" width="210" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#34d399" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M</text>
+      <text x="30" y="13.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Red & Plataforma SIEWEB Activa</text>
+    </g>
+  
+  </g>
+
+  <!-- RETROALIMENTACIÓN DE A3 ➔ A1 -->
+  <g>
+    <path id="p0-feedback" d="M 880 305 L 920 305 L 920 50 L 250 50 L 250 65" class="flow-line flow-line-feedback" stroke-width="2" fill="none" marker-end="url(#arr-f0)" />
+    <circle r="4" class="flow-particle-feedback"><animateMotion dur="3.4s" repeatCount="indefinite"><mpath href="#p0-feedback"/></animateMotion></circle>
+    
+    <g transform="translate(640, 40)">
+      <rect x="0" y="0" width="260" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#c084fc" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#c084fc" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">↺</text>
+      <text x="30" y="13.5" fill="#e9d5ff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Feedback: Retención & Fidelización</text>
+    </g>
+  
+  </g>
+
+  <!-- SALIDAS EXTERNAS -->
+  <g class="flow-group-o">
+    <path id="p0-o2" d="M 580 235 L 980 235" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o0)" />
+    <circle r="3.5" class="flow-particle-o"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#p0-o2"/></animateMotion></circle>
+    
+    <g transform="translate(710, 224)">
+      <rect x="0" y="0" width="250" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#fbbf24" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O</text>
+      <text x="30" y="13.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Egresados Competentes & Notas SIEWEB</text>
+    </g>
+  
+
+    <path id="p0-o3" d="M 880 335 L 980 335" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o0)" />
+    <circle r="3.5" class="flow-particle-o"><animateMotion dur="1.5s" repeatCount="indefinite"><mpath href="#p0-o3"/></animateMotion></circle>
+    
+    <g transform="translate(885, 350)">
+      <rect x="0" y="0" width="115" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#fbbf24" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O</text>
+      <text x="30" y="13.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Clima Escolar Seguro</text>
+    </g>
+  
+
+    <path id="p0-o4" d="M 615 440 L 980 440" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o0)" />
+    <circle r="3.5" class="flow-particle-o"><animateMotion dur="2.3s" repeatCount="indefinite"><mpath href="#p0-o4"/></animateMotion></circle>
+    
+    <g transform="translate(650, 428)">
+      <rect x="0" y="0" width="240" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#fbbf24" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#fbbf24" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">O</text>
+      <text x="30" y="13.5" fill="#fef08a" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Reportes Financieros & Balance SIG</text>
+    </g>
+  
+  </g>
+
+  <!-- MECANISMOS EXTERNOS -->
+  <g class="flow-group-m">
+    <path id="p0-m2" d="M 400 525 L 400 490" class="flow-line flow-line-m" stroke-width="2" fill="none" marker-end="url(#arr-m0)" />
+    <circle r="3.5" class="flow-particle-m"><animateMotion dur="1.7s" repeatCount="indefinite"><mpath href="#p0-m2"/></animateMotion></circle>
+    
+    <g transform="translate(300, 500)">
+      <rect x="0" y="0" width="195" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#34d399" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M</text>
+      <text x="30" y="13.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Administración & Soporte Redes</text>
+    </g>
+  
+
+    <path id="p0-m3" d="M 750 525 L 750 365" class="flow-line flow-line-m" stroke-width="2" fill="none" marker-end="url(#arr-m0)" />
+    <circle r="3.5" class="flow-particle-m"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#p0-m3"/></animateMotion></circle>
+    
+    <g transform="translate(665, 475)">
+      <rect x="0" y="0" width="185" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#34d399" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M</text>
+      <text x="30" y="13.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">CCTV & Biométrico Portería</text>
+    </g>
+  
+  </g>
+</svg>
+
+            </div>
+
+            <!-- NIVEL A2 -->
+            <div class="idef-level-view" id="view-idef-a2">
+              
+<svg class="idef-svg-canvas" viewBox="0 0 1020 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arr-c2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#f43f5e" />
+    </marker>
+    <marker id="arr-i2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arr-o2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arr-m2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34d399" />
+    </marker>
+    <marker id="arr-f2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#c084fc" />
+    </marker>
+  </defs>
+
+  <!-- CONTROLES -->
+  <g class="flow-group-c">
+    <path id="p2-c1" d="M 175 15 L 175 65" class="flow-line flow-line-c" stroke-width="2" fill="none" marker-end="url(#arr-c2)" />
+    <circle r="3.5" class="flow-particle-c"><animateMotion dur="1.7s" repeatCount="indefinite"><mpath href="#p2-c1"/></animateMotion></circle>
+    
+    <g transform="translate(75, 20)">
+      <rect x="0" y="0" width="200" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#f43f5e" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C</text>
+      <text x="30" y="13.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Malla Curricular MINEDU</text>
+    </g>
+  
+
+    <path id="p2-c2" d="M 500 15 L 500 155" class="flow-line flow-line-c" stroke-width="2" fill="none" marker-end="url(#arr-c2)" />
+    <circle r="3.5" class="flow-particle-c"><animateMotion dur="2.1s" repeatCount="indefinite"><mpath href="#p2-c2"/></animateMotion></circle>
+    
+    <g transform="translate(400, 45)">
+      <rect x="0" y="0" width="210" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#f43f5e" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C</text>
+      <text x="30" y="13.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Horario Escolar & Syllabus</text>
+    </g>
+  
+
+    <path id="p2-c3" d="M 820 15 L 820 265" class="flow-line flow-line-c" stroke-width="2" fill="none" marker-end="url(#arr-c2)" />
+    <circle r="3.5" class="flow-particle-c"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#p2-c3"/></animateMotion></circle>
+    
+    <g transform="translate(720, 75)">
+      <rect x="0" y="0" width="200" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#f43f5e" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#f43f5e" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">C</text>
+      <text x="30" y="13.5" fill="#fda4af" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Escalas Evaluativas & CNEB</text>
+    </g>
+  
+  </g>
+
+  <!-- ENTRADAS -->
+  <g class="flow-group-i">
+    <path id="p2-i1" d="M 10 115 L 55 115" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i2)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#p2-i1"/></animateMotion></circle>
+
+    <path id="p2-i2" d="M 10 220 L 350 220" class="flow-line flow-line-i" stroke-width="2" fill="none" marker-end="url(#arr-i2)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="2.5s" repeatCount="indefinite"><mpath href="#p2-i2"/></animateMotion></circle>
+    
+    <g transform="translate(15, 205)">
+      <rect x="0" y="0" width="205" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#38bdf8" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">I</text>
+      <text x="30" y="13.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Alumnos en Aula & Multimedia</text>
+    </g>
+  
+  </g>
+
+  <!-- SUBPROCESO A2.1 -->
+  <g onclick="inspectIdefNode('A2.1')" style="cursor: pointer;">
+    <rect x="55" y="70" width="250" height="150" class="idef-box-rect" id="rect-A2.1" />
+    <rect x="55" y="70" width="250" height="26" class="idef-box-header-bg" />
+    <text x="65" y="88" class="idef-node-code">A2.1</text>
+    <text x="96" y="88" class="idef-node-title" font-size="11.5">Diseño y Programación Curricular</text>
+    
+    <g transform="translate(65, 106)">
+      <rect x="0" y="0" width="230" height="26" rx="5" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.25)" />
+      <text x="8" y="17" class="idef-node-sub" fill="#fff" font-weight="600" font-size="9.5">A2.1.1: Dosificación Preuniversitaria</text>
+      
+      <rect x="0" y="32" width="230" height="26" rx="5" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.25)" />
+      <text x="8" y="49" class="idef-node-sub" fill="#fff" font-weight="600" font-size="9.5">A2.1.2: Unidades Digitales (Ofimática)</text>
+      
+      <rect x="0" y="64" width="230" height="26" rx="5" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.25)" />
+      <text x="8" y="81" class="idef-node-sub" fill="#fff" font-weight="600" font-size="9.5">A2.1.3: Visado de Coordinación</text>
+    </g>
+  </g>
+
+  <!-- FLUJO: A2.1 ➔ A2.2 -->
+  <g>
+    <path id="p2-flow1" d="M 305 145 L 355 145 L 355 195" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i2)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="1.7s" repeatCount="indefinite"><mpath href="#p2-flow1"/></animateMotion></circle>
+    
+    <g transform="translate(300, 130)">
+      <rect x="0" y="0" width="140" height="18" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="14" rx="4" fill="#38bdf8" />
+      <text x="13" y="12.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">➔</text>
+      <text x="30" y="12.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Unidades Aprobadas</text>
+    </g>
+  
+  </g>
+
+  <!-- SUBPROCESO A2.2 -->
+  <g onclick="inspectIdefNode('A2.2')" style="cursor: pointer;">
+    <rect x="355" y="165" width="280" height="165" class="idef-box-rect selected" id="rect-A2.2" />
+    <rect x="355" y="165" width="280" height="26" class="idef-box-header-bg" />
+    <text x="365" y="183" class="idef-node-code">A2.2 • EJECUCIÓN MULTIMODAL</text>
+    <text x="365" y="200" class="idef-node-title" font-size="11.5">Impartición de Sesiones en Aula</text>
+    
+    <g transform="translate(365, 210)">
+      <rect x="0" y="0" width="260" height="30" rx="5" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.3)" />
+      <text x="8" y="15" class="idef-node-sub" fill="#38bdf8" font-weight="700" font-size="9.5">A2.2.1: Inicial & Primaria (Laptops Móviles)</text>
+      <text x="8" y="26" class="idef-node-sub" fill="#94a3b8" font-size="8.5">Laptops de docentes conectadas a Wi-Fi institucional</text>
+      
+      <rect x="0" y="36" width="260" height="30" rx="5" fill="rgba(247,215,116,0.08)" stroke="rgba(247,215,116,0.3)" />
+      <text x="8" y="51" class="idef-node-sub" fill="#F7D774" font-weight="700" font-size="9.5">A2.2.2: Secundaria (PCs Fijas en Aula)</text>
+      <text x="8" y="62" class="idef-node-sub" fill="#94a3b8" font-size="8.5">PCs fijas para docentes + Proyectores multimedia</text>
+      
+      <rect x="0" y="72" width="260" height="30" rx="5" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.3)" />
+      <text x="8" y="87" class="idef-node-sub" fill="#34d399" font-weight="700" font-size="9.5">A2.2.3: Interacción & Tareas en SIEWEB</text>
+      <text x="8" y="98" class="idef-node-sub" fill="#94a3b8" font-size="8.5">Publicación de recursos digitales y agenda escolar</text>
+    </g>
+  </g>
+
+  <!-- FLUJO: A2.2 ➔ A2.3 -->
+  <g>
+    <path id="p2-flow2" d="M 635 245 L 685 245 L 685 300" class="flow-line flow-line-i" stroke-width="2.2" fill="none" marker-end="url(#arr-i2)" />
+    <circle r="3.5" class="flow-particle-i"><animateMotion dur="1.7s" repeatCount="indefinite"><mpath href="#p2-flow2"/></animateMotion></circle>
+    
+    <g transform="translate(630, 230)">
+      <rect x="0" y="0" width="140" height="18" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#38bdf8" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="14" rx="4" fill="#38bdf8" />
+      <text x="13" y="12.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">➔</text>
+      <text x="30" y="12.5" fill="#bae6fd" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Sesiones Dictadas</text>
+    </g>
+  
+  </g>
+
+  <!-- SUBPROCESO A2.3 -->
+  <g onclick="inspectIdefNode('A2.3')" style="cursor: pointer;">
+    <rect x="680" y="275" width="270" height="165" class="idef-box-rect" id="rect-A2.3" />
+    <rect x="680" y="275" width="270" height="26" class="idef-box-header-bg" />
+    <text x="690" y="293" class="idef-node-code">A2.3</text>
+    <text x="718" y="293" class="idef-node-title" font-size="11.5">Evaluación & Registro Digital</text>
+    
+    <g transform="translate(690, 310)">
+      <rect x="0" y="0" width="250" height="30" rx="5" fill="rgba(255,255,255,0.04)" stroke="rgba(212,175,55,0.25)" />
+      <text x="8" y="15" class="idef-node-sub" fill="#fff" font-weight="700" font-size="9.5">A2.3.1: Exámenes & Simulacros Tipo U</text>
+      <text x="8" y="26" class="idef-node-sub" fill="#94a3b8" font-size="8.5">Evaluación formativa y pruebas preuniversitarias</text>
+      
+      <rect x="0" y="36" width="250" height="30" rx="5" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.3)" />
+      <text x="8" y="51" class="idef-node-sub" fill="#38bdf8" font-weight="700" font-size="9.5">A2.3.2: Registro Automatizado en SIEWEB</text>
+      <text x="8" y="62" class="idef-node-sub" fill="#94a3b8" font-size="8.5">Carga de calificaciones por competencias en la nube</text>
+      
+      <rect x="0" y="72" width="250" height="30" rx="5" fill="rgba(247,215,116,0.08)" stroke="rgba(247,215,116,0.3)" />
+      <text x="8" y="87" class="idef-node-sub" fill="#F7D774" font-weight="700" font-size="9.5">A2.3.3: Emisión de Libretas Escolares</text>
+      <text x="8" y="98" class="idef-node-sub" fill="#94a3b8" font-size="8.5">Reportes digitales automáticos para padres</text>
+    </g>
+  </g>
+
+  <!-- BUCLE DE RETROALIMENTACIÓN PEDAGÓGICA -->
+  <g>
+    <path id="p2-feedback" d="M 815 440 L 815 500 L 180 500 L 180 220" class="flow-line flow-line-feedback" stroke-width="2" fill="none" marker-end="url(#arr-f2)" />
+    <circle r="4" class="flow-particle-feedback"><animateMotion dur="3.6s" repeatCount="indefinite"><mpath href="#p2-feedback"/></animateMotion></circle>
+    
+    <g transform="translate(290, 488)">
+      <rect x="0" y="0" width="440" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#c084fc" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#c084fc" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">↺</text>
+      <text x="30" y="13.5" fill="#e9d5ff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Retroalimentación Pedagógica: Reajuste Curricular Bimestral</text>
+    </g>
+  
+  </g>
+
+  <!-- SALIDAS -->
+  <g class="flow-group-o">
+    <path id="p2-out1" d="M 950 355 L 990 355" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o2)" />
+    <circle r="3.5" class="flow-particle-o"><animateMotion dur="1.2s" repeatCount="indefinite"><mpath href="#p2-out1"/></animateMotion></circle>
+    
+    <path id="p2-out2" d="M 950 395 L 990 395" class="flow-line flow-line-o" stroke-width="2.2" fill="none" marker-end="url(#arr-o2)" />
+    <circle r="3.5" class="flow-particle-o"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#p2-out2"/></animateMotion></circle>
+  </g>
+
+  <!-- MECANISMOS -->
+  <g class="flow-group-m">
+    <path id="p2-m1" d="M 495 460 L 495 330" class="flow-line flow-line-m" stroke-width="2" fill="none" marker-end="url(#arr-m2)" />
+    <circle r="3.5" class="flow-particle-m"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#p2-m1"/></animateMotion></circle>
+    
+    <g transform="translate(400, 435)">
+      <rect x="0" y="0" width="200" height="20" rx="6" ry="6" fill="rgba(6, 12, 24, 0.94)" stroke="#34d399" stroke-width="1.2" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.6))" />
+      <rect x="2" y="2" width="22" height="16" rx="4" fill="#34d399" />
+      <text x="13" y="13.5" fill="#fff" font-family="'Outfit', sans-serif" font-weight="800" font-size="9" text-anchor="middle">M</text>
+      <text x="30" y="13.5" fill="#a7f3d0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Equipamiento TIC & Wi-Fi Aulas</text>
+    </g>
+  
+  </g>
+</svg>
+
+            </div>
+
+            <!-- NIVEL MATRIZ -->
+            <div class="idef-level-view" id="view-idef-matriz">
+              
+<div class="matriz-icom-wrap">
+  <div class="matriz-search-bar">
+    <input type="text" class="matriz-input" id="matrizSearchInput" placeholder="🔍 Filtrar por código, proceso, sistema o SIG..." onkeyup="filterIdefMatrix(this.value)">
+    <div style="font-size: 0.72rem; color: #94a3b8;">
+      Mostrando <strong id="matrizRowCount">17</strong> procesos modelados (Estándar <strong>IEEE 1320.1</strong>)
+    </div>
+  </div>
+  <div class="matriz-table-container">
+    <table class="matriz-table" id="idefFullMatrixTable">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Función / Actividad</th>
+          <th>Entradas [I]</th>
+          <th>Controles [C]</th>
+          <th>Salidas [O]</th>
+          <th>Mecanismos [M]</th>
+          <th>Módulo SIG / Hardware</th>
+          <th>Responsable</th>
+          <th>KPI / Indicador</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+    <tr onclick="inspectIdefNode('A0')">
+      <td><span class="badge-code lvl-0">A0</span></td>
+      <td><strong>Gestionar y Brindar el Servicio Educativo Integral</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Diagrama de Contexto Macro</span></td>
+      <td style="color: #bae6fd;">Postulantes y estudiantes (Inicial, Primaria, Secundaria), Demandas pedagógicas de padres de familia, Recursos financieros (pensiones y matrículas), Currículo Nacional Base.</td>
+      <td style="color: #fda4af;">Normativas MINEDU / DRE Huánuco / UGEL, PEI y PAT 2026, Reglamento Interno y Código de Convivencia, Ideario y Principios Cristianos.</td>
+      <td style="color: #fef08a;">Egresados formados con excelencia preuniversitaria y valores morales, Libretas digitales y registros SIAGIE, Comunidad familiar satisfecha, Reportes directivos y balances financieros.</td>
+      <td style="color: #a7f3d0;">Plana directiva y docente titulada, ERP Cloud Escolar SIEWEB, Infraestructura TIC (PCs fijas Secundaria, laptops Inicial/Primaria, red Wi-Fi), CCTV 24/7 y Control Biométrico.</td>
+      <td style="color: #38bdf8;"><strong>Plataforma integral SIEWEB (Académico, Familia, Cobranzas), Red cableada estructurada, Switches y conectividad en todas las aulas.</strong></td>
+      <td style="color: #fff;">Dirección General & Promotoría</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Tasa de retención anual (>96%), Nivel de satisfacción de padres (>92%), % de ingreso preuniversitario.</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A1')">
+      <td><span class="badge-code lvl-1">A1</span></td>
+      <td><strong>Gestionar Admisión, Matrícula y Relación Familiar</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Macroproceso Estratégico</span></td>
+      <td style="color: #bae6fd;">Solicitudes de vacantes por padres de familia, Fichas de traslado y certificados de estudio previos, Comprobantes de pago de derecho de matrícula.</td>
+      <td style="color: #fda4af;">Reglamento de Admisión Institucional, Aforo de aulas autorizado por UGEL Huánuco, Tarifario y cronograma de pensiones.</td>
+      <td style="color: #fef08a;">Nómina oficial de estudiantes matriculados, Legajos digitales aperturados en SIEWEB, Cuentas de intranet familiar activadas, Contratos de servicio educativo firmados.</td>
+      <td style="color: #a7f3d0;">Personal de Admisión y Secretaría General, Sitio Web oficial (ladivinamisericordia.edu.pe), Módulo Administrativo y de Matrícula SIEWEB.</td>
+      <td style="color: #38bdf8;"><strong>Módulo SIEWEB Admisiones: Centraliza la base de datos de ingresantes y alimenta automáticamente las listas de aula de los profesores.</strong></td>
+      <td style="color: #fff;">Coordinación de Admisión & Secretaría</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">% de vacantes cubiertas al inicio del año escolar, Tiempo promedio de matriculación por alumno (<10 min en SIEWEB).</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2')">
+      <td><span class="badge-code lvl-1">A2</span></td>
+      <td><strong>Planificar y Ejecutar la Enseñanza-Aprendizaje Integral</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Núcleo Operativo / Core Business</span></td>
+      <td style="color: #bae6fd;">Nómina de estudiantes matriculados (desde A1), Textos y recursos educativos, Plan anual de trabajo (PAT), Horarios de clase.</td>
+      <td style="color: #fda4af;">Currículo Nacional de la Educación Básica (CNEB), Enfoque Preuniversitario institucional, Syllabus bimestrales, Calendario cívico-escolar.</td>
+      <td style="color: #fef08a;">Sesiones de clase desarrolladas, Estudiantes evaluados por competencias, Libretas de notas emitidas, Control diario de tardanzas y asistencias.</td>
+      <td style="color: #a7f3d0;">Plana docente especializada, Computadoras fijas en Secundaria, Laptops móviles en Inicial/Primaria, Proyectores de aula, SIEWEB Académico.</td>
+      <td style="color: #38bdf8;"><strong>Módulo SIEWEB Académico: Carga en tiempo real de calificaciones, asistencias y seguimiento pedagógico accesible para docentes y directivos.</strong></td>
+      <td style="color: #fff;">Coordinación Académica & Plana Docente</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Tasa de rendimiento académico promedio (>15.5 vigesimal), % de cumplimiento de sesiones programadas (>98%).</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A3')">
+      <td><span class="badge-code lvl-1">A3</span></td>
+      <td><strong>Desarrollar Acompañamiento Tutorial, Pastoral y Convivencia</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Macroproceso Formativo</span></td>
+      <td style="color: #bae6fd;">Registros de tardanzas e inasistencias de aula (desde A2), Alertas de bajo rendimiento, Reportes de incidencias disciplinarias.</td>
+      <td style="color: #fda4af;">Lineamientos de Tutoría y Orientación Educativa (TOE), Ideario cristiano del colegio, Protocolos de prevención contra el acoso escolar (Ley 29719).</td>
+      <td style="color: #fef08a;">Estudiantes orientados con soporte psicoafectivo, Actas de mediación y convivencia escolar, Informes psicopedagógicos individuales, Talleres de Escuela de Padres.</td>
+      <td style="color: #a7f3d0;">Departamento Psicopedagógico, Docentes Tutores de aula, Capellanía y pastoral escolar, Sistema de CCTV perimétrico, Biométrico de portería.</td>
+      <td style="color: #38bdf8;"><strong>Cámaras CCTV con grabador NVR para resguardo perimétrico y módulo de incidencias en SIEWEB para trazabilidad tutorial.</strong></td>
+      <td style="color: #fff;">Departamento de Psicología & Tutoría</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Índice de convivencia escolar positiva (>95%), Cero casos de acoso escolar no atendidos en el periodo.</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A4')">
+      <td><span class="badge-code lvl-1">A4</span></td>
+      <td><strong>Administrar Recursos Financieros, TI e Infraestructura</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Macroproceso de Soporte</span></td>
+      <td style="color: #bae6fd;">Cobranza de mensualidades escolares de padres, Requerimientos de insumos pedagógicos, Reportes de mantenimiento técnico de hardware y red.</td>
+      <td style="color: #fda4af;">Presupuesto Operativo Anual, Políticas de cobranza y mora institucional, Estándares de seguridad de Defensa Civil, Licencias de software.</td>
+      <td style="color: #fef08a;">Campus e instalaciones en perfecto estado de funcionamiento, Red Wi-Fi y cableado estructurado estable, Equipos de cómputo y CCTV operativos, Balances contables.</td>
+      <td style="color: #a7f3d0;">Administración General, Técnico especialista en Redes y TI, Módulo de Pensiones/Tesorería SIEWEB, Racks y switches de comunicaciones.</td>
+      <td style="color: #38bdf8;"><strong>Módulo Administrativo y de Cobranzas SIEWEB: Reportes de morosidad, conciliación bancaria y tickets de mantenimiento informático.</strong></td>
+      <td style="color: #fff;">Administración General & Soporte TIC</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Disponibilidad operativa de la red de datos (>99.5%), Índice de morosidad en pensiones (<5%).</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.1')">
+      <td><span class="badge-code lvl-2">A2.1</span></td>
+      <td><strong>Programación y Diseño Curricular por Niveles</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Subproceso Pedagógico</span></td>
+      <td style="color: #bae6fd;">Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.</td>
+      <td style="color: #fda4af;">Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.</td>
+      <td style="color: #fef08a;">Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.</td>
+      <td style="color: #a7f3d0;">Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).</td>
+      <td style="color: #38bdf8;"><strong>Archivos curriculares estandarizados en la nube compartida y cargados en la base de datos de SIEWEB.</strong></td>
+      <td style="color: #fff;">Coordinadores de Nivel & Plana Docente</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">100% de carpetas pedagógicas bimestrales aprobadas con anticipación.</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.2')">
+      <td><span class="badge-code lvl-2">A2.2</span></td>
+      <td><strong>Impartición de Sesiones Pedagógicas Multimodales (Aula & TIC)</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Subproceso Pedagógico</span></td>
+      <td style="color: #bae6fd;">Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.</td>
+      <td style="color: #fda4af;">Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.</td>
+      <td style="color: #fef08a;">Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.</td>
+      <td style="color: #a7f3d0;">Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.</td>
+      <td style="color: #38bdf8;"><strong>Conectividad de red de alta velocidad y aula virtual SIEWEB para descarga de fichas y tareas digitales.</strong></td>
+      <td style="color: #fff;">Docentes de Asignatura / Misses de Aula</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Cumplimiento del 100% de horas lectivas normadas por el MINEDU.</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.3')">
+      <td><span class="badge-code lvl-2">A2.3</span></td>
+      <td><strong>Evaluación Continua, Registro Digital y Retroalimentación</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Subproceso Pedagógico</span></td>
+      <td style="color: #bae6fd;">Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.</td>
+      <td style="color: #fda4af;">Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.</td>
+      <td style="color: #fef08a;">Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.</td>
+      <td style="color: #a7f3d0;">Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.</td>
+      <td style="color: #38bdf8;"><strong>Generación automatizada de boletas de notas y envío de notificaciones inmediatas a los padres de familia vía app SIEWEB.</strong></td>
+      <td style="color: #fff;">Plana Docente & Secretaría Académica</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Tiempo de publicación de notas (<48 hrs post-examen), Cero errores en consolidación de actas oficiales.</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.1.1')">
+      <td><span class="badge-code lvl-3">A2.1.1</span></td>
+      <td><strong>Dosificación Curricular Preuniversitaria y Básica</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.1</span></td>
+      <td style="color: #bae6fd;">Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.</td>
+      <td style="color: #fda4af;">Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.</td>
+      <td style="color: #fef08a;">Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.</td>
+      <td style="color: #a7f3d0;">Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).</td>
+      <td style="color: #38bdf8;"><strong>Alineación de contenidos en matrices digitales compartidas</strong></td>
+      <td style="color: #fff;">Coordinadores de Nivel & Plana Docente</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">% de temas con nivel preuniversitario en secundaria (>85%)</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.1.2')">
+      <td><span class="badge-code lvl-3">A2.1.2</span></td>
+      <td><strong>Elaboración de Unidades y Sesiones Digitales</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.1</span></td>
+      <td style="color: #bae6fd;">Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.</td>
+      <td style="color: #fda4af;">Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.</td>
+      <td style="color: #fef08a;">Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.</td>
+      <td style="color: #a7f3d0;">Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).</td>
+      <td style="color: #38bdf8;"><strong>Formularios y formatos estandarizados en Google Docs / Word</strong></td>
+      <td style="color: #fff;">Coordinadores de Nivel & Plana Docente</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">100% de sesiones con rúbricas de evaluación definidas</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.1.3')">
+      <td><span class="badge-code lvl-3">A2.1.3</span></td>
+      <td><strong>Revisión y Visado de Carpetas Pedagógicas</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.1</span></td>
+      <td style="color: #bae6fd;">Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.</td>
+      <td style="color: #fda4af;">Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.</td>
+      <td style="color: #fef08a;">Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.</td>
+      <td style="color: #a7f3d0;">Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).</td>
+      <td style="color: #38bdf8;"><strong>Control de calidad pedagógica previo al inicio bimestral</strong></td>
+      <td style="color: #fff;">Coordinadores de Nivel & Plana Docente</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Aprobación formal por Coordinación Académica a tiempo</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.2.1')">
+      <td><span class="badge-code lvl-3">A2.2.1</span></td>
+      <td><strong>Dictado en Inicial y Primaria con Modalidad Móvil</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.2</span></td>
+      <td style="color: #bae6fd;">Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.</td>
+      <td style="color: #fda4af;">Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.</td>
+      <td style="color: #fef08a;">Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.</td>
+      <td style="color: #a7f3d0;">Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.</td>
+      <td style="color: #38bdf8;"><strong>Laptops personales de profesoras conectadas a Wi-Fi y pantallas</strong></td>
+      <td style="color: #fff;">Docentes de Asignatura / Misses de Aula</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Tiempo de conexión en aula < 2 minutos</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.2.2')">
+      <td><span class="badge-code lvl-3">A2.2.2</span></td>
+      <td><strong>Dictado en Secundaria con PCs Fijas y Multimedia</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.2</span></td>
+      <td style="color: #bae6fd;">Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.</td>
+      <td style="color: #fda4af;">Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.</td>
+      <td style="color: #fef08a;">Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.</td>
+      <td style="color: #a7f3d0;">Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.</td>
+      <td style="color: #38bdf8;"><strong>Computadoras fijas de escritorio en aula conectadas por cable LAN</strong></td>
+      <td style="color: #fff;">Docentes de Asignatura / Misses de Aula</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Disponibilidad de PCs fijas y proyectores en aula (100%)</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.2.3')">
+      <td><span class="badge-code lvl-3">A2.2.3</span></td>
+      <td><strong>Interacción, Tareas y Materiales en SIEWEB</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.2</span></td>
+      <td style="color: #bae6fd;">Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.</td>
+      <td style="color: #fda4af;">Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.</td>
+      <td style="color: #fef08a;">Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.</td>
+      <td style="color: #a7f3d0;">Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.</td>
+      <td style="color: #38bdf8;"><strong>Agenda digital escolar y repositorio de archivos de SIEWEB</strong></td>
+      <td style="color: #fff;">Docentes de Asignatura / Misses de Aula</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Tasa de entrega puntual de tareas escolares (>94%)</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.3.1')">
+      <td><span class="badge-code lvl-3">A2.3.1</span></td>
+      <td><strong>Aplicación de Exámenes y Simulacros de Admisión</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.3</span></td>
+      <td style="color: #bae6fd;">Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.</td>
+      <td style="color: #fda4af;">Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.</td>
+      <td style="color: #fef08a;">Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.</td>
+      <td style="color: #a7f3d0;">Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.</td>
+      <td style="color: #38bdf8;"><strong>Bancos de preguntas y rúbricas evaluativas por competencias</strong></td>
+      <td style="color: #fff;">Plana Docente & Secretaría Académica</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Simulacros periódicos tipo UNHEVAL para secundaria</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.3.2')">
+      <td><span class="badge-code lvl-3">A2.3.2</span></td>
+      <td><strong>Registro Digital de Notas y Faltas en SIEWEB</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.3</span></td>
+      <td style="color: #bae6fd;">Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.</td>
+      <td style="color: #fda4af;">Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.</td>
+      <td style="color: #fef08a;">Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.</td>
+      <td style="color: #a7f3d0;">Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.</td>
+      <td style="color: #38bdf8;"><strong>Ingreso directo de calificaciones y asistencias por docentes en SIEWEB</strong></td>
+      <td style="color: #fff;">Plana Docente & Secretaría Académica</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Registro de tardanzas antes de las 8:30 am diariamente</td>
+    </tr>
+  
+    <tr onclick="inspectIdefNode('A2.3.3')">
+      <td><span class="badge-code lvl-3">A2.3.3</span></td>
+      <td><strong>Emisión de Libretas y Notificación a Padres</strong><br><span style="font-size: 0.65rem; color: #94a3b8;">Sub-subproceso de A2.3</span></td>
+      <td style="color: #bae6fd;">Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.</td>
+      <td style="color: #fda4af;">Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.</td>
+      <td style="color: #fef08a;">Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.</td>
+      <td style="color: #a7f3d0;">Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.</td>
+      <td style="color: #38bdf8;"><strong>Generación automática de PDFs y acceso 24/7 en portal de familias</strong></td>
+      <td style="color: #fff;">Plana Docente & Secretaría Académica</td>
+      <td style="color: var(--c-gold-light); font-weight: 600;">Descarga de libretas en tiempo real por el 98% de padres</td>
+    </tr>
+  
+      </tbody>
+    </table>
+  </div>
+</div>
+
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <!-- Panel Derecho: Inspector Analítico Detallado -->
+        <div class="idef-inspector-panel" id="idefInspectorPanel">
+          <div class="inspector-header">
+            <div class="inspector-badge-row">
+              <span class="inspector-code-chip" id="inspCode">A0</span>
+              <span class="inspector-category-chip" id="inspCategory">Diagrama de Contexto Macro</span>
+            </div>
+            <h3 class="inspector-title" id="inspTitle">Gestionar y Brindar el Servicio Educativo Integral</h3>
+            <p class="inspector-desc" id="inspDesc">
+              Macroproceso central del Colegio Privado La Divina Misericordia. Modela la totalidad de las operaciones formativas, pedagógicas y de soporte en Huánuco para garantizar excelencia académica con fe cristiana y soporte SIG.
+            </p>
+          </div>
+
+          <div class="inspector-icom-quad">
+            <div class="icom-quad-box c-box">
+              <span class="icom-quad-label">⬇ Controles [C]</span>
+              <span class="icom-quad-text" id="inspC">Normativas MINEDU / DRE Huánuco / UGEL, PEI y PAT 2026, Reglamento Interno y Código de Convivencia, Ideario y Principios Cristianos.</span>
+            </div>
+            <div class="icom-quad-box i-box">
+              <span class="icom-quad-label">➔ Entradas [I]</span>
+              <span class="icom-quad-text" id="inspI">Postulantes y estudiantes (Inicial, Primaria, Secundaria), Demandas pedagógicas de padres de familia, Recursos financieros (pensiones y matrículas), Currículo Nacional Base.</span>
+            </div>
+            <div class="icom-quad-box o-box">
+              <span class="icom-quad-label">➔ Salidas [O]</span>
+              <span class="icom-quad-text" id="inspO">Egresados formados con excelencia preuniversitaria y valores morales, Libretas digitales y registros SIAGIE, Comunidad familiar satisfecha, Reportes directivos y balances financieros.</span>
+            </div>
+            <div class="icom-quad-box m-box">
+              <span class="icom-quad-label">⬆ Mecanismos [M]</span>
+              <span class="icom-quad-text" id="inspM">Plana directiva y docente titulada, ERP Cloud Escolar SIEWEB, Infraestructura TIC (PCs fijas Secundaria, laptops Inicial/Primaria, red Wi-Fi), CCTV 24/7 y Control Biométrico.</span>
+            </div>
+          </div>
+
+          <div class="inspector-sig-box">
+            <h5><span>⚡</span> Integración & Rol del SIG</h5>
+            <p id="inspSig">
+              Plataforma integral SIEWEB (Académico, Familia, Cobranzas), Red cableada estructurada, Switches y conectividad en todas las aulas.
+            </p>
+          </div>
+
+          <div class="inspector-meta-row">
+            <div class="meta-chip">
+              <span class="lbl">Responsable</span>
+              <span class="val" id="inspResp">Dirección General & Promotoría</span>
+            </div>
+            <div class="meta-chip">
+              <span class="lbl">KPI Estratégico</span>
+              <span class="val" id="inspKpi">Retención > 96%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================================================================
+         SLIDE 7: 1.6 IDENTIFICACIÓN DE HARDWARE
+         =================================================================== -->
+    <section class="slide-node" id="slide-7" data-index="7">
       <div class="corner-ornament corner-tl"></div>
       <div class="corner-ornament corner-tr"></div>
       <div class="corner-ornament corner-bl"></div>
@@ -2591,7 +4502,7 @@
     <!-- ===================================================================
          SLIDE 7: 1.7 IDENTIFICACIÓN DE SOFTWARE
          =================================================================== -->
-    <section class="slide-node" id="slide-7" data-index="7">
+    <section class="slide-node" id="slide-8" data-index="8">
       <div class="corner-ornament corner-tl"></div>
       <div class="corner-ornament corner-tr"></div>
       <div class="corner-ornament corner-bl"></div>
@@ -2663,7 +4574,7 @@
     <!-- ===================================================================
          SLIDE 8: CONCLUSIONES Y DIAGNÓSTICO ESTRATÉGICO
          =================================================================== -->
-    <section class="slide-node" id="slide-8" data-index="8">
+    <section class="slide-node" id="slide-9" data-index="9">
       <div class="corner-ornament corner-tl"></div>
       <div class="corner-ornament corner-tr"></div>
       <div class="corner-ornament corner-bl"></div>
@@ -2714,7 +4625,7 @@
     <!-- ===================================================================
          SLIDE 9: FICHA INSTITUCIONAL Y CIERRE
          =================================================================== -->
-    <section class="slide-node" id="slide-9" data-index="9">
+    <section class="slide-node" id="slide-10" data-index="10">
       <div class="corner-ornament corner-tl"></div>
       <div class="corner-ornament corner-tr"></div>
       <div class="corner-ornament corner-bl"></div>
@@ -2811,7 +4722,7 @@
     <div class="progress-dock">
       <div class="progress-meta">
         <span id="slideTitleIndicator">Portada Institucional</span>
-        <span id="slideCounterText">1 / 10</span>
+        <span id="slideCounterText">1 / 11</span>
       </div>
       <div class="progress-track" onclick="handleTrackClick(event)" title="Hacer clic para saltar en la presentación">
         <div class="progress-fill" id="progressFillBar"></div>
@@ -2891,7 +4802,7 @@
         tip: "Resalta que el SIG asegura que la promesa de valor a los padres se cumpla día a día."
       },
       {
-        id: 5,
+                id: 5,
         title: "1.4 Modelo de Negocio",
         speaker: "Xavier Russell Figueroa",
         notes: "Describir el modelo de negocio: Educación privada particular en Huánuco. Explicar la propuesta de valor (excelencia académica + valores cristianos + preparación preuniversitaria). Detallar el segmento de clientes y los canales de comunicación, culminando con el flujo: Entrada ➔ Procesos ➔ Salida de valor.",
@@ -2899,27 +4810,34 @@
       },
       {
         id: 6,
+        title: "Modelado Funcional IDEF0",
+        speaker: "Xavier Russell Figueroa",
+        notes: "Presentar el modelado formal de procesos bajo el estándar internacional IDEF0 (IEEE 1320.1) adaptado a la realidad del Colegio Privado La Divina Misericordia. Explicar con maestría la sintaxis ICOM: Entradas (I) que se transforman, Controles (C) rectores desde arriba (MINEDU y principios cristianos), Salidas (O) de valor generado, y Mecanismos (M) tecnológicos y humanos desde la base. Navegar interactivamente por los tres niveles jerárquicos: Nivel A-0 (Contexto Institucional), Nivel A0 (Los 4 Macroprocesos interconectados con bucles de retroalimentación) y Nivel A2 (Zoom profundo a la enseñanza-aprendizaje con sus 9 sub-subprocesos y la diferenciación real entre PCs fijas de Secundaria y laptops móviles en Inicial/Primaria). Finalizar mostrando la Matriz ICOM integral vinculada a cada módulo de SIEWEB.",
+        tip: "Usa los botones de nivel (A-0, A0, A2) y el selector de flujos para mostrar las flechas animadas y las partículas viajeras en tiempo real al profesor Alex Baldeón."
+      },
+      {
+        id: 7,
         title: "1.6 Identificación de Hardware",
         speaker: "Xavier Russell Figueroa",
         notes: "Exponer el hardware del colegio: el sistema de CCTV con cámaras IP, alarmas contra sismos e incendios, control biométrico de asistencia, cableado estructurado y switches. Destacar la diferencia gerencial: en Secundaria hay PCs fijas en cada aula, mientras que en Inicial/Primaria se maneja modalidad móvil con laptops docentes.",
         tip: "Haz clic en cada botón del menú lateral para mostrar los detalles al profesor."
       },
       {
-        id: 7,
+        id: 8,
         title: "1.7 Identificación de Software",
         speaker: "Lintsay Karlely Morales",
         notes: "Presentar el software central: la plataforma ERP en la nube SIEWEB (módulos académico, de comunicación familia y administrativo). Mencionar también el portal web oficial (ladivinamisericordia.edu.pe), el correo institucional y los sistemas operativos y suites ofimáticas (Windows y Google Workspace / Office).",
         tip: "Alterna entre los botones de SIEWEB para mostrar la versatilidad de la plataforma escolar."
       },
       {
-        id: 8,
+        id: 9,
         title: "Conclusiones y Diagnóstico SIG",
         speaker: "Lintsay Karlely Morales",
         notes: "Sintetizar los tres hallazgos clave: la madurez alcanzada con SIEWEB, la oportunidad de estandarizar la seguridad en equipos móviles de Inicial/Primaria, y la recomendación de incorporar pasarelas de pago automatizadas para la cobranza de pensiones.",
         tip: "Demuestra visión gerencial y capacidad de propuesta de mejora."
       },
       {
-        id: 9,
+        id: 10,
         title: "Ficha Institucional y Agradecimiento",
         speaker: "Todos los Integrantes",
         notes: "Agradecer al docente Alex Heraclides Baldeon Romero por la atención prestada y abrir el espacio para responder cualquier consulta o pregunta del jurado/profesor.",
@@ -3374,6 +5292,658 @@
       requestAnimationFrame(animateAmbient);
     }
     animateAmbient();
+
+    
+    // =========================================================================
+    // CONTROLADOR INTERACTIVO IDEF0 (IEEE 1320.1) & ARQUITECTURA SIG
+    // =========================================================================
+    const idefDictionary = {
+  "A0": {
+    "code": "A0",
+    "name": "Gestionar y Brindar el Servicio Educativo Integral",
+    "category": "Diagrama de Contexto Macro",
+    "level": "Nivel A-0",
+    "desc": "Macroproceso central del Colegio Privado La Divina Misericordia. Modela la totalidad de las operaciones formativas, pedagógicas y de soporte en Huánuco para garantizar excelencia académica con fe cristiana y soporte SIG.",
+    "c": "Normativas MINEDU / DRE Huánuco / UGEL, PEI y PAT 2026, Reglamento Interno y Código de Convivencia, Ideario y Principios Cristianos.",
+    "i": "Postulantes y estudiantes (Inicial, Primaria, Secundaria), Demandas pedagógicas de padres de familia, Recursos financieros (pensiones y matrículas), Currículo Nacional Base.",
+    "o": "Egresados formados con excelencia preuniversitaria y valores morales, Libretas digitales y registros SIAGIE, Comunidad familiar satisfecha, Reportes directivos y balances financieros.",
+    "m": "Plana directiva y docente titulada, ERP Cloud Escolar SIEWEB, Infraestructura TIC (PCs fijas Secundaria, laptops Inicial/Primaria, red Wi-Fi), CCTV 24/7 y Control Biométrico.",
+    "sig": "Plataforma integral SIEWEB (Académico, Familia, Cobranzas), Red cableada estructurada, Switches y conectividad en todas las aulas.",
+    "resp": "Dirección General & Promotoría",
+    "kpi": "Tasa de retención anual (>96%), Nivel de satisfacción de padres (>92%), % de ingreso preuniversitario."
+  },
+  "A1": {
+    "code": "A1",
+    "name": "Gestionar Admisión, Matrícula y Relación Familiar",
+    "category": "Macroproceso Estratégico",
+    "level": "Nivel A0",
+    "desc": "Canaliza el ingreso formal de los estudiantes a Inicial, Primaria y Secundaria, garantizando el registro de expedientes, vinculación contractual con los padres y creación de usuarios en la intranet escolar.",
+    "c": "Reglamento de Admisión Institucional, Aforo de aulas autorizado por UGEL Huánuco, Tarifario y cronograma de pensiones.",
+    "i": "Solicitudes de vacantes por padres de familia, Fichas de traslado y certificados de estudio previos, Comprobantes de pago de derecho de matrícula.",
+    "o": "Nómina oficial de estudiantes matriculados, Legajos digitales aperturados en SIEWEB, Cuentas de intranet familiar activadas, Contratos de servicio educativo firmados.",
+    "m": "Personal de Admisión y Secretaría General, Sitio Web oficial (ladivinamisericordia.edu.pe), Módulo Administrativo y de Matrícula SIEWEB.",
+    "sig": "Módulo SIEWEB Admisiones: Centraliza la base de datos de ingresantes y alimenta automáticamente las listas de aula de los profesores.",
+    "resp": "Coordinación de Admisión & Secretaría",
+    "kpi": "% de vacantes cubiertas al inicio del año escolar, Tiempo promedio de matriculación por alumno (<10 min en SIEWEB)."
+  },
+  "A2": {
+    "code": "A2",
+    "name": "Planificar y Ejecutar la Enseñanza-Aprendizaje Integral",
+    "category": "Núcleo Operativo / Core Business",
+    "level": "Nivel A0",
+    "desc": "Núcleo de la propuesta de valor del colegio. Abarca la programación curricular, el dictado presencial interactivo con soporte multimedia y la evaluación continua por competencias de los tres niveles educativos.",
+    "c": "Currículo Nacional de la Educación Básica (CNEB), Enfoque Preuniversitario institucional, Syllabus bimestrales, Calendario cívico-escolar.",
+    "i": "Nómina de estudiantes matriculados (desde A1), Textos y recursos educativos, Plan anual de trabajo (PAT), Horarios de clase.",
+    "o": "Sesiones de clase desarrolladas, Estudiantes evaluados por competencias, Libretas de notas emitidas, Control diario de tardanzas y asistencias.",
+    "m": "Plana docente especializada, Computadoras fijas en Secundaria, Laptops móviles en Inicial/Primaria, Proyectores de aula, SIEWEB Académico.",
+    "sig": "Módulo SIEWEB Académico: Carga en tiempo real de calificaciones, asistencias y seguimiento pedagógico accesible para docentes y directivos.",
+    "resp": "Coordinación Académica & Plana Docente",
+    "kpi": "Tasa de rendimiento académico promedio (>15.5 vigesimal), % de cumplimiento de sesiones programadas (>98%)."
+  },
+  "A3": {
+    "code": "A3",
+    "name": "Desarrollar Acompañamiento Tutorial, Pastoral y Convivencia",
+    "category": "Macroproceso Formativo",
+    "level": "Nivel A0",
+    "desc": "Asegura el bienestar emocional, ético y conductual del estudiante, velando por un clima escolar armónico cimentado en la fe cristiana y la disciplina misericordiana.",
+    "c": "Lineamientos de Tutoría y Orientación Educativa (TOE), Ideario cristiano del colegio, Protocolos de prevención contra el acoso escolar (Ley 29719).",
+    "i": "Registros de tardanzas e inasistencias de aula (desde A2), Alertas de bajo rendimiento, Reportes de incidencias disciplinarias.",
+    "o": "Estudiantes orientados con soporte psicoafectivo, Actas de mediación y convivencia escolar, Informes psicopedagógicos individuales, Talleres de Escuela de Padres.",
+    "m": "Departamento Psicopedagógico, Docentes Tutores de aula, Capellanía y pastoral escolar, Sistema de CCTV perimétrico, Biométrico de portería.",
+    "sig": "Cámaras CCTV con grabador NVR para resguardo perimétrico y módulo de incidencias en SIEWEB para trazabilidad tutorial.",
+    "resp": "Departamento de Psicología & Tutoría",
+    "kpi": "Índice de convivencia escolar positiva (>95%), Cero casos de acoso escolar no atendidos en el periodo."
+  },
+  "A4": {
+    "code": "A4",
+    "name": "Administrar Recursos Financieros, TI e Infraestructura",
+    "category": "Macroproceso de Soporte",
+    "level": "Nivel A0",
+    "desc": "Provee la base logística, financiera, tecnológica y de seguridad física para el funcionamiento continuo y seguro del campus educativo en Huánuco.",
+    "c": "Presupuesto Operativo Anual, Políticas de cobranza y mora institucional, Estándares de seguridad de Defensa Civil, Licencias de software.",
+    "i": "Cobranza de mensualidades escolares de padres, Requerimientos de insumos pedagógicos, Reportes de mantenimiento técnico de hardware y red.",
+    "o": "Campus e instalaciones en perfecto estado de funcionamiento, Red Wi-Fi y cableado estructurado estable, Equipos de cómputo y CCTV operativos, Balances contables.",
+    "m": "Administración General, Técnico especialista en Redes y TI, Módulo de Pensiones/Tesorería SIEWEB, Racks y switches de comunicaciones.",
+    "sig": "Módulo Administrativo y de Cobranzas SIEWEB: Reportes de morosidad, conciliación bancaria y tickets de mantenimiento informático.",
+    "resp": "Administración General & Soporte TIC",
+    "kpi": "Disponibilidad operativa de la red de datos (>99.5%), Índice de morosidad en pensiones (<5%)."
+  },
+  "A2.1": {
+    "code": "A2.1",
+    "name": "Programación y Diseño Curricular por Niveles",
+    "category": "Subproceso Pedagógico",
+    "level": "Nivel A2",
+    "desc": "Planificación estratégica de contenidos, capacidades e instrumentos de evaluación antes del inicio de cada bimestre.",
+    "c": "Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.",
+    "i": "Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.",
+    "o": "Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.",
+    "m": "Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).",
+    "sig": "Archivos curriculares estandarizados en la nube compartida y cargados en la base de datos de SIEWEB.",
+    "resp": "Coordinadores de Nivel & Plana Docente",
+    "kpi": "100% de carpetas pedagógicas bimestrales aprobadas con anticipación."
+  },
+  "A2.2": {
+    "code": "A2.2",
+    "name": "Impartición de Sesiones Pedagógicas Multimodales (Aula & TIC)",
+    "category": "Subproceso Pedagógico",
+    "level": "Nivel A2",
+    "desc": "Desarrollo de las clases presenciales dinámicas diferenciando el soporte tecnológico según el nivel educativo de la institución.",
+    "c": "Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.",
+    "i": "Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.",
+    "o": "Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.",
+    "m": "Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.",
+    "sig": "Conectividad de red de alta velocidad y aula virtual SIEWEB para descarga de fichas y tareas digitales.",
+    "resp": "Docentes de Asignatura / Misses de Aula",
+    "kpi": "Cumplimiento del 100% de horas lectivas normadas por el MINEDU."
+  },
+  "A2.3": {
+    "code": "A2.3",
+    "name": "Evaluación Continua, Registro Digital y Retroalimentación",
+    "category": "Subproceso Pedagógico",
+    "level": "Nivel A2",
+    "desc": "Medición sistemática del logro de competencias, carga instantánea de calificaciones en SIEWEB y emisión de libretas escolares para los padres de familia.",
+    "c": "Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.",
+    "i": "Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.",
+    "o": "Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.",
+    "m": "Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.",
+    "sig": "Generación automatizada de boletas de notas y envío de notificaciones inmediatas a los padres de familia vía app SIEWEB.",
+    "resp": "Plana Docente & Secretaría Académica",
+    "kpi": "Tiempo de publicación de notas (<48 hrs post-examen), Cero errores en consolidación de actas oficiales."
+  },
+  "A2.1.1": {
+    "code": "A2.1.1",
+    "name": "Dosificación Curricular Preuniversitaria y Básica",
+    "category": "Sub-subproceso de A2.1",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Programación y Diseño Curricular por Niveles en el Colegio La Divina Misericordia.",
+    "c": "Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.",
+    "i": "Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.",
+    "o": "Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.",
+    "m": "Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).",
+    "sig": "Alineación de contenidos en matrices digitales compartidas",
+    "resp": "Coordinadores de Nivel & Plana Docente",
+    "kpi": "% de temas con nivel preuniversitario en secundaria (>85%)"
+  },
+  "A2.1.2": {
+    "code": "A2.1.2",
+    "name": "Elaboración de Unidades y Sesiones Digitales",
+    "category": "Sub-subproceso de A2.1",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Programación y Diseño Curricular por Niveles en el Colegio La Divina Misericordia.",
+    "c": "Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.",
+    "i": "Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.",
+    "o": "Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.",
+    "m": "Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).",
+    "sig": "Formularios y formatos estandarizados en Google Docs / Word",
+    "resp": "Coordinadores de Nivel & Plana Docente",
+    "kpi": "100% de sesiones con rúbricas de evaluación definidas"
+  },
+  "A2.1.3": {
+    "code": "A2.1.3",
+    "name": "Revisión y Visado de Carpetas Pedagógicas",
+    "category": "Sub-subproceso de A2.1",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Programación y Diseño Curricular por Niveles en el Colegio La Divina Misericordia.",
+    "c": "Estándares CNEB MINEDU, Enfoque Preuniversitario para Secundaria, Directivas pedagógicas de la DRE Huánuco.",
+    "i": "Diagnóstico inicial de aprendizaje del estudiante, Malla curricular institucional, Calendario bimestral escolar.",
+    "o": "Programaciones anuales, Unidades de aprendizaje digitales y Syllabus visados por la Coordinación Académica.",
+    "m": "Docentes de área y coordinadores de nivel (Inicial, Primaria, Secundaria), Ofimática (Microsoft Office / Google Workspace).",
+    "sig": "Control de calidad pedagógica previo al inicio bimestral",
+    "resp": "Coordinadores de Nivel & Plana Docente",
+    "kpi": "Aprobación formal por Coordinación Académica a tiempo"
+  },
+  "A2.2.1": {
+    "code": "A2.2.1",
+    "name": "Dictado en Inicial y Primaria con Modalidad Móvil",
+    "category": "Sub-subproceso de A2.2",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Impartición de Sesiones Pedagógicas Multimodales (Aula & TIC) en el Colegio La Divina Misericordia.",
+    "c": "Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.",
+    "i": "Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.",
+    "o": "Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.",
+    "m": "Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.",
+    "sig": "Laptops personales de profesoras conectadas a Wi-Fi y pantallas",
+    "resp": "Docentes de Asignatura / Misses de Aula",
+    "kpi": "Tiempo de conexión en aula < 2 minutos"
+  },
+  "A2.2.2": {
+    "code": "A2.2.2",
+    "name": "Dictado en Secundaria con PCs Fijas y Multimedia",
+    "category": "Sub-subproceso de A2.2",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Impartición de Sesiones Pedagógicas Multimodales (Aula & TIC) en el Colegio La Divina Misericordia.",
+    "c": "Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.",
+    "i": "Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.",
+    "o": "Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.",
+    "m": "Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.",
+    "sig": "Computadoras fijas de escritorio en aula conectadas por cable LAN",
+    "resp": "Docentes de Asignatura / Misses de Aula",
+    "kpi": "Disponibilidad de PCs fijas y proyectores en aula (100%)"
+  },
+  "A2.2.3": {
+    "code": "A2.2.3",
+    "name": "Interacción, Tareas y Materiales en SIEWEB",
+    "category": "Sub-subproceso de A2.2",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Impartición de Sesiones Pedagógicas Multimodales (Aula & TIC) en el Colegio La Divina Misericordia.",
+    "c": "Syllabus aprobado, Horario escolar oficial, Normas de convivencia dentro del aula de clase.",
+    "i": "Estudiantes en aula, Sesiones didácticas preparadas, Materiales multimedia y libros de texto.",
+    "o": "Clases desarrolladas, Participación de los alumnos, Tareas y actividades escolares asignadas en la plataforma.",
+    "m": "Docentes por nivel; Nivel Secundaria: PCs fijas en aula y data shows; Niveles Inicial/Primaria: Laptops móviles de docentes; Red Wi-Fi.",
+    "sig": "Agenda digital escolar y repositorio de archivos de SIEWEB",
+    "resp": "Docentes de Asignatura / Misses de Aula",
+    "kpi": "Tasa de entrega puntual de tareas escolares (>94%)"
+  },
+  "A2.3.1": {
+    "code": "A2.3.1",
+    "name": "Aplicación de Exámenes y Simulacros de Admisión",
+    "category": "Sub-subproceso de A2.3",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Evaluación Continua, Registro Digital y Retroalimentación en el Colegio La Divina Misericordia.",
+    "c": "Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.",
+    "i": "Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.",
+    "o": "Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.",
+    "m": "Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.",
+    "sig": "Bancos de preguntas y rúbricas evaluativas por competencias",
+    "resp": "Plana Docente & Secretaría Académica",
+    "kpi": "Simulacros periódicos tipo UNHEVAL para secundaria"
+  },
+  "A2.3.2": {
+    "code": "A2.3.2",
+    "name": "Registro Digital de Notas y Faltas en SIEWEB",
+    "category": "Sub-subproceso de A2.3",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Evaluación Continua, Registro Digital y Retroalimentación en el Colegio La Divina Misericordia.",
+    "c": "Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.",
+    "i": "Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.",
+    "o": "Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.",
+    "m": "Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.",
+    "sig": "Ingreso directo de calificaciones y asistencias por docentes en SIEWEB",
+    "resp": "Plana Docente & Secretaría Académica",
+    "kpi": "Registro de tardanzas antes de las 8:30 am diariamente"
+  },
+  "A2.3.3": {
+    "code": "A2.3.3",
+    "name": "Emisión de Libretas y Notificación a Padres",
+    "category": "Sub-subproceso de A2.3",
+    "level": "Nivel A2 (Detalle Fino)",
+    "desc": "Actividad operativa elemental que conforma la cadena de valor de Evaluación Continua, Registro Digital y Retroalimentación en el Colegio La Divina Misericordia.",
+    "c": "Criterios y escalas de calificación vigesimal y cualitativa MINEDU, Cronograma bimestral de evaluaciones.",
+    "i": "Exámenes escritos, orales, rúbricas de proyectos y simulacros de admisión tipo universidad.",
+    "o": "Calificaciones registradas en la nube, Libretas de notas emitidas, Reportes de asistencia consolidados, Actas para el SIAGIE.",
+    "m": "Docentes calificadores, Módulo Académico SIEWEB, Servidores cloud de SIEWEB, Portal web para acceso de padres.",
+    "sig": "Generación automática de PDFs y acceso 24/7 en portal de familias",
+    "resp": "Plana Docente & Secretaría Académica",
+    "kpi": "Descarga de libretas en tiempo real por el 98% de padres"
+  }
+};
+
+    let currentIdefLevel = 'a-0';
+    let flowAnimRunning = true;
+    let flowSpeedMultiplier = 1; // 1x, 2x, 0.5x
+
+    function updateInspectorData(code) {
+      const data = idefDictionary[code];
+      if (!data) return;
+
+      document.getElementById('inspCode').textContent = data.code;
+      document.getElementById('inspCategory').textContent = data.category;
+      document.getElementById('inspTitle').textContent = data.name;
+      document.getElementById('inspDesc').textContent = data.desc;
+      document.getElementById('inspC').textContent = data.c;
+      document.getElementById('inspI').textContent = data.i;
+      document.getElementById('inspO').textContent = data.o;
+      document.getElementById('inspM').textContent = data.m;
+      document.getElementById('inspSig').textContent = data.sig;
+      document.getElementById('inspResp').textContent = data.resp;
+      document.getElementById('inspKpi').textContent = data.kpi;
+
+      document.querySelectorAll('.idef-box-rect').forEach(rect => {
+        rect.classList.remove('selected');
+      });
+      const selectedRect = document.getElementById(`rect-${code}`);
+      if (selectedRect) {
+        selectedRect.classList.add('selected');
+      }
+    }
+
+    function switchIdefLevel(level) {
+      currentIdefLevel = level;
+      
+      // Actualizar botones de navegación
+      const buttons = document.querySelectorAll('.idef-pill');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-lvl-${level}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Actualizar vistas
+      const views = document.querySelectorAll('.idef-level-view');
+      views.forEach(v => v.classList.remove('active'));
+      const activeView = document.getElementById(`view-idef-${level}`);
+      if (activeView) activeView.classList.add('active');
+
+      // Resetear zoom y centrar sin saltar a otro nivel
+      resetIdefZoom(false);
+
+      // Cargar datos en el inspector según el nivel seleccionado
+      if (level === 'a-0') updateInspectorData('A0');
+      else if (level === 'a0') updateInspectorData('A2');
+      else if (level === 'a2') updateInspectorData('A2.2');
+      else if (level === 'matriz') updateInspectorData('A0');
+      
+      playSfx('tab');
+    }
+
+    function inspectIdefNode(code) {
+      updateInspectorData(code);
+      playSfx('click');
+    }
+
+    function toggleFlowAnimation() {
+      flowAnimRunning = !flowAnimRunning;
+      const lines = document.querySelectorAll('.flow-line');
+      const particles = document.querySelectorAll('.idef-svg-canvas animateMotion');
+      const dot = document.getElementById('flowPulseDot');
+      const text = document.getElementById('flowStatusText');
+      const icon = document.getElementById('flowToggleIcon');
+
+      lines.forEach(l => {
+        l.style.animationPlayState = flowAnimRunning ? 'running' : 'paused';
+      });
+
+      particles.forEach(p => {
+        try {
+          if (flowAnimRunning) p.ownerSVGElement.unpauseAnimations();
+          else p.ownerSVGElement.pauseAnimations();
+        } catch(e) {}
+      });
+
+      if (dot) dot.style.animationPlayState = flowAnimRunning ? 'running' : 'paused';
+      if (text) text.textContent = flowAnimRunning ? 'Flujo: Activo' : 'Flujo: Pausado';
+      if (icon) icon.textContent = flowAnimRunning ? '⏸' : '▶';
+
+      playSfx('tab');
+    }
+
+    function cycleFlowSpeed() {
+      const btn = document.getElementById('btnFlowSpeed');
+      const lines = document.querySelectorAll('.flow-line');
+      
+      if (flowSpeedMultiplier === 1) {
+        flowSpeedMultiplier = 2;
+        btn.textContent = '⚡ 2x';
+        lines.forEach(l => l.style.animationDuration = '0.7s');
+      } else if (flowSpeedMultiplier === 2) {
+        flowSpeedMultiplier = 0.5;
+        btn.textContent = '🐢 0.5x';
+        lines.forEach(l => l.style.animationDuration = '2.8s');
+      } else {
+        flowSpeedMultiplier = 1;
+        btn.textContent = '⚡ 1x';
+        lines.forEach(l => l.style.animationDuration = '1.4s');
+      }
+      playSfx('click');
+    }
+
+    function filterIcomFlows(type) {
+      const groups = {
+        c: document.querySelectorAll('.flow-group-c, .flow-line-c'),
+        i: document.querySelectorAll('.flow-group-i, .flow-line-i'),
+        o: document.querySelectorAll('.flow-group-o, .flow-line-o'),
+        m: document.querySelectorAll('.flow-group-m, .flow-line-m')
+      };
+
+      if (type === 'all') {
+        Object.values(groups).forEach(nodeList => {
+          nodeList.forEach(el => el.style.opacity = '1');
+        });
+      } else {
+        Object.keys(groups).forEach(key => {
+          const opacity = (key === type) ? '1' : '0.12';
+          groups[key].forEach(el => el.style.opacity = opacity);
+        });
+      }
+      playSfx('tab');
+    }
+
+    function filterIdefMatrix(term) {
+      const q = term.toLowerCase().trim();
+      const rows = document.querySelectorAll('#idefFullMatrixTable tbody tr');
+      let visible = 0;
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        const match = !q || text.includes(q);
+        r.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      const countEl = document.getElementById('matrizRowCount');
+      if (countEl) countEl.textContent = visible;
+    }
+
+
+    
+    // =========================================================================
+    // MOTOR DE ZOOM, PANTALLA COMPLETA & EDGE PANNING (DESPLAZAMIENTO POR BORDE)
+    // =========================================================================
+    let idefZoom = 1.0;
+    let idefPanX = 0;
+    let idefPanY = 0;
+    let isIdefDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let edgePanningActive = false;
+    let edgePanAnimFrame = null;
+    let edgeVx = 0;
+    let edgeVy = 0;
+
+    const idefStage = document.getElementById('idefStageScrollable');
+    const panZoomContainer = document.getElementById('idefPanZoomContainer');
+    const hudScaleText = document.getElementById('hudScaleText');
+    const glowTop = document.getElementById('edgeGlowTop');
+    const glowBottom = document.getElementById('edgeGlowBottom');
+    const glowLeft = document.getElementById('edgeGlowLeft');
+    const glowRight = document.getElementById('edgeGlowRight');
+
+    function applyIdefTransform(smooth = false) {
+      if (!panZoomContainer) return;
+      panZoomContainer.classList.toggle('smooth-transition', smooth);
+      panZoomContainer.style.transform = `translate(${idefPanX}px, ${idefPanY}px) scale(${idefZoom})`;
+      if (hudScaleText) {
+        hudScaleText.textContent = `${Math.round(idefZoom * 100)}%`;
+      }
+    }
+
+    function zoomIdefStep(delta) {
+      const prev = idefZoom;
+      idefZoom = Math.min(3.5, Math.max(0.7, idefZoom + delta));
+      if (prev !== idefZoom) {
+        applyIdefTransform(true);
+        playSfx('click');
+      }
+    }
+
+    function resetIdefZoom(smooth = true) {
+      idefZoom = 1.0;
+      idefPanX = 0;
+      idefPanY = 0;
+      applyIdefTransform(smooth);
+      document.querySelectorAll('.idef-box-rect').forEach(r => r.classList.remove('zoom-focused'));
+      stopEdgePanning();
+      playSfx('tab');
+    }
+
+    // Zoom específico centrado sobre una coordenada (x, y) de la caja en el diagrama
+    function zoomToIdefBox(targetX, targetY, targetScale = 1.65, code = null) {
+      if (currentIdefLevel === 'matriz') return;
+
+      const stageRect = idefStage.getBoundingClientRect();
+      const centerX = stageRect.width / 2;
+      const centerY = stageRect.height / 2;
+
+      // Calcular traslación para centrar el punto de interés
+      idefZoom = targetScale;
+      idefPanX = (centerX - targetX) * (targetScale - 0.7);
+      idefPanY = (centerY - targetY) * (targetScale - 0.7);
+
+      // Limitar traslación razonablemente
+      idefPanX = Math.max(-500, Math.min(500, idefPanX));
+      idefPanY = Math.max(-350, Math.min(350, idefPanY));
+
+      applyIdefTransform(true);
+
+      // Resaltar caja con pulso luminoso
+      document.querySelectorAll('.idef-box-rect').forEach(r => r.classList.remove('zoom-focused'));
+      if (code) {
+        const el = document.getElementById(`rect-${code}`);
+        if (el) el.classList.add('zoom-focused');
+      }
+    }
+
+    // Alternar Pantalla Completa del Diagrama
+    function toggleIdefFullscreen() {
+      const card = document.getElementById('idefViewportCard');
+      const isFs = card.classList.toggle('fullscreen-active');
+      const fsIcon = document.getElementById('fsIcon');
+      if (fsIcon) fsIcon.textContent = isFs ? '🗗' : '⛶';
+
+      // Si el navegador soporta Fullscreen API nativo y se desea fullscreen total
+      if (isFs) {
+        if (!document.fullscreenElement && card.requestFullscreen) {
+          card.requestFullscreen().catch(() => {});
+        }
+      } else {
+        if (document.fullscreenElement && document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+
+      resetIdefZoom(false);
+      playSfx('transition');
+    }
+
+    // Salir de pantalla completa con Esc
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const card = document.getElementById('idefViewportCard');
+        if (card && card.classList.contains('fullscreen-active')) {
+          card.classList.remove('fullscreen-active');
+          resetIdefZoom(false);
+        }
+      }
+    });
+
+    // =========================================================================
+    // EDGE PANNING: Desplazamiento automático al acercar el cursor a los bordes
+    // =========================================================================
+    const EDGE_MARGIN = 75; // Distancia en píxeles al borde para activar desplazamiento
+    const MAX_PAN_SPEED = 9.5; // Velocidad de desplazamiento
+
+    function handleEdgePanning(e) {
+      if (!idefStage) return;
+      const rect = idefStage.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      let vx = 0;
+      let vy = 0;
+      let activeTop = false, activeBottom = false, activeLeft = false, activeRight = false;
+
+      // Solo desplazar si el mouse está dentro del lienzo
+      if (mouseX >= 0 && mouseX <= rect.width && mouseY >= 0 && mouseY <= rect.height) {
+        // Borde Izquierdo
+        if (mouseX < EDGE_MARGIN) {
+          const factor = (EDGE_MARGIN - mouseX) / EDGE_MARGIN;
+          vx = MAX_PAN_SPEED * factor;
+          activeLeft = true;
+        }
+        // Borde Derecho
+        else if (mouseX > rect.width - EDGE_MARGIN) {
+          const factor = (mouseX - (rect.width - EDGE_MARGIN)) / EDGE_MARGIN;
+          vx = -MAX_PAN_SPEED * factor;
+          activeRight = true;
+        }
+
+        // Borde Superior
+        if (mouseY < EDGE_MARGIN) {
+          const factor = (EDGE_MARGIN - mouseY) / EDGE_MARGIN;
+          vy = MAX_PAN_SPEED * factor;
+          activeTop = true;
+        }
+        // Borde Inferior
+        else if (mouseY > rect.height - EDGE_MARGIN) {
+          const factor = (mouseY - (rect.height - EDGE_MARGIN)) / EDGE_MARGIN;
+          vy = -MAX_PAN_SPEED * factor;
+          activeBottom = true;
+        }
+      }
+
+      // Actualizar visual de luces en los bordes
+      if (glowTop) glowTop.classList.toggle('active', activeTop);
+      if (glowBottom) glowBottom.classList.toggle('active', activeBottom);
+      if (glowLeft) glowLeft.classList.toggle('active', activeLeft);
+      if (glowRight) glowRight.classList.toggle('active', activeRight);
+
+      edgeVx = vx;
+      edgeVy = vy;
+
+      if ((vx !== 0 || vy !== 0) && !edgePanningActive) {
+        edgePanningActive = true;
+        startEdgePanLoop();
+      } else if (vx === 0 && vy === 0 && edgePanningActive) {
+        stopEdgePanning();
+      }
+    }
+
+    function startEdgePanLoop() {
+      if (edgePanAnimFrame) cancelAnimationFrame(edgePanAnimFrame);
+      function loop() {
+        if (!edgePanningActive) return;
+
+        // Limitar desplazamiento según el zoom actual
+        const maxPanX = Math.max(200, (idefZoom * 480));
+        const maxPanY = Math.max(160, (idefZoom * 320));
+
+        idefPanX = Math.max(-maxPanX, Math.min(maxPanX, idefPanX + edgeVx));
+        idefPanY = Math.max(-maxPanY, Math.min(maxPanY, idefPanY + edgeVy));
+
+        applyIdefTransform(false);
+        edgePanAnimFrame = requestAnimationFrame(loop);
+      }
+      edgePanAnimFrame = requestAnimationFrame(loop);
+    }
+
+    function stopEdgePanning() {
+      edgePanningActive = false;
+      if (edgePanAnimFrame) {
+        cancelAnimationFrame(edgePanAnimFrame);
+        edgePanAnimFrame = null;
+      }
+      if (glowTop) glowTop.classList.remove('active');
+      if (glowBottom) glowBottom.classList.remove('active');
+      if (glowLeft) glowLeft.classList.remove('active');
+      if (glowRight) glowRight.classList.remove('active');
+    }
+
+    if (idefStage) {
+      idefStage.addEventListener('mousemove', handleEdgePanning);
+      idefStage.addEventListener('mouseleave', stopEdgePanning);
+
+      // Drag manual con clic
+      idefStage.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.hud-btn') || e.target.closest('.idef-pill') || e.target.closest('.select-filter-icom')) return;
+        isIdefDragging = true;
+        dragStartX = e.clientX - idefPanX;
+        dragStartY = e.clientY - idefPanY;
+        idefStage.classList.add('is-dragging');
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isIdefDragging) return;
+        idefPanX = e.clientX - dragStartX;
+        idefPanY = e.clientY - dragStartY;
+        applyIdefTransform(false);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isIdefDragging) {
+          isIdefDragging = false;
+          idefStage.classList.remove('is-dragging');
+        }
+      });
+
+      // Zoom con rueda del ratón
+      idefStage.addEventListener('wheel', (e) => {
+        if (currentIdefLevel === 'matriz') return;
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.15 : -0.15;
+        zoomIdefStep(delta);
+      }, { passive: false });
+    }
+
+    // =========================================================================
+    // ENHANCED NODE INSPECTION & CENTER ZOOM (SIN SALTOS INVOLUNTARIOS DE PESTAÑA)
+    // =========================================================================
+    const originalInspect = inspectIdefNode;
+    inspectIdefNode = function(code) {
+      originalInspect(code);
+
+      // Coordenadas para centrar el zoom sobre el proceso seleccionado sin cambiar de pestaña
+      const boxCoords = {
+        'A0': { x: 510, y: 265, scale: 1.45 },
+        'A1': { x: 187, y: 112, scale: 1.55 },
+        'A2': { x: 455, y: 215, scale: 1.55 },
+        'A3': { x: 755, y: 310, scale: 1.55 },
+        'A4': { x: 482, y: 442, scale: 1.55 },
+        'A2.1': { x: 180, y: 145, scale: 1.65 },
+        'A2.2': { x: 495, y: 245, scale: 1.65 },
+        'A2.3': { x: 815, y: 355, scale: 1.65 }
+      };
+
+      if (boxCoords[code]) {
+        const c = boxCoords[code];
+        zoomToIdefBox(c.x, c.y, c.scale, code);
+      }
+    };
 
     window.addEventListener('DOMContentLoaded', () => {
       updateSpeakerNotesContent();
