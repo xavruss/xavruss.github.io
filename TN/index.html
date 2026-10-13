@@ -1,0 +1,3418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDH - Taller de Negocios: Diagnóstico, Arquetipos y Árbol de Problemas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070c18;
+      --bg-surface: #0c1424;
+      --bg-card: rgba(18, 29, 53, 0.75);
+      --bg-card-hover: rgba(28, 44, 78, 0.85);
+      --border-color: rgba(212, 175, 55, 0.2);
+      --border-gold: #d4af37;
+      --gold-light: #f6d77a;
+      --gold-glow: rgba(212, 175, 55, 0.25);
+      --gold-gradient: linear-gradient(135deg, #f6d77a 0%, #d4af37 50%, #aa8010 100%);
+      --text-main: #f8fafc;
+      --text-muted: #9bb0cd;
+      --accent-cyan: #06b6d4;
+      --accent-sky: #0ea5e9;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-emerald: #10b981;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-serif: 'Cinzel', serif;
+      --shadow-card: 0 12px 35px -10px rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(12, 20, 36, 0.6) 0%, transparent 100%);
+    }
+
+    /* Top Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 12, 24, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-logo-img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+    }
+
+    .brand-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .slide-counter {
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      font-weight: 700;
+      min-width: 75px;
+      text-align: center;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-gold);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .btn-gold {
+      background: var(--gold-gradient);
+      color: #0b111e;
+      border: none;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    /* Progress bar */
+    .progress-bar-container {
+      position: sticky;
+      top: 59px;
+      z-index: 99;
+      width: 100%;
+      height: 3px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 7.7%;
+      background: var(--gold-gradient);
+      transition: width 0.3s ease;
+    }
+
+    /* Presentation Canvas */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      min-height: 660px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.8rem;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.15);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: var(--gold-gradient);
+      opacity: 0.8;
+    }
+
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Slide Headers */
+    .slide-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .slide-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .slide-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+    }
+
+    /* Slide 1: Carátula Institucional */
+    .cover-header-udh {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .cover-logo-big {
+      height: 90px;
+      width: auto;
+      object-fit: contain;
+      margin-bottom: 0.8rem;
+      filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.35));
+    }
+
+    .cover-inst-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.2rem;
+    }
+
+    .cover-inst-sub {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .gold-divider {
+      width: 140px;
+      height: 2px;
+      background: var(--gold-gradient);
+      margin: 1rem auto;
+    }
+
+    .cover-main-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 0.6rem;
+    }
+
+    .cover-desc-text {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 850px;
+      margin: 0 auto 1.8rem auto;
+    }
+
+    .members-card {
+      background: rgba(18, 29, 53, 0.85);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1.5rem 2.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.06);
+    }
+
+    .members-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      text-align: center;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem 2rem;
+    }
+
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: #ffffff;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--border-gold);
+    }
+
+    .member-num {
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .cover-footer-note {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* Grids & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 8px 25px -5px rgba(0,0,0,0.5);
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Arquetipo Styles with real image */
+    .archetype-container {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 2rem;
+      height: 100%;
+    }
+
+    .archetype-visual-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    .archetype-photo {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .archetype-name {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-bottom: 0.2rem;
+      text-align: center;
+    }
+
+    .archetype-role {
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .archetype-meta-list {
+      width: 100%;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.8rem;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .meta-key {
+      color: var(--text-muted);
+    }
+
+    .meta-val {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .archetype-content-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .feature-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .feature-block.rose { border-left-color: var(--accent-rose); }
+    .feature-block.gold { border-left-color: var(--border-gold); }
+    .feature-block.emerald { border-left-color: var(--accent-emerald); }
+
+    .feature-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .feature-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .feature-list {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .feature-list li {
+      position: relative;
+      padding-left: 1.25rem;
+    }
+
+    .feature-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--border-gold);
+      font-weight: bold;
+    }
+
+    /* Table */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    thead th {
+      background: rgba(18, 29, 53, 0.95);
+      color: var(--gold-light);
+      padding: 0.9rem 1rem;
+      font-weight: 700;
+      font-family: var(--font-heading);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    tbody td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    tbody tr:hover {
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .badge-pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .badge-rose { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .badge-gold { background: rgba(212, 175, 55, 0.15); color: var(--gold-light); border: 1px solid rgba(212, 175, 55, 0.4); }
+
+    /* Árbol de Problemas */
+    .tree-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .tree-box-effect {
+      background: linear-gradient(135deg, rgba(159, 18, 57, 0.3), rgba(244, 63, 94, 0.15));
+      border: 1.5px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 1.1rem 2rem;
+      width: 85%;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .tree-box-trunk {
+      background: linear-gradient(135deg, rgba(22, 36, 68, 0.8), rgba(11, 20, 42, 0.9));
+      border: 2px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1.4rem 2.5rem;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 4px 25px rgba(212, 175, 55, 0.2);
+    }
+
+    .tree-roots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      width: 100%;
+    }
+
+    .root-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .root-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-gold);
+    }
+
+    .connector-line {
+      width: 2px;
+      height: 18px;
+      background: var(--border-gold);
+      margin: 0 auto;
+      opacity: 0.6;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(7, 12, 24, 0.95);
+      border-top: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .keyboard-shortcuts {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    .key {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-family: monospace;
+      color: var(--gold-light);
+    }
+
+    @media (max-width: 1024px) {
+      .archetype-container { grid-template-columns: 1fr; }
+      .grid-4, .grid-3 { grid-template-columns: 1fr; }
+      .tree-roots-grid { grid-template-columns: 1fr; }
+      .members-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Customer Journey Workshop Styles */
+    .workshop-header-banner {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(12, 20, 36, 0.85));
+      border: 1.5px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 0.85rem 1.4rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .workshop-steps-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .ws-step-pill {
+      background: rgba(18, 29, 53, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .ws-step-num {
+      font-weight: 800;
+      color: var(--gold-light);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ws-step-name {
+      color: #fff;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .journey-stages-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .journey-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      position: relative;
+    }
+
+    .journey-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+
+    .journey-step-num {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .journey-step-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .journey-step-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .touchpoints-card {
+      background: rgba(17, 28, 52, 0.9);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .emotions-column-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .emotion-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid var(--gold-light);
+      border-radius: 6px;
+      padding: 0.5rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .emotion-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .emotion-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .pain-points-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent-rose);
+      border-radius: 14px;
+      padding: 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .pain-item {
+      background: rgba(244, 63, 94, 0.06);
+      border-left: 3px solid var(--accent-rose);
+      border-radius: 6px;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.82rem;
+      color: #fff;
+      line-height: 1.4;
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+
+    .pain-num {
+      font-weight: 800;
+      color: var(--accent-rose);
+      font-size: 0.85rem;
+      min-width: 20px;
+    }
+
+
+    /* Brainstorming Slide Styles */
+    .brainstorm-hmw-box {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(12, 20, 36, 0.9));
+      border: 1.5px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 0.9rem 1.4rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .brainstorm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .brainstorm-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.15rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: all 0.25s ease;
+    }
+
+    .brainstorm-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .brainstorm-cluster-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brainstorm-cluster-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .brainstorm-ideas-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.2rem;
+    }
+
+    .brainstorm-idea-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: #fff;
+    }
+
+    .brainstorm-rules-bar {
+      background: rgba(18, 29, 53, 0.75);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+
+    /* SCAMPER 3D Flip Cards Styles */
+    .scamper-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      background: rgba(18, 29, 53, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.6rem 1.2rem;
+    }
+
+    .scamper-grid-top {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .scamper-grid-bottom {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .scamper-card {
+      background-color: transparent;
+      perspective: 1200px;
+      height: 235px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .scamper-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: left;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+      border-radius: 14px;
+    }
+
+    .scamper-card.flipped .scamper-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .scamper-card-front, .scamper-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    .scamper-card-front {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .scamper-card:hover .scamper-card-front {
+      border-color: var(--border-gold);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+    }
+
+    .scamper-card-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, rgba(20, 32, 60, 0.98), rgba(9, 15, 29, 0.98));
+      border: 2px solid var(--border-gold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .scamper-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .scamper-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #0b111e;
+      background: var(--gold-gradient);
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+    }
+
+    .scamper-word {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.92rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .scamper-front-body {
+      margin: 0.4rem 0;
+    }
+
+    .scamper-label-base {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .scamper-base-text {
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+
+    .scamper-flip-hint {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px dashed rgba(212, 175, 55, 0.35);
+      padding: 0.3rem 0.5rem;
+      border-radius: 6px;
+      width: fit-content;
+    }
+
+    .scamper-back-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .scamper-back-text {
+      font-size: 0.82rem;
+      color: #fff;
+      line-height: 1.45;
+      margin: 0.3rem 0;
+    }
+
+    .scamper-back-impact {
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 2.5px solid var(--accent-emerald);
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+
+    /* HMW, Crazy 8's and RWW Styles */
+    .hmw-intro-box {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(12, 20, 36, 0.9));
+      border: 1.5px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 0.85rem 1.4rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hmw-grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .hmw-card-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.15rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      transition: all 0.25s ease;
+    }
+
+    .hmw-card-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .hmw-tag-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hmw-pain-info {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .hmw-statement {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.4;
+      background: rgba(212, 175, 55, 0.05);
+      border-left: 3px solid var(--gold-light);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    /* Crazy 8's Grid Styles */
+    .crazy8-container-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .crazy8-item-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      min-height: 200px;
+      position: relative;
+    }
+
+    .crazy8-item-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+    }
+
+    .crazy8-idx-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    .crazy8-item-title {
+      font-family: var(--font-heading);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+
+    .crazy8-item-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* RWW Evaluation Styles */
+    .rww-evaluation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .rww-card-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.15rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: all 0.25s ease;
+    }
+
+    .rww-card-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .rww-metric-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+    }
+
+    .rww-metric-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      line-height: 1.35;
+      color: #e2e8f0;
+    }
+
+    .rww-verdict-pill {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+
+
+    /* RWW Detailed Slides Styles */
+    .rww-detail-banner {
+      background: rgba(18, 29, 53, 0.95);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 0.85rem 1.4rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rww-pillars-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.15rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .rww-pillar-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      transition: all 0.25s ease;
+    }
+
+    .rww-pillar-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .rww-criterion-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 0.65rem 0.8rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .rww-crit-q {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .rww-crit-j {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .rww-crit-score {
+      font-size: 0.8rem;
+      font-weight: 800;
+      align-self: flex-end;
+    }
+
+    .rww-subtotal-bar {
+      border-top: 1px dashed rgba(212, 175, 55, 0.3);
+      padding-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 0.88rem;
+    }
+
+    .rww-score-pill {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--border-gold);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+
+    .rww-verdict-banner {
+      background: rgba(18, 29, 53, 0.95);
+      border-radius: 10px;
+      padding: 0.8rem 1.4rem;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+    }
+
+    .ranking-row-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.85rem 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .ranking-row-card:hover {
+      border-color: var(--border-gold);
+      transform: translateX(3px);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <img src="logo.png" alt="Logo UDH" class="brand-logo-img">
+      <div class="brand-text-block">
+        <span class="brand-title">UNIVERSIDAD DE HUÁNUCO &middot; UDH</span>
+        <span class="brand-sub">TALLER DE NEGOCIOS &bull; MARCO LÓGICO & DESIGN THINKING</span>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <button class="btn" id="prevBtn" onclick="changeSlide(-1)">❮ Anterior</button>
+      <div class="slide-counter" id="slideCounter">1 / 23</div>
+      <button class="btn" id="nextBtn" onclick="changeSlide(1)">Siguiente ❯</button>
+      <a href="Presentacion_Taller_Negocios_Arquetipos_Arbol_Problemas.pptx" class="btn btn-gold" download>
+        📥 Descargar PPTX Oficial
+      </a>
+      <button class="btn" onclick="toggleFullscreen()" title="Pantalla Completa">⛶</button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <main>
+
+    <!-- SLIDE 1: CARÁTULA OFICIAL UDH CON INTEGRANTES ALFABÉTICOS -->
+    <section class="slide active" id="slide-1">
+      <div class="cover-header-udh">
+        <img src="logo.png" alt="Universidad de Huánuco" class="cover-logo-big">
+        <h2 class="cover-inst-title">UNIVERSIDAD DE HUÁNUCO</h2>
+        <div class="cover-inst-sub">Vicerrectorado Académico &bull; Taller de Negocios</div>
+        <div class="gold-divider"></div>
+      </div>
+
+      <h1 class="cover-main-title">
+        Diagnóstico de Campo, Arquetipos de Usuario<br>y Árbol de Problemas
+      </h1>
+      <p class="cover-desc-text">
+        Investigación empírica aplicada a una muestra de 10 trabajadores y familias independientes. Análisis cualitativo, mapa de empatía profunda y diseño de árbol causa-efecto bajo el marco lógico.
+      </p>
+
+      <!-- Members Box (Alphabetical Order) -->
+      <div class="members-card">
+        <div class="members-title">
+          <span>✦</span> Integrantes del Equipo (Orden Alfabético) <span>✦</span>
+        </div>
+        <div class="members-grid">
+          <div class="member-item">
+            <span class="member-num">01.</span>
+            <span>Córdova Guadalupe, Rafael Arturo</span>
+          </div>
+          <div class="member-item">
+            <span class="member-num">02.</span>
+            <span>Escalante Nolasco, Airton</span>
+          </div>
+          <div class="member-item">
+            <span class="member-num">03.</span>
+            <span>Figueroa Aguirre, Xavier Russell</span>
+          </div>
+          <div class="member-item">
+            <span class="member-num">04.</span>
+            <span>Marquez Checya, Jordy Brayan</span>
+          </div>
+          <div class="member-item">
+            <span class="member-num">05.</span>
+            <span>Panduro Berrospi, Marcelo Luciano</span>
+          </div>
+          <div class="member-item">
+            <span class="member-num">06.</span>
+            <span>Salazar Cáceres, Ronaldo Gonzalo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-footer-note">
+        Huánuco, Perú &bull; 2026
+      </div>
+    </section>
+
+    <!-- SLIDE 2: RESUMEN DE LA MUESTRA -->
+    <section class="slide" id="slide-2">
+      <span class="slide-category">✦ Fase 1: Diagnóstico de Campo ✦</span>
+      <h2 class="slide-title">Muestra de Entrevistas y Diagnóstico Estadístico</h2>
+      <p class="slide-subtitle">Sistematización de los 10 casos reales levantados en campo (ingresos, situación familiar y fricciones)</p>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Entrevistado (Edad)</th>
+              <th>Estado Civil / Rol</th>
+              <th>Ingreso Mensual</th>
+              <th>Objetivo Principal</th>
+              <th>Dificultades en su Vida</th>
+              <th>Fricción Operativa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Rosa Solos (40)</strong></td>
+              <td><span class="badge-pill badge-rose">Cabeza de Hogar</span> (Conviviente)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,200</strong></td>
+              <td>Sacar a sus hijos adelante</td>
+              <td>Sobrecarga del hogar</td>
+              <td>Problemas con Serenazgo</td>
+            </tr>
+            <tr>
+              <td><strong>2. Gladis (38)</strong></td>
+              <td><span class="badge-pill badge-rose">Cabeza de Hogar</span> (Soltera)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,000</strong></td>
+              <td>Sacar a sus hijos adelante</td>
+              <td>No haber estudiado</td>
+              <td>Cansancio extremo al trabajar</td>
+            </tr>
+            <tr>
+              <td><strong>3. Katerine Cruz (35)</strong></td>
+              <td>Soltera (Hija)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,000</strong></td>
+              <td>Estudiar carrera técnica</td>
+              <td>Falta de tiempo</td>
+              <td>Choferes que no obedecen</td>
+            </tr>
+            <tr>
+              <td><strong>4. Jose (18)</strong></td>
+              <td>Soltero (Joven)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,800</strong></td>
+              <td>Estudiar y progresar</td>
+              <td>Llegar al trabajo (distancia)</td>
+              <td>Congestión vehicular diaria</td>
+            </tr>
+            <tr>
+              <td><strong>5. Carlos Mendoza (30)</strong></td>
+              <td>Soltero (Independiente)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,800</strong></td>
+              <td>Ahorrar dinero</td>
+              <td>Poco tiempo libre</td>
+              <td>Encontrar trabajo estable</td>
+            </tr>
+            <tr>
+              <td><strong>6. Andrea Flores (37)</strong></td>
+              <td><span class="badge-pill badge-rose">Cabeza de Hogar</span> (Casada)</td>
+              <td><strong style="color: var(--gold-light);">S/ 2,300</strong></td>
+              <td>Estabilidad económica</td>
+              <td>Administrar su tiempo</td>
+              <td>Atención doméstica y negocio</td>
+            </tr>
+            <tr>
+              <td><strong>7. Christina (40)</strong></td>
+              <td><span class="badge-pill badge-rose">Cabeza de Hogar</span> (Viuda)</td>
+              <td><strong style="color: var(--gold-light);">S/ 400</strong></td>
+              <td>Ahorrar para sus hijos</td>
+              <td>Ingreso insuficiente</td>
+              <td>Vulnerabilidad económica crítica</td>
+            </tr>
+            <tr>
+              <td><strong>8. Wuilfredo (40)</strong></td>
+              <td><span class="badge-pill badge-rose">Cabeza de Hogar</span> (Conviviente)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,500</strong></td>
+              <td>Ahorrar para independizarse</td>
+              <td>No ser profesional</td>
+              <td>Discusiones en el trabajo</td>
+            </tr>
+            <tr>
+              <td><strong>9. María Salazar (32)</strong></td>
+              <td>Soltera (Independiente)</td>
+              <td><strong style="color: var(--gold-light);">S/ 600</strong></td>
+              <td>Estabilidad económica</td>
+              <td>Dificultad en la carga física</td>
+              <td>Escasez de tiempo diario</td>
+            </tr>
+            <tr>
+              <td><strong>10. Abel Paucar (30)</strong></td>
+              <td>Soltero (Apoyo a padres)</td>
+              <td><strong style="color: var(--gold-light);">S/ 1,300</strong></td>
+              <td>Apoyar a sus padres</td>
+              <td>Comprensión lectora</td>
+              <td>Doble turno trabajo y estudio</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: ARQUETIPO 1 CON ILUSTRACIÓN -->
+    <section class="slide" id="slide-3">
+      <span class="slide-category">✦ Determinación de Arquetipos de Usuario ✦</span>
+      <h2 class="slide-title">Arquetipo 1: La Madre/Padre Cabeza de Hogar Multirrol</h2>
+      <p class="slide-subtitle">Representa a Rosa, Gladis y Andrea (37-40 años) &mdash; Sobrecarga de crianza y comercio</p>
+
+      <div class="archetype-container">
+        <div class="archetype-visual-box">
+          <img src="archetype_mother.jpg" alt="Madre Emprendedora" class="archetype-photo">
+          <h3 class="archetype-name">Rosa / Gladis</h3>
+          <p class="archetype-role">Cabeza de Familia Monoparental</p>
+          <div class="archetype-meta-list">
+            <div class="meta-row"><span class="meta-key">Edad Promedio:</span> <span class="meta-val">38 - 40 años</span></div>
+            <div class="meta-row"><span class="meta-key">Ingreso Promedio:</span> <span class="meta-val">S/ 1,000 - S/ 1,200</span></div>
+            <div class="meta-row"><span class="meta-key">Carácter:</span> <span class="meta-val">Luchadora y alegre</span></div>
+            <div class="meta-row"><span class="meta-key">Dependientes:</span> <span class="meta-val">2 a 3 hijos escolares</span></div>
+            <div class="meta-row"><span class="meta-key">Jornada:</span> <span class="meta-val">12 a 14 hrs (hogar + venta)</span></div>
+          </div>
+        </div>
+
+        <div class="archetype-content-blocks">
+          <div class="feature-block gold">
+            <div class="feature-title">🎯 Objetivo Primario</div>
+            <p class="feature-text">
+              Garantizar la alimentación, salud y educación de sus hijos, asegurando que ellos sí logren una profesión y no repitan el ciclo de precariedad.
+            </p>
+          </div>
+          <div class="feature-block rose">
+            <div class="feature-title">⚡ Fricciones y Dificultades Diarias</div>
+            <ul class="feature-list">
+              <li><strong>Presión de serenazgo:</strong> Miedo continuo a decomisos y desalojos en la vía pública donde comercian.</li>
+              <li><strong>Sobrecarga física y mental:</strong> Cansancio acumulado por atender el hogar, cocinar, cuidar hijos y salir a trabajar sin relevo.</li>
+              <li><strong>Limitación formativa:</strong> Frustración por no haber terminado estudios superiores, lo que restringe sus opciones laborales.</li>
+            </ul>
+          </div>
+          <div class="feature-block emerald">
+            <div class="feature-title">💡 Necesidades y Oportunidades Clave</div>
+            <ul class="feature-list">
+              <li>Guarderías comunales o nidos a bajo costo para liberar horas productivas.</li>
+              <li>Capacitación en técnicas comerciales y finanzas familiares básicas.</li>
+              <li>Espacios comerciales seguros y formales con microcréditos ágiles.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: ARQUETIPO 2 CON ILUSTRACIÓN -->
+    <section class="slide" id="slide-4">
+      <span class="slide-category">✦ Determinación de Arquetipos de Usuario ✦</span>
+      <h2 class="slide-title">Arquetipo 2: El Joven Trabajador en Doble Turno</h2>
+      <p class="slide-subtitle">Representa a Abel, Jose y Katerine (18-32 años) &mdash; Atrapados entre el sostén a padres y su superación</p>
+
+      <div class="archetype-container">
+        <div class="archetype-visual-box">
+          <img src="archetype_student.jpg" alt="Estudiante Trabajador" class="archetype-photo">
+          <h3 class="archetype-name">Abel / Jose</h3>
+          <p class="archetype-role">Trabajador Joven con Meta Educativa</p>
+          <div class="archetype-meta-list">
+            <div class="meta-row"><span class="meta-key">Edad Promedio:</span> <span class="meta-val">18 - 30 años</span></div>
+            <div class="meta-row"><span class="meta-key">Ingreso Promedio:</span> <span class="meta-val">S/ 1,300 - S/ 1,800</span></div>
+            <div class="meta-row"><span class="meta-key">Carácter:</span> <span class="meta-val">Paciente y disciplinado</span></div>
+            <div class="meta-row"><span class="meta-key">Pasatiempos:</span> <span class="meta-val">Fútbol, básquetbol, deporte</span></div>
+            <div class="meta-row"><span class="meta-key">Carga Familiar:</span> <span class="meta-val">Aporte indispensable a padres</span></div>
+          </div>
+        </div>
+
+        <div class="archetype-content-blocks">
+          <div class="feature-block gold">
+            <div class="feature-title">🎯 Objetivo Primario</div>
+            <p class="feature-text">
+              Costearse estudios técnicos o superiores para acceder a un empleo calificado, ahorrar capital y mejorar el bienestar de sus progenitores.
+            </p>
+          </div>
+          <div class="feature-block rose">
+            <div class="feature-title">⚡ Fricciones y Dificultades Diarias</div>
+            <ul class="feature-list">
+              <li><strong>Barreras formativas:</strong> Dificultades notables en comprensión lectora y competencias analíticas básicas.</li>
+              <li><strong>Agotamiento por transporte:</strong> Congestión vehicular urbana que devora entre 2 a 3 horas diarias de viaje.</li>
+              <li><strong>Dilema tiempo vs dinero:</strong> Si trabajan menos horas para estudiar, no les alcanza para las mensualidades.</li>
+            </ul>
+          </div>
+          <div class="feature-block emerald">
+            <div class="feature-title">💡 Necesidades y Oportunidades Clave</div>
+            <ul class="feature-list">
+              <li>Educación técnica modular con horarios flexibles, nocturnos o semipresenciales.</li>
+              <li>Tutorías en habilidades blandas y nivelación en comprensión lectora.</li>
+              <li>Rutas y transportes optimizados o alternativas de trabajo cercano.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: ARQUETIPO 3 CON ILUSTRACIÓN -->
+    <section class="slide" id="slide-5">
+      <span class="slide-category">✦ Determinación de Arquetipos de Usuario ✦</span>
+      <h2 class="slide-title">Arquetipo 3: El Operario con Techo Laboral</h2>
+      <p class="slide-subtitle">Representa a Wuilfredo, Carlos Mendoza y María Salazar (30-40 años) &mdash; Lucha por capitalizarse</p>
+
+      <div class="archetype-container">
+        <div class="archetype-visual-box">
+          <img src="archetype_craftsman.jpg" alt="Operario Independiente" class="archetype-photo">
+          <h3 class="archetype-name">Wuilfredo / Carlos</h3>
+          <p class="archetype-role">Operario / Emprendedor Operativo</p>
+          <div class="archetype-meta-list">
+            <div class="meta-row"><span class="meta-key">Edad Promedio:</span> <span class="meta-val">30 - 40 años</span></div>
+            <div class="meta-row"><span class="meta-key">Ingreso Promedio:</span> <span class="meta-val">S/ 1,500 - S/ 1,800</span></div>
+            <div class="meta-row"><span class="meta-key">Carácter:</span> <span class="meta-val">Responsable y pragmático</span></div>
+            <div class="meta-row"><span class="meta-key">Estado:</span> <span class="meta-val">Conviviente / Soltero</span></div>
+            <div class="meta-row"><span class="meta-key">Preocupación:</span> <span class="meta-val">No contar con título profesional</span></div>
+          </div>
+        </div>
+
+        <div class="archetype-content-blocks">
+          <div class="feature-block gold">
+            <div class="feature-title">🎯 Objetivo Primario</div>
+            <p class="feature-text">
+              Acumular ahorros sólidos para formalizar un negocio propio o adquirir activos, escapando de la dependencia de contratos precarios o jornadas extenuantes.
+            </p>
+          </div>
+          <div class="feature-block rose">
+            <div class="feature-title">⚡ Fricciones y Dificultades Diarias</div>
+            <ul class="feature-list">
+              <li><strong>Techo salarial bajo:</strong> Sin un título técnico o profesional, su poder de negociación frente a empleadores es casi nulo.</li>
+              <li><strong>Conflictos interpersonales en ruta:</strong> Discusiones con choferes, pasajeros conflictivos o clientes informales.</li>
+              <li><strong>Vulnerabilidad ante fallas mecánicas:</strong> Gastos imprevistos en herramientas o vehículos que eliminan semanas de ahorro.</li>
+            </ul>
+          </div>
+          <div class="feature-block emerald">
+            <div class="feature-title">💡 Necesidades y Oportunidades Clave</div>
+            <ul class="feature-list">
+              <li>Certificaciones de competencias laborales para validar su experiencia práctica.</li>
+              <li>Capacitación en ventas, negociación y resolución de conflictos.</li>
+              <li>Herramientas de ahorro programado y fondos de contingencia para emergencias.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: MAPA DE EMPATÍA - 4 CUADRANTES -->
+    <section class="slide" id="slide-6">
+      <span class="slide-category">✦ Metodología Design Thinking ✦</span>
+      <h2 class="slide-title">Mapa de Empatía Integral: Los 4 Cuadrantes</h2>
+      <p class="slide-subtitle">Sistematización del cuadro de empatía manuscrito aplicado a los entrevistados</p>
+
+      <div class="grid-2">
+        <div class="card" style="border-top: 4px solid var(--border-gold);">
+          <div class="card-title" style="color: var(--gold-light);">
+            <span>🧠</span> ¿QUÉ PIENSA Y SIENTE?
+          </div>
+          <ul class="feature-list">
+            <li><strong>Pensamientos constantes:</strong> "¿Cómo haré para que mis hijos terminen una carrera?", "¿Cuándo podré terminar mis propios estudios?".</li>
+            <li><strong>Sensación de agobio:</strong> Angustia por la falta de tiempo libre y el estrés financiero diario.</li>
+            <li><strong>Frustración arraigada:</strong> Pesar por no haber tenido la oportunidad de estudiar una carrera superior.</li>
+            <li><strong>Cansancio físico y mental:</strong> Desgaste acumulado por años de trabajo operativo ininterrumpido.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--gold-light);">
+          <div class="card-title" style="color: var(--gold-light);">
+            <span>👀</span> ¿QUÉ VE EN SU ENTORNO?
+          </div>
+          <ul class="feature-list">
+            <li><strong>Entorno urbano caótico:</strong> Calles con comercio ambulatorio masivo, competencia desleal y falta de orden.</li>
+            <li><strong>Tráfico vehicular pesado:</strong> Horas enteras perdidas en traslados que complican la jornada diaria.</li>
+            <li><strong>Operativos de fiscalización:</strong> Presencia constante de serenazgo incautando mercadería a comerciantes.</li>
+            <li><strong>Círculo de precariedad:</strong> Compañeros y vecinos lidiando exactamente con las mismas restricciones.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--accent-cyan);">
+          <div class="card-title" style="color: var(--accent-cyan);">
+            <span>💬</span> ¿QUÉ DICE Y OYE?
+          </div>
+          <ul class="feature-list">
+            <li><strong>Lo que dice:</strong> "Hay que trabajar duro por los hijos", "El día no me alcanza para nada".</li>
+            <li><strong>Lo que oye en la calle:</strong> Discusiones con choferes, pasajeros apurados y reclamos de autoridades.</li>
+            <li><strong>Discurso social:</strong> Oye constantemente que "el estudio es el futuro", pero ve pocas oportunidades accesibles para adultos.</li>
+            <li><strong>Mensajes de su familia:</strong> Demandas de mayor presencia en el hogar y apoyo en las tareas escolares.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--accent-emerald);">
+          <div class="card-title" style="color: var(--accent-emerald);">
+            <span>🏃</span> ¿QUÉ HACE EN EL DÍA A DÍA?
+          </div>
+          <ul class="feature-list">
+            <li><strong>Perseverancia extrema:</strong> Trabajan extensas jornadas de 10 a 14 horas de lunes a sábado o domingo.</li>
+            <li><strong>Malabares de roles:</strong> Combinan el empleo operativo con cocinar, atender el hogar y cuidar a menores o padres ancianos.</li>
+            <li><strong>Ahorro precario:</strong> Guardan lo mínimo que pueden en alcancías o panderos familiares sin rentabilidad.</li>
+            <li><strong>Resiliencia operativa:</strong> Lidian con fallas mecánicas, multas y sobrecargas sin abandonar su actividad.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: MAPA DE EMPATÍA - PAINS VS GAINS -->
+    <section class="slide" id="slide-7">
+      <span class="slide-category">✦ Metodología Design Thinking ✦</span>
+      <h2 class="slide-title">Mapa de Empatía: Dolores (Esfuerzos) vs Ganancias (Deseos)</h2>
+      <p class="slide-subtitle">Identificación de las barreras emocionales profundas y las motivaciones de cambio</p>
+
+      <div class="grid-2">
+        <div class="card" style="border: 2px solid rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.05);">
+          <div class="card-title" style="color: var(--accent-rose);">
+            <span>⚠️</span> DOLORES, FRUSTRACIONES Y MIEDOS (PAINS)
+          </div>
+          <div class="archetype-content-blocks" style="gap: 0.85rem;">
+            <div class="feature-block rose" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Estrés Financiero Crónico</div>
+              <p class="feature-text">Incertidumbre constante por no saber si el ingreso del mes cubrirá la comida, alquiler y salud.</p>
+            </div>
+            <div class="feature-block rose" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Agotamiento Severo (Burnout)</div>
+              <p class="feature-text">Cansancio corporal y fatiga mental que deteriora la paciencia y la salud emocional familiar.</p>
+            </div>
+            <div class="feature-block rose" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Resignación Formativa y Brecha de Lectura</div>
+              <p class="feature-text">Sentimiento de inferioridad o estancamiento por dificultades en comprensión lectora y falta de título.</p>
+            </div>
+            <div class="feature-block rose" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Vulnerabilidad ante Autoridades y Entorno</div>
+              <p class="feature-text">Riesgo permanente de sanciones del serenazgo, pérdidas por tráfico y fallas mecánicas costosas.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border: 2px solid rgba(212, 175, 55, 0.5); background: rgba(212, 175, 55, 0.05);">
+          <div class="card-title" style="color: var(--gold-light);">
+            <span>🚀</span> GANANCIAS, ASPIRACIONES Y DESEOS (GAINS)
+          </div>
+          <div class="archetype-content-blocks" style="gap: 0.85rem;">
+            <div class="feature-block gold" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Estabilidad y Predecibilidad Económica</div>
+              <p class="feature-text">Tener un flujo de ingresos estable que permita planificar el mes y generar ahorros reales para emergencias.</p>
+            </div>
+            <div class="feature-block gold" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Movilidad Social para sus Hijos</div>
+              <p class="feature-text">Ver a sus descendientes graduados en institutos o universidades, rompiendo la precariedad familiar.</p>
+            </div>
+            <div class="feature-block gold" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Educación Flexible y Práctica</div>
+              <p class="feature-text">Programas de capacitación de horarios compatibles con el empleo que enseñen habilidades aplicables ya.</p>
+            </div>
+            <div class="feature-block gold" style="background: rgba(18, 29, 53, 0.8);">
+              <div class="feature-title">Tranquilidad y Espacios Seguros</div>
+              <p class="feature-text">Poder trabajar en entornos formales, regulados y dignos sin persecución municipal ni hostilidad.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: MATRIZ CAUSA-EFECTO PARTE 1 -->
+    <section class="slide" id="slide-8">
+      <span class="slide-category">✦ Matriz de Diagnóstico Causa-Efecto ✦</span>
+      <h2 class="slide-title">Problemas, Causas, Efectos y Necesidades (Ejes 1 y 2)</h2>
+      <p class="slide-subtitle">Dimensión Económica y Dimensión de Sobrecarga de Roles y Gestión de Tiempo</p>
+
+      <div class="archetype-content-blocks" style="gap: 1.5rem;">
+        <div class="card" style="border-left: 5px solid var(--border-gold);">
+          <div class="card-title" style="color: var(--gold-light); font-size: 1.1rem;">
+            EJE 1: INESTABILIDAD Y BAJOS INGRESOS ECONÓMICOS
+          </div>
+          <div class="grid-4" style="font-size: 0.85rem; margin-top: 0.5rem;">
+            <div>
+              <span style="color: var(--gold-light); font-weight: 700; display: block; margin-bottom: 0.3rem;">PROBLEMA IDENTIFICADO</span>
+              <p style="color: var(--text-muted);">Percibido en la mayoría, con ingresos desde S/ 40 hasta S/ 2,300 y una alta carga fija de gastos familiares.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-amber); font-weight: 700; display: block; margin-bottom: 0.3rem;">CAUSAS RAÍZ</span>
+              <p style="color: var(--text-muted);">• Falta de estudios superiores completos.<br>• Dependencia del día a día (informalidad).<br>• Poca optimización de negocios o ventas.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-rose); font-weight: 700; display: block; margin-bottom: 0.3rem;">EFECTOS DIRECTOS</span>
+              <p style="color: var(--text-muted);">• Estrés financiero permanente.<br>• Incapacidad estructural para ahorrar.<br>• Dificultad para cubrir la canasta básica.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-emerald); font-weight: 700; display: block; margin-bottom: 0.3rem;">NECESIDADES CLAVE</span>
+              <p style="color: var(--text-muted);">• Educación financiera y microahorro.<br>• Fuentes de ingresos estables y recurrentes.<br>• Capacitación técnica y comercial rápida.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--gold-light);">
+          <div class="card-title" style="color: var(--gold-light); font-size: 1.1rem;">
+            EJE 2: GESTIÓN INEFICIENTE DEL TIEMPO Y SOBRECARGA DE ROLES
+          </div>
+          <div class="grid-4" style="font-size: 0.85rem; margin-top: 0.5rem;">
+            <div>
+              <span style="color: var(--gold-light); font-weight: 700; display: block; margin-bottom: 0.3rem;">PROBLEMA IDENTIFICADO</span>
+              <p style="color: var(--text-muted);">Padres/madres solos que combinan simultáneamente empleo, estudios y crianza de hijos sin apoyo.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-amber); font-weight: 700; display: block; margin-bottom: 0.3rem;">CAUSAS RAÍZ</span>
+              <p style="color: var(--text-muted);">• Carencia de redes de apoyo familiar.<br>• Crianza unipersonal monoparental.<br>• Solapamiento de quehaceres domésticos.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-rose); font-weight: 700; display: block; margin-bottom: 0.3rem;">EFECTOS DIRECTOS</span>
+              <p style="color: var(--text-muted);">• Cansancio físico y mental crónico.<br>• Abandono temporal de proyectos personales.<br>• Descuido involuntario del negocio o familia.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-emerald); font-weight: 700; display: block; margin-bottom: 0.3rem;">NECESIDADES CLAVE</span>
+              <p style="color: var(--text-muted);">• Flexibilidad horaria y trabajo modular.<br>• Guarderías o redes de cuidado accesibles.<br>• Herramientas de optimización del tiempo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: MATRIZ CAUSA-EFECTO PARTE 2 -->
+    <section class="slide" id="slide-9">
+      <span class="slide-category">✦ Matriz de Diagnóstico Causa-Efecto ✦</span>
+      <h2 class="slide-title">Problemas, Causas, Efectos y Necesidades (Ejes 3 y 4)</h2>
+      <p class="slide-subtitle">Dimensión de Entorno Laboral Operativo y Dimensión Académica / Profesional</p>
+
+      <div class="archetype-content-blocks" style="gap: 1.5rem;">
+        <div class="card" style="border-left: 5px solid var(--accent-rose);">
+          <div class="card-title" style="color: var(--accent-rose); font-size: 1.1rem;">
+            EJE 3: CONFLICTOS OPERATIVOS Y BARRERAS EN EL ENTORNO LABORAL
+          </div>
+          <div class="grid-4" style="font-size: 0.85rem; margin-top: 0.5rem;">
+            <div>
+              <span style="color: var(--gold-light); font-weight: 700; display: block; margin-bottom: 0.3rem;">PROBLEMA IDENTIFICADO</span>
+              <p style="color: var(--text-muted);">Problemas frecuentes con autoridades/serenazgo, tráfico vehicular pesado, pasajeros conflictivos o averías mecánicas.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-amber); font-weight: 700; display: block; margin-bottom: 0.3rem;">CAUSAS RAÍZ</span>
+              <p style="color: var(--text-muted);">• Alta informalidad en transporte y comercio.<br>• Congestión vehicular urbana colapsada.<br>• Carencia de regulación y espacios seguros.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-rose); font-weight: 700; display: block; margin-bottom: 0.3rem;">EFECTOS DIRECTOS</span>
+              <p style="color: var(--text-muted);">• Pérdida de horas valiosas de trabajo.<br>• Disminución de ingresos diarios y multas.<br>• Desgaste emocional y conflictos con pares.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-emerald); font-weight: 700; display: block; margin-bottom: 0.3rem;">NECESIDADES CLAVE</span>
+              <p style="color: var(--text-muted);">• Soluciones logísticas para evitar atascos.<br>• Formalización en zonas seguras y ordenadas.<br>• Talleres de mediación y trato al usuario.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--border-gold);">
+          <div class="card-title" style="color: var(--gold-light); font-size: 1.1rem;">
+            EJE 4: LIMITACIONES EN EL DESARROLLO ACADÉMICO Y PROFESIONAL
+          </div>
+          <div class="grid-4" style="font-size: 0.85rem; margin-top: 0.5rem;">
+            <div>
+              <span style="color: var(--gold-light); font-weight: 700; display: block; margin-bottom: 0.3rem;">PROBLEMA IDENTIFICADO</span>
+              <p style="color: var(--text-muted);">Dificultades en comprensión lectora, deserción en estudios superiores y frustración por no contar con una profesión.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-amber); font-weight: 700; display: block; margin-bottom: 0.3rem;">CAUSAS RAÍZ</span>
+              <p style="color: var(--text-muted);">• Deserción temprana para sostener a la familia.<br>• Carencia de recursos económicos iniciales.<br>• Base escolar básica con vacíos de calidad.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-rose); font-weight: 700; display: block; margin-bottom: 0.3rem;">EFECTOS DIRECTOS</span>
+              <p style="color: var(--text-muted);">• Menor poder de negociación salarial.<br>• Enclaustramiento en labores de alta fricción.<br>• Estancamiento laboral y baja autoestima.</p>
+            </div>
+            <div>
+              <span style="color: var(--accent-emerald); font-weight: 700; display: block; margin-bottom: 0.3rem;">NECESIDADES CLAVE</span>
+              <p style="color: var(--text-muted);">• Programas educativos cortos y accesibles.<br>• Tutorías en comprensión lectora aplicada.<br>• Certificaciones técnicas con salida laboral.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: ÁRBOL DE PROBLEMAS - VISIÓN ESTRUCTURAL -->
+    <!-- SLIDE 10: ÁRBOL DE PROBLEMAS - ARQUITECTURA ESTRUCTURAL -->
+    <section class="slide" id="slide-10">
+      <span class="slide-category">✦ Metodología de Marco Lógico ✦</span>
+      <h2 class="slide-title">Árbol de Problemas: Arquitectura Causa-Problema-Efecto</h2>
+      <p class="slide-subtitle">Estructura vertical que conecta las raíces causales con el problema central y las consecuencias</p>
+
+      <div class="tree-container">
+        <!-- Efecto Final -->
+        <div class="tree-box-effect">
+          <span style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; color: var(--gold-light); display: block; margin-bottom: 0.25rem;">
+            ✦ EFECTO FINAL DE LARGO PLAZO ✦
+          </span>
+          <strong style="color: #fff; font-size: 1.05rem;">
+            Estancamiento socioeconómico estructural, exclusión y deterioro progresivo de la calidad de vida familiar
+          </strong>
+        </div>
+
+        <div class="connector-line"></div>
+
+        <!-- Efectos Directos -->
+        <div class="grid-4" style="width: 100%;">
+          <div class="card" style="padding: 0.9rem; border-top: 3px solid var(--border-gold);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--gold-light);">Estrés y Angustia Financiera</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Nula capacidad de ahorro previsible y vulnerabilidad ante emergencias familiares.</p>
+          </div>
+          <div class="card" style="padding: 0.9rem; border-top: 3px solid var(--border-gold);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--gold-light);">Agotamiento Físico Severo</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Jornadas extenuantes de pie sin descanso adecuado y doble turno en el hogar.</p>
+          </div>
+          <div class="card" style="padding: 0.9rem; border-top: 3px solid var(--accent-rose);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-rose);">Riesgo de Decomiso y Multas</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Pérdida imprevista del capital invertido por fiscalización municipal y serenazgo.</p>
+          </div>
+          <div class="card" style="padding: 0.9rem; border-top: 3px solid var(--accent-cyan);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan);">Vulnerabilidad de los Hijos</div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Niños solos en casa o en puestos callejeros con falta de espacio e inseguridad.</p>
+          </div>
+        </div>
+
+        <div class="connector-line"></div>
+
+        <!-- Problema Central (Tronco) -->
+        <div class="tree-box-trunk" style="border: 2.5px solid var(--border-gold); background: linear-gradient(135deg, rgba(22, 36, 68, 0.95), rgba(11, 20, 42, 0.98));">
+          <span style="font-size: 0.8rem; font-weight: 800; letter-spacing: 0.14em; color: var(--gold-light); display: block; margin-bottom: 0.4rem;">
+            ⚡ PROBLEMA CENTRAL IDENTIFICADO (TRONCO DEL ÁRBOL) ⚡
+          </span>
+          <p style="font-size: 1.35rem; font-weight: 800; color: #fff; line-height: 1.35;">
+            "Dificultades socioeconómicas de padres de familia solteros cabezas de hogar dedicados al comercio ambulatorio"
+          </p>
+        </div>
+
+        <div class="connector-line"></div>
+
+        <!-- Raíces -->
+        <div class="tree-roots-grid">
+          <div class="root-card" style="border-top: 4px solid var(--border-gold);">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--gold-light); margin-bottom: 0.4rem;">
+              1. Limitación Financiera & Formativa
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+              Carencia de capital de trabajo para comprar al por mayor, deserción académica temprana por necesidad urgente y brechas en gestión.
+            </p>
+          </div>
+          <div class="root-card" style="border-top: 4px solid var(--gold-light);">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--gold-light); margin-bottom: 0.4rem;">
+              2. Monoparentalidad & Sobrecarga
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+              Crianza sin apoyo de pareja ni guarderías accesibles, estrés por la custodia de los hijos y solapamiento con quehaceres del hogar.
+            </p>
+          </div>
+          <div class="root-card" style="border-top: 4px solid var(--accent-emerald);">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 0.4rem;">
+              3. Condiciones de la Vía Pública
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+              Fiscalizadores municipales, clima inclemente sin protección, traslado pesado de bultos a pie o en bus y dependencia de transeúntes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: ÁRBOL DE PROBLEMAS EN PROFUNDIDAD -->
+    <section class="slide" id="slide-11">
+      <span class="slide-category">✦ Árbol de Problemas Detallado ✦</span>
+      <h2 class="slide-title">Desglose de Causas, Subcausas y Estructura Raíz</h2>
+      <p class="slide-subtitle">Niveles jerárquicos de causalidad orientados a la realidad de los padres solteros en comercio ambulatorio</p>
+
+      <div class="grid-3">
+        <div class="card" style="border-top: 4px solid var(--border-gold);">
+          <span class="badge-pill badge-gold" style="width: fit-content; margin-bottom: 0.75rem;">DIMENSIÓN FINANCIERA Y FORMATIVA</span>
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 1rem;">
+            1. Limitaciones de Capital y Brecha Formativa
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+            <div style="background: rgba(212, 175, 55, 0.08); padding: 0.75rem; border-radius: 8px;">
+              <strong style="color: var(--gold-light); display: block;">Causa 1.1:</strong>
+              <span>Dependencia de ingresos diarios al contado y falta de capital de trabajo.</span>
+              <div style="margin-top: 0.4rem; padding-left: 0.5rem; border-left: 2px solid var(--border-gold); font-size: 0.8rem; color: var(--text-muted);">
+                <strong>↳ Subcausa:</strong> Compras en volúmenes pequeños que generan menores márgenes de ganancia.
+                <div style="margin-top: 0.2rem; font-size: 0.75rem; color: #cbd5e1;">
+                  <strong>↳↳ Subcausa de subcausa:</strong> Nulo acceso a crédito formal y dependencia de financiamiento informal.
+                </div>
+              </div>
+            </div>
+
+            <div style="background: rgba(212, 175, 55, 0.08); padding: 0.75rem; border-radius: 8px;">
+              <strong style="color: var(--gold-light); display: block;">Causa 1.2:</strong>
+              <span>Deserción académica temprana para sostener la economía del hogar.</span>
+              <div style="margin-top: 0.4rem; padding-left: 0.5rem; border-left: 2px solid var(--border-gold); font-size: 0.8rem; color: var(--text-muted);">
+                <strong>↳ Subcausa:</strong> Brechas en administración básica, cálculo de precios y herramientas digitales.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--gold-light);">
+          <span class="badge-pill badge-gold" style="width: fit-content; margin-bottom: 0.75rem;">DIMENSIÓN MONOPARENTAL Y FAMILIAR</span>
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 1rem;">
+            2. Crianza Monoparental y Sobrecarga Extrema
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+            <div style="background: rgba(246, 215, 122, 0.08); padding: 0.75rem; border-radius: 8px;">
+              <strong style="color: var(--gold-light); display: block;">Causa 2.1:</strong>
+              <span>Jefatura monoparental sin respaldo de pareja ni redes de cuidado infantil.</span>
+              <div style="margin-top: 0.4rem; padding-left: 0.5rem; border-left: 2px solid var(--gold-light); font-size: 0.8rem; color: var(--text-muted);">
+                <strong>↳ Subcausa:</strong> Ausencia de guarderías públicas o accesibles próximas a las zonas de venta.
+                <div style="margin-top: 0.2rem; font-size: 0.75rem; color: #cbd5e1;">
+                  <strong>↳↳ Subcausa de subcausa:</strong> Obligación de dejar hijos solos en casa o llevarlos a la calle en precariedad.
+                </div>
+              </div>
+            </div>
+
+            <div style="background: rgba(246, 215, 122, 0.08); padding: 0.75rem; border-radius: 8px;">
+              <strong style="color: var(--gold-light); display: block;">Causa 2.2:</strong>
+              <span>Solapamiento de jornada laboral con tareas del hogar y deberes escolares.</span>
+              <div style="margin-top: 0.4rem; padding-left: 0.5rem; border-left: 2px solid var(--gold-light); font-size: 0.8rem; color: var(--text-muted);">
+                <strong>↳ Subcausa:</strong> Agotamiento crónico, nulo descanso y estrés psicológico continuo.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--accent-emerald);">
+          <span class="badge-pill badge-gold" style="width: fit-content; margin-bottom: 0.75rem;">DIMENSIÓN ENTORNO Y VÍA PÚBLICA</span>
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 1rem;">
+            3. Vulnerabilidad Operativa e Informalidad
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+            <div style="background: rgba(16, 185, 129, 0.08); padding: 0.75rem; border-radius: 8px;">
+              <strong style="color: var(--accent-emerald); display: block;">Causa 3.1:</strong>
+              <span>Hostigamiento constante de fiscalizadores municipales y serenazgo.</span>
+              <div style="margin-top: 0.4rem; padding-left: 0.5rem; border-left: 2px solid var(--accent-emerald); font-size: 0.8rem; color: var(--text-muted);">
+                <strong>↳ Subcausa:</strong> Falta de ordenamiento y escasez de espacios comerciales formales y accesibles.
+                <div style="margin-top: 0.2rem; font-size: 0.75rem; color: #cbd5e1;">
+                  <strong>↳↳ Subcausa de subcausa:</strong> Inseguridad jurídica del comercio ambulatorio y riesgo de decomiso total.
+                </div>
+              </div>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.08); padding: 0.75rem; border-radius: 8px;">
+              <strong style="color: var(--accent-emerald); display: block;">Causa 3.2:</strong>
+              <span>Exposición inclemente al sol, frío o lluvias y traslado pesado de bultos.</span>
+              <div style="margin-top: 0.4rem; padding-left: 0.5rem; border-left: 2px solid var(--accent-emerald); font-size: 0.8rem; color: var(--text-muted);">
+                <strong>↳ Subcausa:</strong> Carencia de puestos con sombra, agua y traslados forzados al hombro o en transporte público.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: TALLER: CONSTRUCCIÓN DEL CUSTOMER JOURNEY (PASO 1 & 2) -->
+    <section class="slide" id="slide-12">
+      <span class="slide-category">✦ Taller Metodológico &bull; Design Thinking ✦</span>
+      <h2 class="slide-title">Taller: Construcción del Customer Journey Map (Etapas & Puntos de Contacto)</h2>
+      <p class="slide-subtitle">Paso 1: Identificación de las 8 etapas cronológicas del viaje &bull; Paso 2: Señalar puntos de contacto (Touchpoints)</p>
+
+      <!-- Metodología de 4 Pasos del Taller -->
+      <div class="workshop-header-banner">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.1em;">
+            ✦ ESTRUCTURA OFICIAL DEL TALLER: 4 PASOS METODOLÓGICOS ✦
+          </span>
+          <span class="badge-pill badge-gold" style="font-size: 0.72rem;">Conforme a la Sesión Práctica</span>
+        </div>
+        <div class="workshop-steps-row">
+          <div class="ws-step-pill" style="border-left: 3px solid var(--border-gold);">
+            <span class="ws-step-num">Paso 01</span>
+            <span class="ws-step-name">Identificar etapas del viaje</span>
+          </div>
+          <div class="ws-step-pill" style="border-left: 3px solid var(--gold-light);">
+            <span class="ws-step-num">Paso 02</span>
+            <span class="ws-step-name">Señalar puntos de contacto</span>
+          </div>
+          <div class="ws-step-pill" style="border-left: 3px solid var(--accent-cyan);">
+            <span class="ws-step-num">Paso 03</span>
+            <span class="ws-step-name">Detectar emociones en cada etapa</span>
+          </div>
+          <div class="ws-step-pill" style="border-left: 3px solid var(--accent-rose);">
+            <span class="ws-step-num">Paso 04</span>
+            <span class="ws-step-name">Marcar puntos de dolor</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 1: Grid de las 8 Etapas del Viaje -->
+      <div class="journey-stages-grid">
+        <div class="journey-card" style="border-top: 3px solid var(--border-gold);">
+          <span class="journey-step-num" style="color: var(--gold-light);">Fase 01</span>
+          <h4 class="journey-step-title">1. Identificación de la necesidad</h4>
+          <p class="journey-step-desc">
+            La madre o padre identifica que necesita generar ingresos urgentes para sostener su hogar de manera independiente.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--gold-light);">
+          <span class="journey-step-num" style="color: var(--gold-light);">Fase 02</span>
+          <h4 class="journey-step-title">2. Planificación del negocio</h4>
+          <p class="journey-step-desc">
+            Decide qué producto vender, calcula el dinero necesario para comprar y elige dónde y cuándo vender.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--accent-cyan);">
+          <span class="journey-step-num" style="color: var(--accent-cyan);">Fase 03</span>
+          <h4 class="journey-step-title">3. Abastecimiento</h4>
+          <p class="journey-step-desc">
+            Compra productos e insumos buscando precios de mayorista que dejen margen y prepara todo para la venta.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--accent-emerald);">
+          <span class="journey-step-num" style="color: var(--accent-emerald);">Fase 04</span>
+          <h4 class="journey-step-title">4. Instalación del puesto</h4>
+          <p class="journey-step-desc">
+            Se traslada al lugar en la vía pública, organiza su espacio de trabajo y coloca los precios visibles.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--border-gold);">
+          <span class="journey-step-num" style="color: var(--gold-light);">Fase 05</span>
+          <h4 class="journey-step-title">5. Atracción de clientes</h4>
+          <p class="journey-step-desc">
+            Los clientes observan el puesto; ofrece productos, explica características y usa carteles, redes o recomendaciones.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--gold-light);">
+          <span class="journey-step-num" style="color: var(--gold-light);">Fase 06</span>
+          <h4 class="journey-step-title">6. Atención y venta</h4>
+          <p class="journey-step-desc">
+            El cliente consulta precio; atiende con calidez, negocia el regateo, cobra en efectivo o billetera digital y entrega.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--accent-cyan);">
+          <span class="journey-step-num" style="color: var(--accent-cyan);">Fase 07</span>
+          <h4 class="journey-step-title">7. Experiencia post-compra</h4>
+          <p class="journey-step-desc">
+            El cliente evalúa producto, precio y atención; si queda satisfecho, vuelve a comprar o recomienda el puesto.
+          </p>
+        </div>
+
+        <div class="journey-card" style="border-top: 3px solid var(--accent-emerald);">
+          <span class="journey-step-num" style="color: var(--accent-emerald);">Fase 08</span>
+          <h4 class="journey-step-title">8. Fidelización y continuidad</h4>
+          <p class="journey-step-desc">
+            Conserva clientes frecuentes, identifica qué productos tienen mayor demanda y reinvierte sus ingresos del día.
+          </p>
+        </div>
+      </div>
+
+      <!-- Paso 2: Puntos de Contacto (Touchpoints) -->
+      <div class="touchpoints-card">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+          <span style="color: var(--gold-light); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em;">
+            ✦ PASO 2: PUNTOS DE CONTACTO (TOUCHPOINTS) - ¿DÓNDE Y CÓMO INTERACTÚA CON EL CLIENTE? ✦
+          </span>
+        </div>
+        <p style="font-size: 0.85rem; color: #fff; line-height: 1.5; margin-bottom: 0.5rem;">
+          Los padres de familia cabeza de hogar interactúan con sus clientes principalmente en <strong>puestos ambulatorios en la vía pública</strong> (veredas universitarias, esquinas comerciales y paraderos de transporte).
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; font-size: 0.8rem; color: var(--text-muted);">
+          <div style="background: rgba(255,255,255,0.03); padding: 0.5rem 0.8rem; border-radius: 6px; border-left: 2px solid var(--border-gold);">
+            <strong style="color: var(--gold-light); display: block;">Red de Recomendaciones:</strong>
+            Alumnos universitarios, profesores y trabajadores de la zona.
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 0.5rem 0.8rem; border-radius: 6px; border-left: 2px solid var(--accent-cyan);">
+            <strong style="color: var(--accent-cyan); display: block;">Transportistas y Transeúntes:</strong>
+            Conductores de mototaxis, combis y personas de paso diario.
+          </div>
+          <div style="background: rgba(255,255,255,0.03); padding: 0.5rem 0.8rem; border-radius: 6px; border-left: 2px solid var(--accent-emerald);">
+            <strong style="color: var(--accent-emerald); display: block;">Canales de Difusión:</strong>
+            Cartelería artesanal, trato personal cordial y pedidos por WhatsApp.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: TALLER: DETECTOR DE EMOCIONES & PUNTOS DE DOLOR -->
+    <section class="slide" id="slide-13">
+      <span class="slide-category">✦ Taller Metodológico &bull; Design Thinking ✦</span>
+      <h2 class="slide-title">Customer Journey: Emociones y Puntos de Dolor Críticos</h2>
+      <p class="slide-subtitle">Paso 3: Vivencia emocional experimentada en cada etapa &bull; Paso 4: Marcado de puntos de dolor (Pain Points)</p>
+
+      <div class="grid-2" style="align-items: stretch;">
+        <!-- Columna Izquierda: Paso 3 - Detector de Emociones -->
+        <div class="emotions-column-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 0.5rem;">
+            <div>
+              <span style="font-size: 0.75rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase;">Paso 03</span>
+              <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Detector de Emociones</h3>
+            </div>
+            <span class="badge-pill badge-gold" style="font-size: 0.7rem;">8 Emociones Clave</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+            <div class="emotion-item">
+              <span class="emotion-name">⚡ Frustración</span>
+              <span class="emotion-desc">Por bajas ventas o regateo excesivo de precios.</span>
+            </div>
+            <div class="emotion-item">
+              <span class="emotion-name">😰 Estrés</span>
+              <span class="emotion-desc">Por el sustento diario y la seguridad de los hijos.</span>
+            </div>
+            <div class="emotion-item">
+              <span class="emotion-name">📉 Agotamiento</span>
+              <span class="emotion-desc">Desgaste físico y mental por doble jornada sin descanso.</span>
+            </div>
+            <div class="emotion-item">
+              <span class="emotion-name">❓ Incertidumbre</span>
+              <span class="emotion-desc">Ganancias variables que dependen del flujo diario.</span>
+            </div>
+            <div class="emotion-item">
+              <span class="emotion-name">🛡️ Vulnerabilidad</span>
+              <span class="emotion-desc">Carencia de seguro médico o respaldo ante emergencias.</span>
+            </div>
+            <div class="emotion-item">
+              <span class="emotion-name">💸 Angustia Financiera</span>
+              <span class="emotion-desc">Imposibilidad de ahorrar y presión por deudas.</span>
+            </div>
+            <div class="emotion-item" style="border-left-color: var(--accent-rose);">
+              <span class="emotion-name" style="color: var(--accent-rose);">🚨 Alerta Constante</span>
+              <span class="emotion-desc">Tensión ante fiscalizadores y riesgo de decomiso.</span>
+            </div>
+            <div class="emotion-item" style="border-left-color: var(--accent-amber);">
+              <span class="emotion-name" style="color: var(--accent-amber);">⏳ Presión y Prisa</span>
+              <span class="emotion-desc">Apuro por vender, volver a casa y atender a los hijos.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Paso 4 - Marcar Puntos de Dolor -->
+        <div class="pain-points-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(244, 63, 94, 0.25); padding-bottom: 0.5rem;">
+            <div>
+              <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-rose); text-transform: uppercase;">Paso 04</span>
+              <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Marcar Puntos de Dolor (Pain Points)</h3>
+            </div>
+            <span class="badge-pill" style="background: rgba(244,63,94,0.15); color: var(--accent-rose); border: 1px solid var(--accent-rose); font-size: 0.7rem;">9 Fricciones Reales</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.45rem; max-height: 470px; overflow-y: auto;">
+            <div class="pain-item">
+              <span class="pain-num">01.</span>
+              <span>Estrés por tener que dejar a sus hijos solos o a supervisión precaria de un familiar.</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">02.</span>
+              <span>Inicio de la jornada laboral sin un descanso adecuado (desgaste físico acumulado).</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">03.</span>
+              <span>Dificultad severa para transportar la mercadería en el transporte público o al hombro.</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">04.</span>
+              <span>Riesgo permanente de decomiso de mercadería por parte de fiscalizadores (serenazgo).</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">05.</span>
+              <span>Exposición prolongada e inclemente a la intemperie: sol extremo, lluvia o frío.</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">06.</span>
+              <span>Dependencia total de la presencia de transeúntes para generar las ventas del día.</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">07.</span>
+              <span>Tener a los hijos en los puestos de venta en condiciones de inseguridad, incomodidad y falta de espacio.</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">08.</span>
+              <span>Llegar a la casa tarde en la noche y revisar las tareas del hogar y deberes escolares.</span>
+            </div>
+            <div class="pain-item">
+              <span class="pain-num">09.</span>
+              <span>Imposibilidad estructural de planificar a futuro o generar ahorros preventivos.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: BRAINSTORMING - LLUVIA DE IDEAS EN FUNCIÓN DEL PROBLEMA -->
+    <section class="slide" id="slide-14">
+      <span class="slide-category">✦ Fase de Ideación &bull; Design Thinking ✦</span>
+      <h2 class="slide-title">Brainstorming: Lluvia de Ideas de Solución e Innovación</h2>
+      <p class="slide-subtitle">Generación divergente de alternativas frente al problema central de las familias en comercio ambulatorio</p>
+
+      <!-- Banner de Pregunta Reto (How Might We) -->
+      <div class="brainstorm-hmw-box">
+        <span style="font-size: 0.75rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-bottom: 0.25rem;">
+          ⚡ PREGUNTA RETO (HOW MIGHT WE / HMW) - ENFOQUE DEL TALLER DE NEGOCIOS ⚡
+        </span>
+        <p style="font-size: 1.05rem; font-weight: 700; color: #fff; line-height: 1.35;">
+          "¿Cómo podríamos mejorar las condiciones socioeconómicas, la estabilidad operativa y el bienestar familiar de los padres de familia solteros cabezas de hogar dedicados al comercio ambulatorio?"
+        </p>
+      </div>
+
+      <!-- 4 Clústeres de Lluvia de Ideas (Grid 2x2) -->
+      <div class="brainstorm-grid">
+        <!-- Clúster 1 -->
+        <div class="brainstorm-card" style="border-top: 3.5px solid var(--border-gold);">
+          <div>
+            <h4 class="brainstorm-cluster-title" style="color: var(--gold-light);">1. Cuidado Infantil & Conciliación Familiar</h4>
+            <p class="brainstorm-cluster-sub">Aliviar la angustia de dejar a los hijos solos o exponerlos a la calle</p>
+          </div>
+          <div class="brainstorm-ideas-list">
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--border-gold);">
+              <strong style="color: var(--gold-light);">Red de Cuidado Comunitario Rotativo:</strong>
+              Madres/padres del mismo sector comercial coordinan turnos compartidos para supervisar a los niños mientras otros venden.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--border-gold);">
+              <strong style="color: var(--gold-light);">Nido / Ludoteca Comunitaria UDH:</strong>
+              Alianzas de voluntariado para que estudiantes universitarios de Educación y Psicología brinden apoyo escolar gratuito.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--border-gold);">
+              <strong style="color: var(--gold-light);">Kits Lúdicos y Módulo Seguro:</strong>
+              Espacio lúdico seguro y plegable con materiales didácticos para niños cuando sea inevitable que acompañen al puesto.
+            </div>
+          </div>
+        </div>
+
+        <!-- Clúster 2 -->
+        <div class="brainstorm-card" style="border-top: 3.5px solid var(--accent-rose);">
+          <div>
+            <h4 class="brainstorm-cluster-title" style="color: var(--accent-rose);">2. Infraestructura & Logística Urbana Segura</h4>
+            <p class="brainstorm-cluster-sub">Mitigar riesgos de decomiso, intemperie extrema y transporte pesado</p>
+          </div>
+          <div class="brainstorm-ideas-list">
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--accent-rose);">
+              <strong style="color: var(--accent-rose);">Carritos Ultraligeros con Control y Facturación Integrada:</strong>
+              Módulos rodantes ultralivianos de fácil traslado y plegado, equipados con terminal integrado para control de ventas, inventario en tiempo real, cuadre de caja diario y facturación/tickets digitales.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--accent-rose);">
+              <strong style="color: var(--accent-rose);">Corredor Comercial Concertado UDH:</strong>
+              Padrón y carnetización con la municipalidad y serenazgo para autorizar zonas comerciales seguras sin decomisos.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--accent-rose);">
+              <strong style="color: var(--accent-rose);">Almacenes de Proximidad Compartidos:</strong>
+              Espacios seguros alquilados cerca al campus para guardar la mercadería y evitar cargar bultos en buses o al hombro.
+            </div>
+          </div>
+        </div>
+
+        <!-- Clúster 3 -->
+        <div class="brainstorm-card" style="border-top: 3.5px solid var(--gold-light);">
+          <div>
+            <h4 class="brainstorm-cluster-title" style="color: var(--gold-light);">3. Microfinanzas & Asociatividad Colectiva</h4>
+            <p class="brainstorm-cluster-sub">Superar la falta de capital de trabajo, usura informal y nulo ahorro</p>
+          </div>
+          <div class="brainstorm-ideas-list">
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--gold-light);">
+              <strong style="color: var(--gold-light);">Juntas Digitales de Ahorro Programado:</strong>
+              Rondas de microahorro diario automatizado mediante billeteras (Yape/Plin) con candado de emergencia para salud.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--gold-light);">
+              <strong style="color: var(--gold-light);">Club de Compras Mayoristas Conjuntas:</strong>
+              Agrupación de vendedores para abastecerse a escala de proveedores mayoristas con descuentos de 25% a 35%.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--gold-light);">
+              <strong style="color: var(--gold-light);">Fondo Solidario de Protección Familiar:</strong>
+              Microcobertura comunitaria para reposición inmediata de mercadería ante incautaciones o días sin venta por lluvia.
+            </div>
+          </div>
+        </div>
+
+        <!-- Clúster 4 -->
+        <div class="brainstorm-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 class="brainstorm-cluster-title" style="color: var(--accent-emerald);">4. Canales Digitales & Fidelización Local</h4>
+            <p class="brainstorm-cluster-sub">Romper la dependencia exclusiva del flujo aleatorio de transeúntes</p>
+          </div>
+          <div class="brainstorm-ideas-list">
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--accent-emerald);">
+              <strong style="color: var(--accent-emerald);">Catálogo Express UDH (WhatsApp / Web):</strong>
+              Pedidos programados de refrigerios, snacks y útiles escolares con recojo express para estudiantes y profesores.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--accent-emerald);">
+              <strong style="color: var(--accent-emerald);">Suscripción Semanal de Refrigerios:</strong>
+              Paquetes prepagados con descuento para alumnos universitarios que aseguran un flujo de ingresos fijo previsible.
+            </div>
+            <div class="brainstorm-idea-item" style="border-left: 3px solid var(--accent-emerald);">
+              <strong style="color: var(--accent-emerald);">Identidad Visual & Señalética QR:</strong>
+              Cartelería artesanal llamativa con QR para cobros rápidos y programas simples de fidelización a clientes frecuentes.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reglas del Brainstorming -->
+      <div class="brainstorm-rules-bar">
+        ✦ REGLAS DEL BRAINSTORMING: Suspender el juicio &bull; Fomentar volumen y originalidad &bull; Construir sobre ideas ajenas &bull; Priorizar viabilidad de negocio
+      </div>
+    </section>
+
+    <!-- SLIDE 15: TÉCNICA SCAMPER - REFINAMIENTO E INNOVACIÓN -->
+    <section class="slide" id="slide-15">
+      <span class="slide-category">✦ Técnica de Innovación &bull; Design Thinking ✦</span>
+      <h2 class="slide-title">Técnica SCAMPER: Refinamiento e Innovación de Soluciones</h2>
+      <p class="slide-subtitle">Evolución sistemática de las ideas de negocio para resolver los puntos de dolor de los padres solteros</p>
+
+      <!-- Barra de Control Interactivo -->
+      <div class="scamper-controls-bar">
+        <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: var(--gold-light);">
+          <span style="font-size: 1.1rem;">💡</span>
+          <strong>Tarjetas Interactivas 3D:</strong>
+          <span style="color: var(--text-muted);">Haz clic en cualquier tarjeta para girarla y descubrir su mejora SCAMPER</span>
+        </div>
+        <button class="btn btn-gold" onclick="toggleAllFlipCards()" style="font-size: 0.78rem; padding: 0.35rem 0.85rem;">
+          🔄 Voltear Todas las Tarjetas
+        </button>
+      </div>
+
+      <!-- Fila Superior: S, C, A, M (4 Tarjetas) -->
+      <div class="scamper-grid-top">
+        <!-- S: Sustituir -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--border-gold);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter">S</div>
+                <div class="scamper-word">Sustituir</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">Compra individual al menudeo y cobro exclusivo en dinero en efectivo.</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--border-gold);">
+              <div class="scamper-back-tag">✦ SUSTITUCIÓN COLECTIVA & QR ✦</div>
+              <p class="scamper-back-text">
+                Sustituir compras individuales por <strong>abastecimiento colectivo mayorista</strong> (-30% de costo) y el efectivo por <strong>billeteras QR (Yape/Plin)</strong> para cobros rápidos y seguros.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--gold-light);">Impacto:</strong> Mayor margen de ganancia y cero riesgo de robo de efectivo en calle.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C: Combinar -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--gold-light);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter" style="background: linear-gradient(135deg, #fef08a, #facc15);">C</div>
+                <div class="scamper-word">Combinar</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">Venta callejera aislada y cuidado solitario de los hijos durante la jornada.</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--gold-light);">
+              <div class="scamper-back-tag">✦ ALIANZA VENTA + PEDAGOGÍA ✦</div>
+              <p class="scamper-back-text">
+                Combinar el puesto comercial con una <strong>red de apoyo y tareas escolares UDH</strong> con practicantes de Educación/Psicología, más venta física combinada con WhatsApp.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--gold-light);">Impacto:</strong> Niños supervisados educativamente y ventas continuas sin angustia.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- A: Adaptar -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--accent-cyan);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter" style="background: linear-gradient(135deg, #67e8f9, #06b6d4);">A</div>
+                <div class="scamper-word">Adaptar</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">Puesto precario en vereda y descontrol manual de ingresos diarios e inventario.</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--accent-cyan);">
+              <div class="scamper-back-tag">✦ CARRO ULTRALIGERO CON FACTURACIÓN ✦</div>
+              <p class="scamper-back-text">
+                Adaptar <strong>carritos comerciales ultraligeros de fácil transporte</strong> equipados con un <strong>sistema POS integrado de control de ventas, inventario en tiempo real y facturación/tickets digitales</strong>, con ruedas de alta movilidad y toldo térmico.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--accent-cyan);">Impacto:</strong> Traslado liviano sin sobreesfuerzo, cuadre exacto de caja diario y formalización ágil.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- M: Modificar / Magnificar -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--accent-rose);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter" style="background: linear-gradient(135deg, #fda4af, #f43f5e);">M</div>
+                <div class="scamper-word">Modificar</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">Venta pasiva sujeta al flujo aleatorio e incierto de transeúntes.</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--accent-rose);">
+              <div class="scamper-back-tag">✦ SUSCRIPCIÓN DE REFRIGERIOS ✦</div>
+              <p class="scamper-back-text">
+                Modificar el modelo a <strong>"Suscripciones Semanales de Refrigerios UDH"</strong>. Estudiantes compran cuponeras prepagadas de frutas/snacks asegurando ingresos fijos.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--accent-rose);">Impacto:</strong> Ingreso diario predecible y fidelización garantizada de alumnos.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila Inferior: P, E, R (3 Tarjetas) -->
+      <div class="scamper-grid-bottom">
+        <!-- P: Proponer otros usos -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--accent-emerald);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter" style="background: linear-gradient(135deg, #6ee7b7, #10b981);">P</div>
+                <div class="scamper-word">Proponer Otros Usos</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">El puesto ambulante solo se utiliza para despachar productos al paso.</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--accent-emerald);">
+              <div class="scamper-back-tag">✦ NODO DE ENLACE & RECOJO ✦</div>
+              <p class="scamper-back-text">
+                Proponer el puesto como <strong>Punto de Recojo Express</strong> para encargos de universitarios y centro de enlace barrial, aprovechando horas valle para microtalleres de ventas.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--accent-emerald);">Impacto:</strong> Diversificación de ingresos y mayor valor agregado del espacio.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- E: Eliminar -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--accent-rose);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter" style="background: linear-gradient(135deg, #f87171, #dc2626);">E</div>
+                <div class="scamper-word">Eliminar</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">Miedo constante a decomisos de serenazgo y préstamos usureros "gota a gota".</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--accent-rose);">
+              <div class="scamper-back-tag">✦ CERO DECOMISOS & CERO USURA ✦</div>
+              <p class="scamper-back-text">
+                Eliminar decomisos mediante <strong>padrón de comercio concertado municipal</strong> y erradicar la usura informal mediante <strong>juntas digitales de microahorro rotativo</strong>.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--accent-rose);">Impacto:</strong> Tranquilidad psicológica, seguridad jurídica y salud financiera.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- R: Reordenar / Revertir -->
+        <div class="scamper-card" onclick="flipSingleCard(this)">
+          <div class="scamper-card-inner">
+            <div class="scamper-card-front" style="border-top: 3.5px solid var(--gold-light);">
+              <div class="scamper-badge-row">
+                <div class="scamper-letter" style="background: linear-gradient(135deg, #fed7aa, #f97316);">R</div>
+                <div class="scamper-word">Reordenar / Revertir</div>
+              </div>
+              <div class="scamper-front-body">
+                <span class="scamper-label-base">Idea Base:</span>
+                <p class="scamper-base-text">Esperar al cliente en la calle y jornadas nocturnas agotadoras.</p>
+              </div>
+              <div class="scamper-flip-hint"><span>↻ Clic para ver mejora SCAMPER</span></div>
+            </div>
+            <div class="scamper-card-back" style="border-top: 3.5px solid var(--gold-light);">
+              <div class="scamper-back-tag">✦ PREVENTA DIGITAL BAJO DEMANDA ✦</div>
+              <p class="scamper-back-text">
+                Revertir la logística con <strong>preventa digital bajo demanda</strong> (el cliente reserva antes) y reordenar horarios laborales para que coincidan con la escuela y descanso familiar.
+              </p>
+              <div class="scamper-back-impact">
+                <strong style="color: var(--gold-light);">Impacto:</strong> Cero desperdicio de mercadería perecible y más tiempo de calidad en el hogar.
+              </div>
+              <div class="scamper-flip-hint" style="margin-top: 0.3rem;"><span>↻ Volver al frente</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: PILARES ESTRATÉGICOS DE SOLUCIÓN (RESULTADOS SCAMPER) -->
+    <section class="slide" id="slide-16">
+      <span class="slide-category">✦ Estrategia y Propuesta de Valor ✦</span>
+      <h2 class="slide-title">Pilares de Solución para el Taller de Negocios</h2>
+      <p class="slide-subtitle">Resultados de la fase de ideación divergente (Brainstorming y SCAMPER) hacia modelos viables de negocio</p>
+
+      <div class="grid-2">
+        <div class="card" style="border-left: 5px solid var(--border-gold);">
+          <div class="card-title" style="color: var(--gold-light);">
+            <span>1.</span> Innovación Operativa: Ecopuesto Smart POS
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            Implementar módulos rodantes ultraligeros de fácil transporte dotados de control de ventas, cuadre diario e inventario para formalizar ingresos y eliminar el sobreesfuerzo físico.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--gold-light);">
+          <div class="card-title" style="color: var(--gold-light);">
+            <span>2.</span> Soporte Social: Cuidado Infantil & Ludoteca
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            Diseñar modelos de cuidado comunitario infantil y guarderías de proximidad en convenio con la UDH que alivien el estrés de dejar a los hijos solos o exponerlos en la calle.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--accent-rose);">
+          <div class="card-title" style="color: var(--accent-rose);">
+            <span>3.</span> Puntos Seguros & Formalización Urbana
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            Convenios de ordenamiento comercial y espacios modulares autorizados que eliminen el riesgo de decomiso de mercadería y protejan al vendedor del sol y la lluvia.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--accent-emerald);">
+          <div class="card-title" style="color: var(--accent-emerald);">
+            <span>4.</span> Canales Digitales & Microahorro Cooperativo
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            Adopción de preventa por WhatsApp/redes, cuponeras semanales de refrigerios y microahorro diario con billeteras electrónicas (Yape/Plin) para quebrar la dependencia del "gota a gota".
+          </p>
+        </div>
+      </div>
+
+      <div class="brainstorm-rules-bar" style="margin-top: 1.5rem;">
+        ✦ Síntesis estratégica tras la fase de ideación divergente. A continuación se desglosan los retos HMW y la selección con Crazy 8's y R-W-W ✦
+      </div>
+    </section>
+
+    <!-- SLIDE 17: FORMULACIÓN HOW MIGHT WE (HMW) -->
+    <section class="slide" id="slide-17">
+      <span class="slide-category">✦ Enfoque de Innovación &bull; Design Thinking ✦</span>
+      <h2 class="slide-title">Formulación de Preguntas Reto: How Might We (HMW)</h2>
+      <p class="slide-subtitle">Transformación de los puntos de dolor del Customer Journey en oportunidades estructuradas de innovación</p>
+
+      <div class="hmw-intro-box">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.2rem;">
+            ✦ ESTRUCTURA DE LA PREGUNTA RETO HMW ✦
+          </span>
+          <span style="font-size: 0.95rem; font-weight: 700; color: #fff;">
+            ¿Cómo podríamos nosotros + [Acción Clave] + [Padres Solteros Ambulantes] + [Impacto Sostenible]?
+          </span>
+        </div>
+        <span class="badge-pill badge-gold" style="font-size: 0.72rem;">Fase de Enfoque</span>
+      </div>
+
+      <div class="hmw-grid-2x2">
+        <div class="hmw-card-box" style="border-top: 3.5px solid var(--border-gold);">
+          <span class="hmw-tag-pill" style="color: var(--gold-light);">HMW 01: Conciliación & Cuidado Familiar</span>
+          <div class="hmw-pain-info">
+            <strong style="color: var(--accent-rose);">Dolor Detectado:</strong> Angustia extrema por dejar a los hijos solos en casa o exponerlos en el puesto en condiciones precarias e inseguras.
+          </div>
+          <div class="hmw-statement">
+            ¿Cómo podríamos facilitar un entorno de cuidado infantil seguro y apoyo escolar accesible para que los padres solteros trabajen con tranquilidad y sus hijos progresen educativamente?
+          </div>
+        </div>
+
+        <div class="hmw-card-box" style="border-top: 3.5px solid var(--accent-rose);">
+          <span class="hmw-tag-pill" style="color: var(--accent-rose);">HMW 02: Infraestructura & Logística Urbana</span>
+          <div class="hmw-pain-info">
+            <strong style="color: var(--accent-rose);">Dolor Detectado:</strong> Carga física pesada al hombro o transporte público, clima extremo sin protección y riesgo latente de decomiso de serenazgo.
+          </div>
+          <div class="hmw-statement" style="border-left-color: var(--accent-rose);">
+            ¿Cómo podríamos diseñar módulos comerciales móviles ultraligeros y acuerdos de concertación urbana que eliminen el sobreesfuerzo físico y el temor a fiscalizaciones municipales?
+          </div>
+        </div>
+
+        <div class="hmw-card-box" style="border-top: 3.5px solid var(--gold-light);">
+          <span class="hmw-tag-pill" style="color: var(--gold-light);">HMW 03: Salud Financiera & Control Operativo</span>
+          <div class="hmw-pain-info">
+            <strong style="color: var(--accent-rose);">Dolor Detectado:</strong> Falta de capital para abastecerse, préstamos usureros "gota a gota" y nulo control contable de ganancias netas.
+          </div>
+          <div class="hmw-statement" style="border-left-color: var(--gold-light);">
+            ¿Cómo podríamos democratizar el microahorro colectivo y automatizar el control de ventas e inventario para evitar la descapitalización y generar ahorro previsible?
+          </div>
+        </div>
+
+        <div class="hmw-card-box" style="border-top: 3.5px solid var(--accent-emerald);">
+          <span class="hmw-tag-pill" style="color: var(--accent-emerald);">HMW 04: Canales Digitales & Fidelización Local</span>
+          <div class="hmw-pain-info">
+            <strong style="color: var(--accent-rose);">Dolor Detectado:</strong> Dependencia absoluta del flujo aleatorio de transeúntes y ventas variables que causan merma de producto.
+          </div>
+          <div class="hmw-statement" style="border-left-color: var(--accent-emerald);">
+            ¿Cómo podríamos conectar la oferta del comerciante con la demanda recurrente de la comunidad universitaria mediante preventa y suscripciones que aseguren ingresos fijos?
+          </div>
+        </div>
+      </div>
+
+      <div class="brainstorm-rules-bar">
+        ✦ Los retos HMW seleccionados sirven como base directa para la sesión de ideación visual divergente: CRAZY 8'S ✦
+      </div>
+    </section>
+
+    <!-- SLIDE 18: DINÁMICA CRAZY 8'S -->
+    <section class="slide" id="slide-18">
+      <span class="slide-category">✦ Ideación Divergente Rápida &bull; Design Thinking ✦</span>
+      <h2 class="slide-title">Dinámica Crazy 8's: 8 Soluciones Rápidas de Alto Impacto</h2>
+      <p class="slide-subtitle">Técnica ágil de 8 bocetos en 8 minutos para explorar alternativas divergentes sobre los retos HMW</p>
+
+      <div class="crazy8-container-grid">
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--border-gold);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--gold-light);">Cuadrante 01 / 08</div>
+            <h4 class="crazy8-item-title">Ecopuesto Smart POS</h4>
+            <p class="crazy8-item-desc">
+              Carrito ultraliviano de aluminio con ruedas shock-absorb, toldo solar y POS integrado para control de inventario y facturación digital en tiempo real.
+            </p>
+          </div>
+          <span class="badge-pill badge-gold" style="font-size: 0.68rem; margin-top: 0.5rem;">Hardware / Logística</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--gold-light);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--gold-light);">Cuadrante 02 / 08</div>
+            <h4 class="crazy8-item-title">Ludoteca Comunitaria UDH</h4>
+            <p class="crazy8-item-desc">
+              Espacio lúdico y de tareas dirigidas con estudiantes de Educación y Psicología para cuidar a los hijos de ambulantes empadronados.
+            </p>
+          </div>
+          <span class="badge-pill badge-gold" style="font-size: 0.68rem; margin-top: 0.5rem;">Soporte Social</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--accent-cyan);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--accent-cyan);">Cuadrante 03 / 08</div>
+            <h4 class="crazy8-item-title">Bot 'Anticipa UDH'</h4>
+            <p class="crazy8-item-desc">
+              Catálogo automatizado por WhatsApp para pedidos programados de refrigerios y snacks para alumnos y docentes con entrega express en recesos.
+            </p>
+          </div>
+          <span class="badge-pill" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); font-size: 0.68rem; margin-top: 0.5rem;">Canal Digital</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--accent-rose);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--accent-rose);">Cuadrante 04 / 08</div>
+            <h4 class="crazy8-item-title">Juntas Digitales & Seguro</h4>
+            <p class="crazy8-item-desc">
+              Rondas de microahorro diario en Yape/Plin con fondo mutuo de emergencia ante incautaciones municipales o emergencias médicas de salud.
+            </p>
+          </div>
+          <span class="badge-pill" style="background: rgba(244,63,94,0.15); color: var(--accent-rose); border: 1px solid var(--accent-rose); font-size: 0.68rem; margin-top: 0.5rem;">Microfinanzas</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--accent-emerald);">Cuadrante 05 / 08</div>
+            <h4 class="crazy8-item-title">Corredor Concertado UDH</h4>
+            <p class="crazy8-item-desc">
+              Módulos estandarizados y carnetizados con la municipalidad y serenazgo en zonas perimetrales seguras del campus sin riesgo de decomiso.
+            </p>
+          </div>
+          <span class="badge-pill" style="background: rgba(16,185,129,0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); font-size: 0.68rem; margin-top: 0.5rem;">Formalización</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--border-gold);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--gold-light);">Cuadrante 06 / 08</div>
+            <h4 class="crazy8-item-title">Central Compras Mayoristas</h4>
+            <p class="crazy8-item-desc">
+              Compras conjuntas por volumen directo a distribuidores mayoristas para abaratar costos de insumos entre 25% y 35% y elevar márgenes.
+            </p>
+          </div>
+          <span class="badge-pill badge-gold" style="font-size: 0.68rem; margin-top: 0.5rem;">Asociatividad</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--gold-light);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--gold-light);">Cuadrante 07 / 08</div>
+            <h4 class="crazy8-item-title">Lockers / Almacén Cercano</h4>
+            <p class="crazy8-item-desc">
+              Almacén comunitario alquilado a una cuadra de la universidad para guardar bultos pesados y evitar cargarlos a pie o en transporte público.
+            </p>
+          </div>
+          <span class="badge-pill badge-gold" style="font-size: 0.68rem; margin-top: 0.5rem;">Logística</span>
+        </div>
+
+        <div class="crazy8-item-box" style="border-top: 3.5px solid var(--accent-cyan);">
+          <div>
+            <div class="crazy8-idx-tag" style="color: var(--accent-cyan);">Cuadrante 08 / 08</div>
+            <h4 class="crazy8-item-title">Suscripción de Refrigerios</h4>
+            <p class="crazy8-item-desc">
+              Cuponera semanal prepagada con descuento para estudiantes universitarios, asegurando ingresos diarios fijos y cero merma de alimentos.
+            </p>
+          </div>
+          <span class="badge-pill" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); font-size: 0.68rem; margin-top: 0.5rem;">Modelo de Negocio</span>
+        </div>
+      </div>
+
+      <div class="brainstorm-rules-bar">
+        ✦ TÉCNICA CRAZY 8'S: 1 minuto por cuadrante para forzar la divergencia sin juzgar prematuramente las ideas ✦
+      </div>
+    </section>
+
+    <!-- SLIDE 19: RWW DETALLE 01 - ECOPUESTO SMART POS -->
+    <section class="slide" id="slide-19">
+      <span class="slide-category">✦ Filtrado R-W-W &bull; Detalle Criterial & Conteo Oficial ✦</span>
+      <h2 class="slide-title">Evaluación R-W-W: Ecopuesto Smart POS</h2>
+      <p class="slide-subtitle">Evaluación bajo la metodología oficial del docente: preguntas clave, justificación de campo y puntuación Likert</p>
+
+      <div class="rww-detail-banner" style="border-color: var(--border-gold);">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase;">PROPUESTA EVALUADA 01 / 04</span>
+          <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Ecopuesto Ultraligero con Facturación y Control Digital POS</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Módulo rodante ultraliviano con ruedas shock-absorb, panel solar y tablet POS para inventario, cuadre de caja diario y tickets digitales.</p>
+        </div>
+        <span class="badge-pill badge-gold" style="font-size: 0.75rem;">Solución Ganadora</span>
+      </div>
+
+      <div class="rww-pillars-3col">
+        <!-- 1. REAL -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--border-gold);">
+          <div>
+            <h4 style="color: var(--gold-light); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">1. ¿ES LA OPORTUNIDAD REAL? (REAL)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el "mercado" real?</span>
+              <p class="rww-crit-j">Necesidad validada en 93% de ambulantes (dolores físicos, desorden de caja). Mercado de &gt;3,000 comerciantes en Huánuco con alta disposición de compra/adopción.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 5.0 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el producto/proceso real?</span>
+              <p class="rww-crit-j">Concepto claro: chasis tubular liviano, toldo retráctil y tablet POS Android. Satisface la necesidad integral. Producción y entrega factible en talleres locales.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 5.0 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--gold-light);">
+            <span>SUBTOTAL REAL:</span>
+            <span class="rww-score-pill">10.0 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 2. WIN -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--gold-light);">
+          <div>
+            <h4 style="color: var(--gold-light); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">2. ¿PODEMOS GANAR? (WIN)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede el producto ser competitivo?</span>
+              <p class="rww-crit-j">Ventaja competitiva superior: integra ergonomía de transporte, orden visual y facturación electrónica. Difícil de replicar informalmente; no existen módulos similares.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 5.0 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede la empresa/equipo ser competitiva?</span>
+              <p class="rww-crit-j">Recursos y componentes disponibles en Huánuco (aluminio, ruedas, Android). Competencias técnicas y de gestión plenamente cubiertas por el equipo del Taller UDH.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 4.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--gold-light);">
+            <span>SUBTOTAL WIN:</span>
+            <span class="rww-score-pill">9.5 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 3. WORTH IT -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 style="color: var(--accent-emerald); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">3. ¿VALE LA PENA HACERLO? (WORTH-IT)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Será rentable con riesgos aceptables?</span>
+              <p class="rww-crit-j">Retornos esperados superan con creces los costos: recuperable en 4 meses vía micro-leasing (S/ 15/día). Riesgos financieros bajos y mitigables con fondo de garantía.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 4.5 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Tiene sentido estratégico hacerlo?</span>
+              <p class="rww-crit-j">Totalmente alineado con ODS 8 (Trabajo Decente), ODS 10 y visión de formalización UDH. Cuenta con alto respaldo municipal y académico para ordenar la vía pública.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 5.0 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-emerald);">
+            <span>SUBTOTAL WORTH-IT:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">9.5 / 10 PTS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rww-verdict-banner" style="border: 2px solid var(--border-gold); color: var(--gold-light);">
+        ★ PUNTAJE TOTAL: 29.0 / 30.0 PUNTOS (96.7%) | VEREDICTO: ¡SOLUCIÓN GANADORA PRINCIPAL (GO / PRIORIZADA PARA PROTOTIPAR)! ★
+      </div>
+    </section>
+
+    <!-- SLIDE 20: RWW DETALLE 02 - LUDOTECA COMUNITARIA UDH -->
+    <section class="slide" id="slide-20">
+      <span class="slide-category">✦ Filtrado R-W-W &bull; Detalle Criterial & Conteo Oficial ✦</span>
+      <h2 class="slide-title">Evaluación R-W-W: Red de Cuidado & Ludoteca UDH</h2>
+      <p class="slide-subtitle">Evaluación bajo la metodología oficial del docente: preguntas clave, justificación de campo y puntuación Likert</p>
+
+      <div class="rww-detail-banner" style="border-color: var(--gold-light);">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase;">PROPUESTA EVALUADA 02 / 04</span>
+          <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Red Comunitaria de Cuidado &amp; Ludoteca Itinerante UDH</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Espacio seguro de custodia, estimulación temprana y apoyo escolar para hijos de comerciantes ambulatorios durante sus horas de venta.</p>
+        </div>
+        <span class="badge-pill" style="background: rgba(246, 215, 122, 0.15); color: var(--gold-light); border: 1px solid var(--gold-light); font-size: 0.75rem;">Alianza Social</span>
+      </div>
+
+      <div class="rww-pillars-3col">
+        <!-- 1. REAL -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--gold-light);">
+          <div>
+            <h4 style="color: var(--gold-light); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">1. ¿ES LA OPORTUNIDAD REAL? (REAL)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el "mercado" real?</span>
+              <p class="rww-crit-j">100% de madres monoparentales llevan sus hijos al puesto por falta de red de apoyo. Mercado potencial crítico en mercados de Huánuco con alta disposición de uso.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 5.0 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el producto/proceso real?</span>
+              <p class="rww-crit-j">Concepto claro de ludoteca y guardería comunitaria. Satisface la protección infantil, pero su implementación exige local fijo, permisos y personal calificado continuo.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 4.0 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--gold-light);">
+            <span>SUBTOTAL REAL:</span>
+            <span class="rww-score-pill">9.0 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 2. WIN -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--gold-light);">
+          <div>
+            <h4 style="color: var(--gold-light); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">2. ¿PODEMOS GANAR? (WIN)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede el producto ser competitivo?</span>
+              <p class="rww-crit-j">Ventaja competitiva única mediante voluntariado universitario UDH (Educación y Psicología). Sin competencia directa que atienda a este estrato socioeconómico.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 4.5 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede la empresa/equipo ser competitiva?</span>
+              <p class="rww-crit-j">El equipo universitario posee competencias pedagógicas, pero carece de personería jurídica y gestión directa para custodia legal permanente de menores.</p>
+              <span class="rww-crit-score" style="color: var(--gold-light);">Puntaje: 3.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--gold-light);">
+            <span>SUBTOTAL WIN:</span>
+            <span class="rww-score-pill">8.0 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 3. WORTH IT -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 style="color: var(--accent-emerald); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">3. ¿VALE LA PENA HACERLO? (WORTH-IT)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Será rentable con riesgos aceptables?</span>
+              <p class="rww-crit-j">Proyecto de costo social no lucrativo: retorno financiero nulo. Requiere subsidio institucional continuo. Presenta riesgos de responsabilidad civil y custodia.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 3.0 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Tiene sentido estratégico hacerlo?</span>
+              <p class="rww-crit-j">Alineación extraordinaria con la Responsabilidad Social Universitaria UDH y ODS 4/5. Impacto social transformador en la infancia, pero no es autofinanciable.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 5.0 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-emerald);">
+            <span>SUBTOTAL WORTH-IT:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">8.0 / 10 PTS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rww-verdict-banner" style="border: 2px solid var(--gold-light); color: var(--gold-light);">
+        ✦ PUNTAJE TOTAL: 25.0 / 30.0 PUNTOS (83.3%) | VEREDICTO: COMPONENTE DE ALIANZA SOCIAL (INTEGRAR EN SEGUNDA ETAPA) ✦
+      </div>
+    </section>
+
+    <!-- SLIDE 21: RWW DETALLE 03 - BOT WHATSAPP ANTICIPA UDH -->
+    <section class="slide" id="slide-21">
+      <span class="slide-category">✦ Filtrado R-W-W &bull; Detalle Criterial & Conteo Oficial ✦</span>
+      <h2 class="slide-title">Evaluación R-W-W: Bot WhatsApp 'Anticipa UDH'</h2>
+      <p class="slide-subtitle">Evaluación bajo la metodología oficial del docente: preguntas clave, justificación de campo y puntuación Likert</p>
+
+      <div class="rww-detail-banner" style="border-color: var(--accent-cyan);">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase;">PROPUESTA EVALUADA 03 / 04</span>
+          <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Bot WhatsApp 'Anticipa UDH' de Preventa y Suscripciones</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Canal digital automatizado para pedidos anticipados de refrigerios, frutas y snacks con recojo express para estudiantes y docentes universitarios.</p>
+        </div>
+        <span class="badge-pill" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); font-size: 0.75rem;">Canal Digital</span>
+      </div>
+
+      <div class="rww-pillars-3col">
+        <!-- 1. REAL -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-cyan);">
+          <div>
+            <h4 style="color: var(--accent-cyan); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">1. ¿ES LA OPORTUNIDAD REAL? (REAL)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el "mercado" real?</span>
+              <p class="rww-crit-j">Necesidad comprobada en estudiantes con recesos breves (10-15 min) que buscan comida rápida y sana. El cliente comprará digitalmente para evitar colas.</p>
+              <span class="rww-crit-score" style="color: var(--accent-cyan);">Puntaje: 4.5 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el producto/proceso real?</span>
+              <p class="rww-crit-j">Concepto claro de preventa por WhatsApp API y recojo express. Satisface la demanda rápida. Factible de desarrollar y entregar con herramientas accesibles.</p>
+              <span class="rww-crit-score" style="color: var(--accent-cyan);">Puntaje: 4.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-cyan);">
+            <span>SUBTOTAL REAL:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">9.0 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 2. WIN -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-cyan);">
+          <div>
+            <h4 style="color: var(--accent-cyan); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">2. ¿PODEMOS GANAR? (WIN)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede el producto ser competitivo?</span>
+              <p class="rww-crit-j">Ventaja diferencial al asegurar venta previa antes de salir a la calle. Sin embargo, cafeterías formales pueden replicar el canal digital con mayor catálogo.</p>
+              <span class="rww-crit-score" style="color: var(--accent-cyan);">Puntaje: 4.0 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede la empresa/equipo ser competitiva?</span>
+              <p class="rww-crit-j">El equipo domina la tecnología web, pero el comerciante ambulatorio presenta una brecha de alfabetización digital para gestionar pedidos en tiempo real.</p>
+              <span class="rww-crit-score" style="color: var(--accent-cyan);">Puntaje: 3.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-cyan);">
+            <span>SUBTOTAL WIN:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">7.5 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 3. WORTH IT -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 style="color: var(--accent-emerald); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">3. ¿VALE LA PENA HACERLO? (WORTH-IT)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Será rentable con riesgos aceptables?</span>
+              <p class="rww-crit-j">Modelo de suscripción semanal prepagada asegura flujo de caja y reduce mermas perecibles a cero. Costos mínimos de inversión y bajo riesgo financiero.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 4.5 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Tiene sentido estratégico hacerlo?</span>
+              <p class="rww-crit-j">Alineado con modernización comercial, pero impacto social parcial (no resuelve el esfuerzo físico del traslado ni el cuidado de los niños en la calle).</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 3.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-emerald);">
+            <span>SUBTOTAL WORTH-IT:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">8.0 / 10 PTS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rww-verdict-banner" style="border: 2px solid var(--accent-cyan); color: var(--accent-cyan);">
+        ✦ PUNTAJE TOTAL: 24.5 / 30.0 PUNTOS (81.7%) | VEREDICTO: CANAL DIGITAL COMPLEMENTARIO (FASE 2 DE EXPANSIÓN) ✦
+      </div>
+    </section>
+
+    <!-- SLIDE 22: RWW DETALLE 04 - JUNTAS DIGITALES & SEGURO -->
+    <section class="slide" id="slide-22">
+      <span class="slide-category">✦ Filtrado R-W-W &bull; Detalle Criterial & Conteo Oficial ✦</span>
+      <h2 class="slide-title">Evaluación R-W-W: Juntas Digitales & Seguro</h2>
+      <p class="slide-subtitle">Evaluación bajo la metodología oficial del docente: preguntas clave, justificación de campo y puntuación Likert</p>
+
+      <div class="rww-detail-banner" style="border-color: var(--accent-emerald);">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-emerald); text-transform: uppercase;">PROPUESTA EVALUADA 04 / 04</span>
+          <h3 style="font-size: 1.1rem; color: #fff; font-weight: 700;">Juntas Digitales de Ahorro & Microseguro Paramétrico</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Rondas de microahorro diario mediante billeteras móviles (Yape/Plin) con fondo mutuo de cobertura ante decomisos municipales o emergencias de salud.</p>
+        </div>
+        <span class="badge-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); font-size: 0.75rem;">Microfinanzas</span>
+      </div>
+
+      <div class="rww-pillars-3col">
+        <!-- 1. REAL -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 style="color: var(--accent-emerald); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">1. ¿ES LA OPORTUNIDAD REAL? (REAL)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el "mercado" real?</span>
+              <p class="rww-crit-j">Necesidad apremiante frente a la extorsión de prestamistas 'gota a gota' (20% de interés). El mercado ya confía en juntas tradicionales familiares informales.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 4.5 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Es el producto/proceso real?</span>
+              <p class="rww-crit-j">Concepto claro de ahorro rotativo digital y fondo de emergencia. Factible en billeteras móviles, pero la gobernanza del fondo mutuo requiere reglas complejas.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 3.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-emerald);">
+            <span>SUBTOTAL REAL:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">8.0 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 2. WIN -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 style="color: var(--accent-emerald); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">2. ¿PODEMOS GANAR? (WIN)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede el producto ser competitivo?</span>
+              <p class="rww-crit-j">Ventaja de cero interés usurero y red de protección ante decomisos. Sin embargo, prestamistas informales compiten con entrega inmediata sin requisitos.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 4.0 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Puede la empresa/equipo ser competitiva?</span>
+              <p class="rww-crit-j">El equipo carece de estructura legal y fiduciaria para custodiar fondos ajenos; requiere obligatoriamente alianza con una Cooperativa de Ahorro y Crédito (COOPAC).</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 3.0 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-emerald);">
+            <span>SUBTOTAL WIN:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">7.0 / 10 PTS</span>
+          </div>
+        </div>
+
+        <!-- 3. WORTH IT -->
+        <div class="rww-pillar-card" style="border-top: 3.5px solid var(--accent-emerald);">
+          <div>
+            <h4 style="color: var(--accent-emerald); font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem;">3. ¿VALE LA PENA HACERLO? (WORTH-IT)</h4>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Será rentable con riesgos aceptables?</span>
+              <p class="rww-crit-j">Fortalece la solvencia familiar pero no genera utilidades propias para el proyecto. Alto riesgo de morosidad o deserción si falla la confianza del grupo.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 3.5 / 5.0</span>
+            </div>
+            <div class="rww-criterion-box">
+              <span class="rww-crit-q">• ¿Tiene sentido estratégico hacerlo?</span>
+              <p class="rww-crit-j">Alto valor estratégico en inclusión financiera y combate a la usura ilícita. Excelente pilar de resiliencia comunitaria articulado con una microfinanciera.</p>
+              <span class="rww-crit-score" style="color: var(--accent-emerald);">Puntaje: 4.5 / 5.0</span>
+            </div>
+          </div>
+          <div class="rww-subtotal-bar" style="color: var(--accent-emerald);">
+            <span>SUBTOTAL WORTH-IT:</span>
+            <span class="rww-score-pill" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">8.0 / 10 PTS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rww-verdict-banner" style="border: 2px solid var(--accent-emerald); color: var(--accent-emerald);">
+        ✦ PUNTAJE TOTAL: 23.0 / 30.0 PUNTOS (76.7%) | VEREDICTO: HERRAMIENTA FINANCIERA DE SOPORTE (PILAR DE RESILIENCIA) ✦
+      </div>
+    </section>
+
+    <!-- SLIDE 23: MATRIZ CONSOLIDADA R-W-W, RANKING Y VEREDICTO -->
+    <section class="slide" id="slide-23">
+      <span class="slide-category">✦ Síntesis de Evaluación Multidimensional ✦</span>
+      <h2 class="slide-title">Matriz Consolidada R-W-W: Ranking de Totales y Selección</h2>
+      <p class="slide-subtitle">Comparativa cuantitativa de los 4 proyectos evaluados y fundamentación metodológica de la escala aplicada</p>
+
+      <div style="display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 1.5rem; margin-top: 1.2rem; align-items: stretch;">
+        <!-- Columna Izquierda: Ranking Consolidado -->
+        <div style="display: flex; flex-direction: column; justify-content: space-between;">
+          <h3 style="color: var(--gold-light); font-size: 0.9rem; text-transform: uppercase; font-weight: 800; margin-bottom: 0.6rem; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem;">
+            <span>🏆</span> Ranking Cuantitativo &amp; Conteo Total (/30 PTS)
+          </h3>
+
+          <div class="ranking-row-card" style="border-left: 5px solid var(--border-gold); background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(18, 29, 53, 0.95)); padding: 0.85rem 1.15rem; margin-bottom: 0.65rem;">
+            <div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase;">1° PUESTO (SOLUCIÓN GANADORA PRINCIPAL)</span>
+              <h4 style="color: #fff; font-size: 0.96rem; font-weight: 700; margin: 0.15rem 0;">Ecopuesto Ultraligero con Facturación y Control POS</h4>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Real: 10/10 &bull; Win: 9.5/10 &bull; Worth: 9.5/10</span>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-pill badge-gold" style="font-size: 0.82rem; font-weight: 800; display: inline-block;">29.0 / 30 (96.7%)</span>
+              <div style="font-size: 0.7rem; color: var(--gold-light); font-weight: 700; margin-top: 0.25rem;">PROTOTIPAR FASE 1</div>
+            </div>
+          </div>
+
+          <div class="ranking-row-card" style="border-left: 5px solid var(--gold-light); padding: 0.85rem 1.15rem; margin-bottom: 0.65rem;">
+            <div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--gold-light); text-transform: uppercase;">2° PUESTO (ALIANZA SOCIAL)</span>
+              <h4 style="color: #fff; font-size: 0.96rem; font-weight: 700; margin: 0.15rem 0;">Red de Cuidado Infantil &amp; Ludoteca Comunitaria UDH</h4>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Real: 9.0/10 &bull; Win: 8.0/10 &bull; Worth: 8.0/10</span>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-pill" style="background: rgba(246, 215, 122, 0.15); color: var(--gold-light); border: 1px solid var(--gold-light); font-size: 0.82rem; font-weight: 800; display: inline-block;">25.0 / 30 (83.3%)</span>
+              <div style="font-size: 0.7rem; color: var(--gold-light); font-weight: 700; margin-top: 0.25rem;">PROYECCIÓN SOCIAL</div>
+            </div>
+          </div>
+
+          <div class="ranking-row-card" style="border-left: 5px solid var(--accent-cyan); padding: 0.85rem 1.15rem; margin-bottom: 0.65rem;">
+            <div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase;">3° PUESTO (CANAL DIGITAL)</span>
+              <h4 style="color: #fff; font-size: 0.96rem; font-weight: 700; margin: 0.15rem 0;">Bot WhatsApp 'Anticipa UDH' de Preventa</h4>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Real: 9.0/10 &bull; Win: 7.5/10 &bull; Worth: 8.0/10</span>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-pill" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); font-size: 0.82rem; font-weight: 800; display: inline-block;">24.5 / 30 (81.7%)</span>
+              <div style="font-size: 0.7rem; color: var(--accent-cyan); font-weight: 700; margin-top: 0.25rem;">CANAL COMPLEMENTARIO</div>
+            </div>
+          </div>
+
+          <div class="ranking-row-card" style="border-left: 5px solid var(--accent-emerald); padding: 0.85rem 1.15rem; margin-bottom: 0;">
+            <div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--accent-emerald); text-transform: uppercase;">4° PUESTO (MICROFINANZAS)</span>
+              <h4 style="color: #fff; font-size: 0.96rem; font-weight: 700; margin: 0.15rem 0;">Juntas Digitales de Ahorro &amp; Microseguro</h4>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Real: 8.0/10 &bull; Win: 7.0/10 &bull; Worth: 8.0/10</span>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); font-size: 0.82rem; font-weight: 800; display: inline-block;">23.0 / 30 (76.7%)</span>
+              <div style="font-size: 0.7rem; color: var(--accent-emerald); font-weight: 700; margin-top: 0.25rem;">SOPORTE RESILIENCIA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Fundamento Metodológico Escala Likert -->
+        <div style="background: var(--bg-card); border: 1.5px solid var(--border-gold); border-radius: 12px; padding: 1.15rem 1.35rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span class="slide-category" style="margin-bottom: 0.25rem; display: block; font-size: 0.72rem;">✦ FUNDAMENTO METODOLÓGICO DEL CONTEO ✦</span>
+            <h3 style="color: #fff; font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;">
+              ¿Por qué Escala Graduada Likert (1-5) vs Binaria (Sí/No)?
+            </h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+              <div style="border-left: 3px solid var(--border-gold); padding-left: 0.7rem;">
+                <strong style="color: var(--gold-light); font-size: 0.83rem; display: block;">1. Mayor Precisión y Cero Ambigüedad</strong>
+                <p style="color: var(--text-light); font-size: 0.76rem; line-height: 1.35; margin-top: 0.15rem;">
+                  Supera el sesgo del "Sí complaciente" en innovación social. Permite graduar certeza empírica alta (5 pts) frente a ideas viables pero con restricciones de financiamiento o logística (3 pts) o inviables (1 pt).
+                </p>
+              </div>
+
+              <div style="border-left: 3px solid var(--gold-light); padding-left: 0.7rem;">
+                <strong style="color: var(--gold-light); font-size: 0.83rem; display: block;">2. Ranking Matemático y Comparabilidad</strong>
+                <p style="color: var(--text-light); font-size: 0.76rem; line-height: 1.35; margin-top: 0.15rem;">
+                  El conteo acumulativo sobre 30 puntos genera una métrica porcentual transparente (96.7% vs 76.7%), eliminando empates ficticios y respaldando la priorización ante el jurado evaluador.
+                </p>
+              </div>
+
+              <div style="border-left: 3px solid var(--accent-cyan); padding-left: 0.7rem;">
+                <strong style="color: var(--accent-cyan); font-size: 0.83rem; display: block;">3. Diagnóstico Preciso de Cuellos de Botella</strong>
+                <p style="color: var(--text-light); font-size: 0.76rem; line-height: 1.35; margin-top: 0.15rem;">
+                  Aísla la dimensión exacta donde flaquea cada proyecto: ej. la Ludoteca tiene Real 9.0/10 (altísima necesidad) pero Win 8.0/10 por autosuficiencia financiera, permitiendo reorientarla como convenio social sin descartarla.
+                </p>
+              </div>
+
+              <div style="border-left: 3px solid var(--accent-emerald); padding-left: 0.7rem;">
+                <strong style="color: var(--accent-emerald); font-size: 0.83rem; display: block;">4. Respaldo Empírico en Campo (30 Entrevistas)</strong>
+                <p style="color: var(--text-light); font-size: 0.76rem; line-height: 1.35; margin-top: 0.15rem;">
+                  Cada ponderación asignada tiene sustento directo en la investigación empírica levantada en los Mercados Modelo, Puelles y Paucarbamba, dotando de validez científica a la solución ganadora.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner Veredicto Final -->
+      <div style="margin-top: 1.15rem; background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(18, 29, 53, 0.98)); border: 2px solid var(--border-gold); border-radius: 12px; padding: 0.9rem 1.4rem; text-align: center;">
+        <span style="color: var(--gold-light); font-size: 0.92rem; font-weight: 800; letter-spacing: 0.04em;">
+          ✦ VEREDICTO FINAL: El Ecopuesto Smart POS (29.0 / 30 pts &middot; 96.7%) lidera con máxima viabilidad y rentabilidad, priorizándose para el Prototipado y Validación en Campo en el Taller UDH ✦
+        </span>
+      </div>
+
+      <div style="margin-top: 1rem; background: var(--bg-card); border: 1px solid var(--border-gold); border-radius: 10px; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h4 style="color: #fff; font-size: 0.92rem; margin-bottom: 0.15rem;">Presentación Oficial Completa Lista para Descargar</h4>
+          <p style="color: var(--text-muted); font-size: 0.78rem;">Archivo PowerPoint widescreen 16:9 completo con 23 diapositivas oficiales.</p>
+        </div>
+        <a href="Presentacion_Taller_Negocios_Arquetipos_Arbol_Problemas.pptx" class="btn btn-gold" style="font-size: 0.85rem; padding: 0.55rem 1.2rem;" download>
+          Descargar Archivo PPTX Editable
+        </a>
+      </div>
+    </section></section></main>
+
+  <footer>
+    <div class="keyboard-shortcuts">
+      <span>Navegar: <span class="key">←</span> <span class="key">→</span></span>
+      <span>Pantalla completa: <span class="key">F</span></span>
+    </div>
+    <div>
+      <span style="color: var(--gold-light); font-weight: 600;">Universidad de Huánuco &middot; Taller de Negocios 2026</span>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 23;
+
+    
+    // Flip Card Functions for SCAMPER
+    function flipSingleCard(card) {
+      card.classList.toggle('flipped');
+    }
+
+    function toggleAllFlipCards() {
+      const cards = document.querySelectorAll('.scamper-card');
+      const anyFlipped = Array.from(cards).some(c => c.classList.contains('flipped'));
+      cards.forEach(card => {
+        if (anyFlipped) {
+          card.classList.remove('flipped');
+        } else {
+          card.classList.add('flipped');
+        }
+      });
+    }
+
+    function updateSlide() {
+      document.querySelectorAll('.slide').forEach((s, idx) => {
+        s.classList.remove('active');
+        if (idx + 1 === currentSlide) {
+          s.classList.add('active');
+        }
+      });
+
+      document.getElementById('slideCounter').textContent = `${currentSlide} / ${totalSlides}`;
+      document.getElementById('progressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+
+      document.getElementById('prevBtn').disabled = (currentSlide === 1);
+      document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeSlide(direction) {
+      const newSlide = currentSlide + direction;
+      if (newSlide >= 1 && newSlide <= totalSlides) {
+        currentSlide = newSlide;
+        updateSlide();
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        changeSlide(-1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      } else if (e.key === 'Home') {
+        currentSlide = 1;
+        updateSlide();
+      } else if (e.key === 'End') {
+        currentSlide = totalSlides;
+        updateSlide();
+      }
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+    document.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) changeSlide(1);
+      if (touchEndX - touchStartX > 50) changeSlide(-1);
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
